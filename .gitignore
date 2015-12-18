@@ -22,9 +22,6 @@ gen/
 
 # Gradle files
 .gradle/
-gradle/
-gradlew
-gradlew.bat
 build/
 local.properties
 
