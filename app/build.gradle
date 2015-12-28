@@ -1,13 +1,17 @@
 buildscript {
     repositories {
         jcenter()
-	}
+    }
 }
 
 apply plugin: 'com.android.application'
 
 def gitVersion() {
-    return "git rev-list master --first-parent --count".execute().text.toInteger()
+    return "git rev-list master --first-parent --count".execute([], project.rootDir).text.toInteger()
+}
+
+def gitTag() {
+    return "git describe --tags".execute([], project.rootDir).text.trim()
 }
 
 android {
@@ -17,20 +21,29 @@ android {
     defaultConfig {
         applicationId "io.romain.passport"
         minSdkVersion 21
-        targetSdkVersion 22
+        targetSdkVersion 23
+
         versionCode gitVersion()
-        versionName "Hello, World!"
+        versionName gitTag()
+
+        // Change the name of the apk.
+        archivesBaseName = "passport-${versionName}"
     }
-	
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        lintOptions {
+            checkReleaseBuilds false
+            abortOnError false
+        }
     }
-	
-	packagingOptions {
+
+    packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
@@ -43,8 +56,8 @@ android {
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-	
-	compileOptions {
+
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
@@ -52,5 +65,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
 }
