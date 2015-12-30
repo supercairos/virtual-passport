@@ -5,8 +5,16 @@
          ?android:attr/buttonBarStyle is new as of API 11 so this is
          necessary to support previous API levels. -->
     <declare-styleable name="ButtonBarContainerTheme">
-        <attr name="metaButtonBarStyle" format="reference" />
-        <attr name="metaButtonBarButtonStyle" format="reference" />
+        <attr name="metaButtonBarStyle" format="reference"/>
+        <attr name="metaButtonBarButtonStyle" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="SvgLogoView">
+        <attr name="strokeWidth" format="float"/>
+        <attr name="strokeColor" format="color|reference"/>
+        <attr name="fillColor" format="color|reference"/>
+        <attr name="resource" format="reference"/>
+        <attr name="makerSize" format="dimension"/>
     </declare-styleable>
 
 </resources>

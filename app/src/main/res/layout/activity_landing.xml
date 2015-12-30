@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/content_root_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@android:string/untitled"
+        android:scaleType="centerCrop"
+        android:src="@drawable/welcome"/>
+
+    <ImageView
+        android:id="@+id/background_blur"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@android:string/untitled"
+        android:scaleType="centerCrop"
+        android:src="@drawable/welcome_blur"
+        android:visibility="gone"/>
+
+    <io.romain.passport.ui.views.SvgLogoView
+        android:id="@+id/svg_animated_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="16dp"
+        app:fillColor="@android:color/white"
+        app:makerSize="16dp"
+        app:resource="@raw/logo"
+        app:strokeColor="@android:color/white"
+        app:strokeWidth="2.0"/>
+
+</RelativeLayout>

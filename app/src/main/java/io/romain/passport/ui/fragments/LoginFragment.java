@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package io.romain.passport;
+package io.romain.passport.ui.fragments;
 
-public class BaseActivity {
+public class LoginFragment extends BaseFragment {
 }

@@ -1,12 +1,22 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Passport" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Passport" parent="@style/Theme.AppCompat">
+        <!-- customize the color palette -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
+    </style>
+
+    <style name="Passport.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="Passport.Home">
+    <style name="Passport.Home" parent="@style/Passport.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
