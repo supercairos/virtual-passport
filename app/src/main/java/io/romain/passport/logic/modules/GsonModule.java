@@ -32,6 +32,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.romain.passport.BuildConfig;
 
 @Module
 public class GsonModule {
@@ -39,13 +40,18 @@ public class GsonModule {
 	@Provides
 	@Singleton
 	Gson getGson() {
-		return new GsonBuilder()
+		GsonBuilder gb = new GsonBuilder()
 				.excludeFieldsWithoutExposeAnnotation()
 				.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
 				.registerTypeAdapter(Uri.class, new UriAdapter())
 				.setDateFormat(DateFormat.LONG)
-				.setVersion(1.0)
-				.create();
+				.setVersion(1.0);
+
+		if (BuildConfig.DEBUG) {
+			gb.setPrettyPrinting();
+		}
+
+		return gb.create();
 	}
 
 

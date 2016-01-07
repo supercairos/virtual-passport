@@ -1,4 +1,4 @@
-package io.romain.passport.logic.managers;
+package io.romain.passport.logic.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,11 +8,11 @@ import android.preference.PreferenceManager;
 import java.util.Set;
 
 
-public class SharedPrefManager {
+public class SharedPrefHelper {
 
 	private SharedPreferences mPrefs;
 
-	public SharedPrefManager(Context context) {
+	public SharedPrefHelper(Context context) {
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 

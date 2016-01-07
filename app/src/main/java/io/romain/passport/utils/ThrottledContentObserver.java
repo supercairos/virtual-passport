@@ -25,14 +25,10 @@ public abstract class ThrottledContentObserver extends ContentObserver {
 		if (now - mLastUpdate > mUpdateThrottle) {
 			mLastUpdate = now;
 			onChangeThrottled();
-			mHandler.postDelayed(new Runnable() {
-
-				@Override
-				public void run() {
-					if (mRerun) {
-						mRerun = false;
-						onChange(selfChange);
-					}
+			mHandler.postDelayed(() -> {
+				if (mRerun) {
+					mRerun = false;
+					onChange(selfChange);
 				}
 			}, mUpdateThrottle + 1);
 		} else {

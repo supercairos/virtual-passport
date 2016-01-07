@@ -15,15 +15,30 @@
  */
 package io.romain.passport.ui.fragments;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.accounts.AccountManager;
+import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.view.View;
+
+import javax.inject.Inject;
+
+import io.romain.passport.MyApplication;
+import io.romain.passport.logic.helpers.SharedPrefHelper;
+import retrofit.Retrofit;
 
 public class BaseFragment extends Fragment {
 
+	@Inject
+	public SharedPrefHelper mSharedPref;
+
+	@Inject
+	public Retrofit mRetrofit;
+
+	@Inject
+	public AccountManager mAccountManager;
+
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		((MyApplication) context.getApplicationContext()).getApplicationComponent().inject(this);
 	}
 }

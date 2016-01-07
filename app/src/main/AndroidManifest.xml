@@ -1,43 +1,150 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.example.romain.virtualpassport"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.romain.passport"
+    platformBuildVersionCode="23"
+    platformBuildVersionName="6.0-2438415"
     android:installLocation="auto">
 
-
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name="io.romain.passport.MyApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/mybackupscheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Passport"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:supportsRtl="true"
+        android:theme="@style/Passport">
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="io.romain.passport.utils.glide.GlideConfiguration"
+            android:value="GlideModule" />
 
         <activity
             android:name="io.romain.passport.ui.LandingActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/Passport.Home">
+            android:screenOrientation="portrait"
+            android:theme="@style/Passport.Home" />
+
+        <activity
+            android:name="io.romain.passport.ui.RegisterActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="io.romain.passport.ui.LandingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Passport.Register">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.romain.passport.ui.LandingActivity" />
+        </activity>
+        <activity
+            android:name="io.romain.passport.ui.LoginActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="io.romain.passport.ui.LandingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Passport.Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.romain.passport.ui.LandingActivity" />
+        </activity>
+        <activity
+            android:name="io.romain.passport.ui.AddCityActivity"
+            android:exported="false"
+            android:theme="@style/Passport.Translucent.AddCity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="io.romain.passport.ui.MainActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="io.romain.passport.ui.LandingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Passport.Main">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.romain.passport.ui.LandingActivity" />
         </activity>
 
-        <!-- use an alias in case we want to change the launch activity later without breaking
-             homescreen shortcuts.  Note must be defined after the targetActivity -->
         <activity-alias
-            android:name=".Launcher"
+            android:name="io.romain.passport.Launcher"
             android:label="@string/app_name"
             android:targetActivity="io.romain.passport.ui.LandingActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-    </application>
+        <provider
+            android:name="io.romain.passport.model.database.generated.PassportContentProvider"
+            android:authorities="io.romain.passport"
+            android:exported="false" />
 
+        <service
+            android:name="io.romain.passport.logic.services.account.SyncService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
+        <service
+            android:name="io.romain.passport.logic.services.account.AuthenticatorService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="io.romain.passport" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="io.romain.passport.logic.services.gcm.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="io.romain.passport.logic.services.gcm.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="io.romain.passport.logic.services.gcm.RegistrationIntentService"
+            android:exported="false" />
+    </application>
 </manifest>

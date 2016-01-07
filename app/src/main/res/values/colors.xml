@@ -1,7 +1,15 @@
 <resources>
 
+    <color name="material_pink_A500">#ffE91E63</color>
+    <color name="material_teal_500">#ff00bcd4</color>
+    <color name="material_teal_700">#ff0097a7</color>
+
     <color name="accent">@color/material_pink_A500</color>
     <color name="primary">@color/material_teal_500</color>
     <color name="primary_dark">@color/material_teal_700</color>
+
+    <!-- General -->
+    <color name="background_light">#fafafa</color>
+    <color name="scrim">#99323232</color>
 
 </resources>

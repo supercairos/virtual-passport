@@ -1,4 +1,4 @@
-package io.romain.passport.utils;
+package io.romain.passport.utils.loaders;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

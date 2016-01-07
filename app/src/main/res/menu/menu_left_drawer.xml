@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_item_1"
+        android:checked="true"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@android:string/emptyPhoneNumber"/>
+
+    <item
+        android:id="@+id/navigation_account_subheader"
+        android:title="@string/navigation_account_subheader">
+        <menu>
+            <item
+                android:id="@+id/navigation_account_logout"
+                android:icon="@drawable/ic_action_accounts"
+                android:title="@string/logout_title"/>
+        </menu>
+    </item>
+</menu>

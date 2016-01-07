@@ -20,31 +20,29 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
-import com.example.romain.virtualpassport.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import io.romain.passport.R;
+import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.MathUtils;
 import io.romain.passport.utils.PixelUtils;
 import io.romain.passport.utils.SvgHelper;
 
 @SuppressWarnings({"ForLoopReplaceableByForEach", "UnusedDeclaration"})
 public class SvgLogoView extends View {
-	private static final String LOG_TAG = "IntroView";
 
-	public static final int TRACE_TIME = 2000;
-	private static final int TRACE_TIME_PER_GLYPH = 1200;
-	private static final int FILL_START = 1500;
+	public static final int TRACE_TIME = 1000;
+	private static final int TRACE_TIME_PER_GLYPH = 600;
+
+	private static final int FILL_START = 750;
 	public static final int FILL_TIME = 1500;
 
 	public static final int STATE_NOT_STARTED = 0;
@@ -84,11 +82,11 @@ public class SvgLogoView extends View {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SvgLogoView, defStyle, 0);
 		try {
 			if (a != null) {
-				float width = a.getFloat(R.styleable.SvgLogoView_strokeWidth, 1.0f);
+				float width = a.getDimension(R.styleable.SvgLogoView_strokeWidth, PixelUtils.convertDpToPixel(getContext(), 2.0f));
 				int strokeColor = a.getColor(R.styleable.SvgLogoView_strokeColor, 0xff000000);
 
 				mStrokePaint.setStrokeWidth(width);
-				mStrokePaint.setColor(Color.argb(128, Color.red(strokeColor), Color.green(strokeColor), Color.blue(strokeColor)));
+				mStrokePaint.setColor(strokeColor);
 
 				mPointPaint.setStrokeWidth(width);
 				mPointPaint.setColor(strokeColor);
@@ -99,7 +97,7 @@ public class SvgLogoView extends View {
 
 				setSvgResource(a.getResourceId(R.styleable.SvgLogoView_resource, 0));
 
-				mMakerSize = a.getDimensionPixelSize(R.styleable.SvgLogoView_makerSize, (int) PixelUtils.convertDpToPixel(getContext(), 16));
+				mMakerSize = a.getDimensionPixelSize(R.styleable.SvgLogoView_makerSize, PixelUtils.convertDpToPixel(getContext(), 16));
 			}
 		} finally {
 			if (a != null) a.recycle();
@@ -193,24 +191,21 @@ public class SvgLogoView extends View {
 			try {
 				mLoader.join();
 			} catch (InterruptedException e) {
-				Log.e(LOG_TAG, "Unexpected error", e);
+				Dog.e(e, "Unexpected error");
 			}
 		}
 
-		mLoader = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				mSvg.load(getContext(), mSvgResource);
-				synchronized (mSvgLock) {
-					mPaths = mSvg.getPathsForViewport(
-							w - getPaddingLeft() - getPaddingRight(),
-							h - getPaddingTop() - getPaddingBottom()
-					);
+		mLoader = new Thread(() -> {
+			mSvg.load(getContext(), mSvgResource);
+			synchronized (mSvgLock) {
+				mPaths = mSvg.getPathsForViewport(
+						w - getPaddingLeft() - getPaddingRight(),
+						h - getPaddingTop() - getPaddingBottom()
+				);
 
-					if (mState == STATE_TRACE_STARTED) {
-						// Restart it;
-						start();
-					}
+				if (mState == STATE_TRACE_STARTED) {
+					// Restart it;
+					start();
 				}
 			}
 		}, "SVG Loader");

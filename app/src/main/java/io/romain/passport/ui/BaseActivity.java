@@ -15,8 +15,9 @@
  */
 package io.romain.passport.ui;
 
-import android.app.Activity;
+import android.accounts.AccountManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,17 +25,20 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import io.romain.passport.MyApplication;
-import io.romain.passport.logic.managers.SharedPrefManager;
+import io.romain.passport.logic.helpers.SharedPrefHelper;
 import io.romain.passport.utils.debug.ViewServer;
 import retrofit.Retrofit;
 
-public class BaseActivity extends Activity {
+public abstract class BaseActivity extends AppCompatActivity {
 
 	@Inject
-	Retrofit mRetrofitService;
+	public SharedPrefHelper mSharedPref;
 
 	@Inject
-	SharedPrefManager mSharedPref;
+	public Retrofit mRetrofit;
+
+	@Inject
+	public AccountManager mAccountManager;
 
 	@Override
 	public void setContentView(int layoutResID) {
@@ -60,7 +64,7 @@ public class BaseActivity extends Activity {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MyApplication.getApplication(this).getApplicationComponent().inject(this);
 	}

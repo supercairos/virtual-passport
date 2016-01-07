@@ -3,23 +3,22 @@ package io.romain.passport.ui;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.romain.virtualpassport.R;
+import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
-import io.romain.passport.model.User;
+import butterknife.OnClick;
+import io.romain.passport.R;
+import io.romain.passport.logic.helpers.AccountHelper;
+import io.romain.passport.logic.helpers.UserHelper;
 import io.romain.passport.ui.views.SvgLogoView;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import io.romain.passport.utils.Dog;
 
 public class LandingActivity extends BaseActivity {
 
@@ -37,27 +36,24 @@ public class LandingActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		String token = AccountUtils.peekToken();
-//		if (!TextUtils.isEmpty(token)) {
-//			Dog.d("Auto login : %s", token);
-//			gotoMain();
-//		}
+		String token = AccountHelper.peekToken(mAccountManager);
+		if (!TextUtils.isEmpty(token)) {
+			Dog.d("Auto login : %s", token.substring(0, token.length() < 10 ? token.length() : 10));
+			UserHelper.next(this);
+		}
 
 		setContentView(R.layout.activity_landing);
+		Glide.with(this).load(R.drawable.welcome).centerCrop().into(mBackground);
+		Glide.with(this).load(R.drawable.welcome_blur).centerCrop().into(mBackgroundBlur);
+
 		mLogoView.setOnStateChangeListenerListener(state -> {
 			switch (state) {
 				case SvgLogoView.STATE_FILL_STARTED:
-					// Bug in older versions where set.setInterpolator didn't work
-					AnimatorSet set = new AnimatorSet();
-					Interpolator interpolator = new DecelerateInterpolator();
-					ObjectAnimator a1 = ObjectAnimator.ofFloat(mLogoView, View.TRANSLATION_Y, 0);
-
 					ObjectAnimator a4 = ObjectAnimator.ofFloat(mBackgroundBlur, View.ALPHA, 1);
 					ObjectAnimator a5 = ObjectAnimator.ofFloat(mBackground, View.ALPHA, 0);
 
-					a1.setInterpolator(interpolator);
-
-					set.setDuration(500).playTogether(a1, a4, a5);
+					AnimatorSet set = new AnimatorSet();
+					set.setDuration(1500).play(a4).with(a5);
 					set.addListener(new Animator.AnimatorListener() {
 						@Override
 						public void onAnimationStart(Animator animation) {
@@ -87,30 +83,8 @@ public class LandingActivity extends BaseActivity {
 					break;
 			}
 		});
-
-		mLogoView.setOnLongClickListener(v -> {
-
-			User.UserService service = mRetrofitService.create(User.UserService.class);
-			Call<User> user = service.register(new User("super.cairos@gmail.com", "Romain Caire", "romain22"));
-			user.enqueue(new Callback<User>() {
-				@Override
-				public void onResponse(Response<User> response, Retrofit retrofit) {
-					if (response.isSuccess()) {
-						Toast.makeText(LandingActivity.this, "Registration success", Toast.LENGTH_LONG).show();
-					}
-				}
-
-				@Override
-				public void onFailure(Throwable t) {
-					Toast.makeText(LandingActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-				}
-			});
-
-			return true;
-		});
-
-
 	}
+
 
 	@Override
 	protected void onStart() {
@@ -118,19 +92,22 @@ public class LandingActivity extends BaseActivity {
 		mHandler.postDelayed(this::start, 500);
 	}
 
-	private void start() {
-		mLogoView.start();
 
+	private void start() {
 		mBackground.setVisibility(View.VISIBLE);
 		mBackground.setAlpha(1.0f);
 		mBackgroundBlur.setVisibility(View.GONE);
+
+		mLogoView.start();
 	}
 
-	private void gotoMain() {
-//		Intent intent = new Intent(this, MainActivity.class);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		startActivity(intent);
-//		finish();
+	@OnClick(R.id.button_register)
+	void onButtonRegisterClicked() {
+		startActivity(new Intent(this, RegisterActivity.class));
+	}
+
+	@OnClick(R.id.button_login)
+	void onButtonLoginClicked() {
+		startActivity(new Intent(this, LoginActivity.class));
 	}
 }

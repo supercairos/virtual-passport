@@ -24,7 +24,6 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.caverock.androidsvg.PreserveAspectRatio;
 import com.caverock.androidsvg.SVG;
@@ -34,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class SvgHelper {
-	private static final String LOG_TAG = "SVG";
 
 	private final List<SvgPath> mPaths = new ArrayList<>();
 
@@ -46,7 +44,7 @@ public final class SvgHelper {
 			mSvg = SVG.getFromResource(context, svgResource);
 			mSvg.setDocumentPreserveAspectRatio(PreserveAspectRatio.UNSCALED);
 		} catch (SVGParseException e) {
-			Log.e(LOG_TAG, "Could not load specified SVG resource", e);
+			Dog.e(e, "Could not load specified SVG resource");
 		}
 	}
 

@@ -3,12 +3,17 @@ buildscript {
         jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
+
+    dependencies {
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+    }
 }
 
 apply plugin: 'build-announcements'
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.jakewharton.hugo'
 
 def gitVersion() {
     return "git rev-list master --first-parent --count".execute([], project.rootDir).text.toInteger()
@@ -34,8 +39,7 @@ android {
         versionCode gitVersion()
         versionName gitTag()
 
-        // Change the name of the apk.
-        archivesBaseName = "passport-${versionName}"
+        buildConfigField "String", "GCM_SENDER_ID", "\"${gcm_sender_id}\""
     }
 
     buildTypes {
@@ -43,6 +47,9 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // Change the name of the apk.
+            archivesBaseName = "passport-${defaultConfig.versionName}"
         }
 
         lintOptions {
@@ -84,9 +91,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${support}"
     compile "com.android.support:palette-v7:${support}"
 
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
-
-    // Guava
+    compile 'com.google.android.gms:play-services-gcm:8.+'
 
     // Dagger
     compile 'com.google.dagger:dagger:2.+'
@@ -96,10 +101,6 @@ dependencies {
     // Butterknife
     compile 'com.jakewharton:butterknife:8.+'
     apt 'com.jakewharton:butterknife-compiler:8.+'
-
-    // Glide
-    compile 'com.github.bumptech.glide:glide:3.+'
-    compile 'com.github.bumptech.glide:okhttp-integration:+'
 
     // GSON
     compile 'com.google.code.gson:gson:+'
@@ -112,7 +113,7 @@ dependencies {
     compile('io.reactivex:rxandroid:+') {
         exclude module: 'rxjava'
     }
-    compile 'io.reactivex:rxjava:+'
+    compile 'io.reactivex:rxjava:1.+'
 
     // Retrofit
     compile('com.squareup.retrofit:retrofit:2.+') {
@@ -121,14 +122,18 @@ dependencies {
     compile 'com.squareup.retrofit:converter-gson:2.+'
     compile 'com.squareup.retrofit:adapter-rxjava:2.+'
 
+    // Glide
+    compile 'com.github.bumptech.glide:glide:3.6.+'
+    compile 'com.github.bumptech.glide:okhttp-integration:+'
+
     // Database Schematic
-    apt 'net.simonvt.schematic:schematic-compiler:+'
-    compile 'net.simonvt.schematic:schematic:+'
+    apt 'net.simonvt.schematic:schematic-compiler:0.6.4'
+    compile 'net.simonvt.schematic:schematic:0.6.4'
 
     // SVG Parser
     compile 'com.caverock:androidsvg:+'
-
-    // Auto Parcel
-    apt 'com.github.frankiesardo:auto-parcel-processor:+'
-    compile 'com.github.frankiesardo:auto-parcel:+'
+//
+//    // Auto Parcel
+//    apt 'com.github.frankiesardo:auto-parcel-processor:+'
+//    compile 'com.github.frankiesardo:auto-parcel:+'
 }

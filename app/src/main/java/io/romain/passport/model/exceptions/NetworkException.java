@@ -8,6 +8,7 @@ import java.io.IOException;
 public class NetworkException extends IOException {
 
 	public static final int OTHER_CAUSE = -1;
+	public static final int UNSET = 0;
 	public static final int INTERNAL_SERVER_ERROR = 1;
 	public static final int CONNECTION_FAILED = 100;
 	public static final int OBJECT_NOT_FOUND = 101;

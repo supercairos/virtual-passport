@@ -21,14 +21,14 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.romain.passport.logic.managers.SharedPrefManager;
+import io.romain.passport.logic.helpers.SharedPrefHelper;
 
 @Module
 public class SharedPrefModule {
 
 	@Provides
 	@Singleton
-	SharedPrefManager getSharedPrefManager(Context context) {
-		return new SharedPrefManager(context);
+	SharedPrefHelper getSharedPrefManager(Context context) {
+		return new SharedPrefHelper(context);
 	}
 }

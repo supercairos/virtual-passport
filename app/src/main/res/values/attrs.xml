@@ -10,7 +10,7 @@
     </declare-styleable>
 
     <declare-styleable name="SvgLogoView">
-        <attr name="strokeWidth" format="float"/>
+        <attr name="strokeWidth" format="dimension"/>
         <attr name="strokeColor" format="color|reference"/>
         <attr name="fillColor" format="color|reference"/>
         <attr name="resource" format="reference"/>

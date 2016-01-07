@@ -20,8 +20,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
 
-import com.example.romain.virtualpassport.BuildConfig;
-
 import io.romain.passport.logic.components.ApplicationComponent;
 import io.romain.passport.logic.components.DaggerApplicationComponent;
 import io.romain.passport.logic.modules.ApplicationContextModule;

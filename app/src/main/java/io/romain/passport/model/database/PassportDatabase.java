@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015 Romain
+ *    Copyright 2016 Romain
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,7 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package io.romain.passport.ui.fragments;
+package io.romain.passport.model.database;
 
-public class RegisterFragment extends BaseFragment {
+import net.simonvt.schematic.annotation.Database;
+import net.simonvt.schematic.annotation.IfNotExists;
+import net.simonvt.schematic.annotation.Table;
+
+import io.romain.passport.model.City;
+
+@Database(version = PassportDatabase.VERSION, fileName = "passport_database.db")
+public final class PassportDatabase {
+
+	public static final int VERSION = 1;
+
+	@Table(City.CityColumns.class)
+	@IfNotExists
+	public static final String CITY_TABLE_NAME = "cities";
 }

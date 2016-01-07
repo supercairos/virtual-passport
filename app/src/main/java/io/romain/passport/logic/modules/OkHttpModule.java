@@ -15,10 +15,11 @@
  */
 package io.romain.passport.logic.modules;
 
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 
-import com.example.romain.virtualpassport.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.okhttp.Cache;
@@ -29,9 +30,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +38,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.romain.passport.BuildConfig;
+import io.romain.passport.logic.helpers.AccountHelper;
 import io.romain.passport.model.exceptions.NetworkException;
 import io.romain.passport.utils.Dog;
 
@@ -49,10 +50,10 @@ public class OkHttpModule {
 
 	@Provides
 	@Singleton
-	protected static OkHttpClient getOkHttpClient(Context context, Gson gson) {
+	protected static OkHttpClient getOkHttpClient(Context context, Gson gson, AccountManager manager) {
 		OkHttpClient client = new OkHttpClient();
 		client.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
-		client.interceptors().add(new HeaderInterceptor());
+		client.interceptors().add(new HeaderInterceptor(manager));
 		client.interceptors().add(
 				new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
 						.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
@@ -71,17 +72,28 @@ public class OkHttpModule {
 
 	private static final class HeaderInterceptor implements Interceptor {
 
+		private static final long MAX_STALE = 60 * 60 * 3;
+
+		private final AccountManager mManager;
+
+		public HeaderInterceptor(AccountManager manager) {
+			mManager = manager;
+		}
+
 		@Override
 		public Response intercept(Interceptor.Chain chain) throws IOException {
 			Request request = chain.request();
 			Request.Builder builder = request.newBuilder()
-					.addHeader("User-Agent", "VirtualPassport-Client {Android-" + Build.VERSION.SDK_INT + "}")
-					.addHeader("Cache-Control", "public, max-stale=" + String.valueOf(60 * 60 * 3)); // tolerate 3 hours stale
+					.addHeader("User-Agent", "VirtualPassport-Client {Android-" + Build.VERSION.SDK_INT + "}");
 
-//			String s = AccountUtils.peekToken();
-//			if (!TextUtils.isEmpty(s)) {
-//				request.addHeader("Authorization", "Bearer " + s);
-//			}
+			if (!request.httpUrl().encodedPath().contains("users/login") && !request.httpUrl().encodedPath().contains("users/register")) {
+				builder.addHeader("Cache-Control", "public, max-stale=" + String.valueOf(MAX_STALE)); // tolerate 3 hours stale
+			}
+
+			String s = AccountHelper.peekToken(mManager);
+			if (!TextUtils.isEmpty(s)) {
+				builder.addHeader("Authorization", "Bearer " + s);
+			}
 
 			return chain.proceed(builder.build());
 		}
@@ -98,26 +110,21 @@ public class OkHttpModule {
 		@Override
 		public Response intercept(Chain chain) throws IOException {
 			Response response = chain.proceed(chain.request());
-			if (response != null) {
+			if (response != null && !response.isSuccessful()) {
 
 				//Try to get response body
-				BufferedReader reader;
-				StringBuilder sb = new StringBuilder();
 				try {
-					reader = new BufferedReader(new InputStreamReader(response.body().byteStream()));
-					String line;
-					while ((line = reader.readLine()) != null) {
-						sb.append(line);
+					NetworkException exception = mGson.fromJson(response.body().charStream(), NetworkException.class);
+
+					if (exception.status != NetworkException.UNSET && !TextUtils.isEmpty(exception.getMessage())) {
+						exception.code = response.code();
+						throw exception;
 					}
-
-					NetworkException exception = mGson.fromJson(sb.toString(), NetworkException.class);
-					exception.code = response.code();
-
-					throw exception;
 				} catch (IOException e) {
 					Dog.e(e, "IOException");
 				} catch (JsonSyntaxException e) {
-					Dog.e(e, "JsonSyntaxException");
+					Dog.v("JsonSyntaxException");
+					// Ignore
 				}
 			}
 
