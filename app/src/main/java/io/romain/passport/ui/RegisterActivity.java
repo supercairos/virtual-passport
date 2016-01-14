@@ -39,12 +39,20 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import io.romain.passport.R;
+import io.romain.passport.logic.helpers.UserHelper;
+import io.romain.passport.model.User;
+import io.romain.passport.ui.fragments.dialogs.ErrorDialogFragment;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.PathUtils;
+import io.romain.passport.utils.SimpleTextWatcher;
+import io.romain.passport.utils.UriRequestBody;
 import io.romain.passport.utils.glide.CircleTransform;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -81,6 +89,7 @@ public class RegisterActivity extends BaseActivity {
 	private Uri mOutputFileUri;
 
 	private BitmapTransformation mCircleTransform;
+	private Subscription mSubscriber;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +103,7 @@ public class RegisterActivity extends BaseActivity {
 		mCircleTransform = new CircleTransform(this);
 		mName.addTextChangedListener(mRegisterFieldWatcher);
 		mEmail.addTextChangedListener(mRegisterFieldWatcher);
+		mPassword.addTextChangedListener(mRegisterFieldWatcher);
 		mPassword.setOnEditorActionListener((v, actionId, event) -> {
 			switch (actionId) {
 				case EditorInfo.IME_ACTION_DONE:
@@ -122,6 +132,7 @@ public class RegisterActivity extends BaseActivity {
 				}
 
 				mPassword.requestFocus();
+				mRegisterButton.setEnabled(isRegisterValid());
 			}
 		});
 	}
@@ -171,10 +182,21 @@ public class RegisterActivity extends BaseActivity {
 
 		if (isEverythingOk) {
 			// Register
-			mDialog = ProgressDialog.show(this, "Register", "Please wait...", true);
+			mDialog = ProgressDialog.show(this, getString(R.string.register), getString(R.string.please_wait), true);
 			mDialog.show();
+			User.UserService service = mRetrofit.create(User.UserService.class);
 
-
+			mSubscriber = service.register(new User(name, email, password, mProfilePictureUri))
+					.flatMap(user -> service.upload("Bearer " + user.token, new UriRequestBody(getContentResolver(), mProfilePictureUri)))
+					.subscribeOn(Schedulers.io())
+					.observeOn(AndroidSchedulers.mainThread())
+					.doOnError(throwable -> Dog.e(throwable, "Error... :'("))
+					.subscribe(
+							// onNext();
+							user -> UserHelper.save(RegisterActivity.this, user),
+							// onError();
+							user -> ErrorDialogFragment.newInstance(getString(R.string.unknown_error)).show(getSupportFragmentManager(), "Dialog")
+					);
 		}
 	}
 
@@ -188,6 +210,10 @@ public class RegisterActivity extends BaseActivity {
 		super.onStop();
 		if (mDialog != null) {
 			mDialog.dismiss();
+		}
+
+		if (mSubscriber != null) {
+			mSubscriber.unsubscribe();
 		}
 	}
 
@@ -279,22 +305,20 @@ public class RegisterActivity extends BaseActivity {
 					.centerCrop()
 					.transform(mCircleTransform)
 					.into(mProfilePicture);
+
 			Dog.d("Found picture : %s", mProfilePictureUri);
 		}
 	}
 
-	private TextWatcher mRegisterFieldWatcher = new TextWatcher() {
-		@Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-		@Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+	private TextWatcher mRegisterFieldWatcher = new SimpleTextWatcher() {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			mRegisterButton.setEnabled(isLoginValid());
+			mRegisterButton.setEnabled(isRegisterValid());
 		}
 	};
 
-	private boolean isLoginValid() {
+	private boolean isRegisterValid() {
 		return mEmail.length() > 0 && mName.length() > 0 && mPassword.length() > 0;
 	}
 }

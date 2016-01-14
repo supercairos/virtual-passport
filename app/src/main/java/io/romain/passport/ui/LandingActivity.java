@@ -10,8 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import io.romain.passport.R;
@@ -43,9 +41,6 @@ public class LandingActivity extends BaseActivity {
 		}
 
 		setContentView(R.layout.activity_landing);
-		Glide.with(this).load(R.drawable.welcome).centerCrop().into(mBackground);
-		Glide.with(this).load(R.drawable.welcome_blur).centerCrop().into(mBackgroundBlur);
-
 		mLogoView.setOnStateChangeListenerListener(state -> {
 			switch (state) {
 				case SvgLogoView.STATE_FILL_STARTED:

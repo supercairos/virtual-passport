@@ -35,6 +35,7 @@ import butterknife.OnClick;
 import io.romain.passport.R;
 import io.romain.passport.logic.helpers.UserHelper;
 import io.romain.passport.model.User;
+import io.romain.passport.utils.SimpleTextWatcher;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
@@ -115,7 +116,7 @@ public class LoginActivity extends BaseActivity {
 		}
 
 		if (isEverythingOk) {
-			mDialog = ProgressDialog.show(this, "Login", "Please wait...", true);
+			mDialog = ProgressDialog.show(this, getString(R.string.login), getString(R.string.please_wait), true);
 			mDialog.show();
 
 			mRetrofit.create(User.UserService.class).login(Credentials.basic(email, password)).enqueue(new Callback<User>() {
@@ -126,10 +127,7 @@ public class LoginActivity extends BaseActivity {
 					}
 
 					if (response.isSuccess()) {
-						User user = response.body();
-						Toast.makeText(LoginActivity.this, "Welcome : " + user.name + "(" + user.id + ")", Toast.LENGTH_LONG).show();
-						UserHelper.save(mAccountManager, user);
-						UserHelper.next(LoginActivity.this);
+						UserHelper.save(LoginActivity.this, response.body());
 					} else {
 						switch (response.code()) {
 							case HttpURLConnection.HTTP_UNAUTHORIZED: // Unauthorized -> Wrong Login
@@ -160,10 +158,7 @@ public class LoginActivity extends BaseActivity {
 		super.onStop();
 	}
 
-	private TextWatcher mLoginFieldWatcher = new TextWatcher() {
-		@Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-		@Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+	private TextWatcher mLoginFieldWatcher = new SimpleTextWatcher() {
 
 		@Override
 		public void afterTextChanged(Editable s) {

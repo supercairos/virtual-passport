@@ -11,5 +11,12 @@
     <!-- General -->
     <color name="background_light">#fafafa</color>
     <color name="scrim">#99323232</color>
+    <color name="grey_300">#ffe0e0e0</color>
+    <color name="mid_grey">#40808080</color>
+
+    <!-- common colours -->
+    <color name="text_primary_dark">#de000000</color> <!-- 87% -->
+    <color name="text_secondary_dark">#8a000000</color> <!-- 54% -->
+    <color name="text_tertiary_dark">#61000000</color> <!-- 38% -->
 
 </resources>

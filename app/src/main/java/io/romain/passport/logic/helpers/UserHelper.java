@@ -30,7 +30,8 @@ import io.romain.passport.utils.constants.AuthenticatorConstants;
 public class UserHelper {
 
 	@SuppressWarnings("deprecation")
-	public static void save(AccountManager manager, User user) {
+	public static void save(Activity context, User user) {
+		AccountManager manager = AccountManager.get(context);
 		Account[] accounts = manager.getAccountsByType(AuthenticatorConstants.ACCOUNT_TYPE);
 		for (Account account : accounts) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -49,6 +50,8 @@ public class UserHelper {
 
 		manager.addAccountExplicitly(myAccount, user.password, data);
 		manager.setAuthToken(myAccount, AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL, user.token);
+
+		UserHelper.next(context);
 	}
 
 	public static void next(Activity context) {

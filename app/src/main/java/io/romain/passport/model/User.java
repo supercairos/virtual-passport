@@ -3,11 +3,11 @@ package io.romain.passport.model;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -15,8 +15,10 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Part;
 import retrofit.http.Path;
+import rx.Observable;
 
 // This is not a persistable model since it will be saved onto the account manager;
 public class User implements Parcelable {
@@ -24,8 +26,7 @@ public class User implements Parcelable {
 	private static final String MODULE = "/users";
 
 	// endpoints
-	private static final String POST_FILE = "/files/{filename}";
-
+	private static final String POST_FILE = "/pictures/upload";
 	private static final String POST_REGISTER = MODULE + "/register";
 	private static final String GET_LOGIN = MODULE + "/login";
 	private static final String PUT_GCM = MODULE + "/gcm/{gcm_token}";
@@ -54,26 +55,19 @@ public class User implements Parcelable {
 	@SerializedName("picture")
 	public Uri picture;
 
-	public User(String email, String name, String password) {
-		this.email = email;
-		this.name = name;
-		this.password = password;
-	}
-
 	public interface UserService {
 
 		@POST(POST_REGISTER)
-		Call<User> register(@Body User user);
+		Observable<User> register(@Body User user);
 
 		@GET(GET_LOGIN)
 		Call<User> login(@Header("Authorization") String basic);
 
 		@Multipart
 		@POST(POST_FILE)
-		Call<Response> upload(@Part("file\"; filename=\"profile.png\" ") RequestBody file,
-		                 @Part("description") String description);
+		Observable<User> upload(@Header("Authorization") String auth, @Part("file\"; filename=\"image.png\"") RequestBody file);
 
-		@POST(PUT_GCM)
+		@PUT(PUT_GCM)
 		Call<User> registerGcm(@Path("gcm_token") String token);
 	}
 
@@ -83,6 +77,8 @@ public class User implements Parcelable {
 		return "User{" +
 				"name='" + name + '\'' +
 				", email='" + email + '\'' +
+				", password='" + (TextUtils.isEmpty(password) ? "empty" : "<redacted>" )+ '\'' +
+				", picture=" + picture +
 				'}';
 	}
 
@@ -108,6 +104,17 @@ public class User implements Parcelable {
 		this.token = in.readString();
 		this.password = in.readString();
 		this.picture = in.readParcelable(Uri.class.getClassLoader());
+	}
+
+	protected User() {
+		super();
+	}
+
+	public User(String name, String email, String password, Uri picture) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.picture = picture;
 	}
 
 	public static final Creator<User> CREATOR = new Creator<User>() {

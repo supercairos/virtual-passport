@@ -4,17 +4,17 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-public class SixteenNineView extends FrameLayout {
+public class FourThreeFrameLayout extends FrameLayout {
 
-	public SixteenNineView(Context context) {
+	public FourThreeFrameLayout(Context context) {
 		super(context);
 	}
 
-	public SixteenNineView(Context context, AttributeSet attrs) {
+	public FourThreeFrameLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public SixteenNineView(Context context, AttributeSet attrs, int defStyle) {
+	public FourThreeFrameLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -25,7 +25,7 @@ public class SixteenNineView extends FrameLayout {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		int width = getMeasuredWidth();
 		//force a 16:9 aspect ratio
-		int height = Math.round(width * (9f / 16f));
+		int height = Math.round(width * (3f / 4f));
 		setMeasuredDimension(width, height);
 	}
 }

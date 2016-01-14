@@ -80,7 +80,7 @@ public class RegistrationIntentService extends BaseIntentService {
 				Response<User> user = mRetrofit.create(User.UserService.class).registerGcm(regid).execute();
 				if(user.isSuccess()) {
 					if(BuildConfig.DEBUG) {
-						Toast.makeText(this, "GCM Register completed!", Toast.LENGTH_LONG).show();
+						Toast.makeText(this, "GCM Register completed!", Toast.LENGTH_SHORT).show();
 					}
 				}
 			}

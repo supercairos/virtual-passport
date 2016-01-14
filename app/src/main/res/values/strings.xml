@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyCities</string>
+    <string name="app_name">Passport</string>
 
     <!-- Navigation Drawer strings -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -30,4 +30,21 @@
 
     <string name="logout_title">Logout</string>
     <string name="logout_message">Are you sure you want to logout ?</string>
+    <string name="add_city_dropdown">%1$s, %2$s</string>
+    <string name="add_city_description">Add a city</string>
+    <string name="search_title">Search</string>
+    <string name="main_title_list">List</string>
+    <string name="main_title_map">Map</string>
+    <string name="menu_add_city">Add a new city</string>
+    <string name="login">Login</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="register">Register</string>
+    <string name="error_dialog_title">Error</string>
+    <string name="wrong_login">Wrong login</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="town_saved_successfully">Town added successfully</string>
+    <string name="transition_detail_background">transition_detail_background</string>
+    <string name="transition_picture">transition_picture</string>
+    <string name="wikipedia_demo">London is the capital and most populous city of England and the United Kingdom. Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium. London\'s ancient core, the City of London, largely retains its 1.12-square-mile (2.9 km2) medieval boundaries and in 2011 had a resident population of 7,375, making it the smallest city in England. Since at least the 19th century, the term London has also referred to the metropolis developed around this core. The bulk of this conurbation forms Greater London, a region of England governed by the Mayor of London and the London Assembly. </string>
+    <string name="temperature_unit_celsius">C</string>
 </resources>

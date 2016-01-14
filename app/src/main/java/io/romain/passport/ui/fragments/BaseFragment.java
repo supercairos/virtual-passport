@@ -17,15 +17,23 @@ package io.romain.passport.ui.fragments;
 
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import javax.inject.Inject;
 
 import io.romain.passport.MyApplication;
 import io.romain.passport.logic.helpers.SharedPrefHelper;
+import io.romain.passport.utils.GoogleApiUtils;
 import retrofit.Retrofit;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 	@Inject
 	public SharedPrefHelper mSharedPref;
@@ -35,10 +43,47 @@ public class BaseFragment extends Fragment {
 
 	@Inject
 	public AccountManager mAccountManager;
+	private GoogleApiClient mGoogleApiClient;
 
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
 		((MyApplication) context.getApplicationContext()).getApplicationComponent().inject(this);
+	}
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (GoogleApiUtils.isGooglePlayServicesAvailable(getContext())) {
+			mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+					.addApi(LocationServices.API)
+					.addConnectionCallbacks(this)
+					.addOnConnectionFailedListener(this)
+					.build();
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (GoogleApiUtils.isGooglePlayServicesAvailable(getContext())) {
+			if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
+				mGoogleApiClient.disconnect();
+			}
+		}
+	}
+
+	@Override
+	public void onConnected(@Nullable Bundle bundle) {
+	}
+
+	@Override
+	public void onConnectionSuspended(int i) {
+
+	}
+
+	@Override
+	public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
 	}
 }

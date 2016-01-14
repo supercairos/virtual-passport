@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 import butterknife.Bind;
 import io.romain.passport.R;
 import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.constants.AccountConstants;
 import io.romain.passport.utils.glide.CircleTransform;
 
@@ -67,8 +66,6 @@ public abstract class DrawerActivity extends BaseActivity {
 		super.setContentView(v);
 
 		setupDrawer();
-
-		mDrawerNavigation.setOnClickListener(v1 -> Dog.d("Test ..."));
 	}
 
 	private void setupDrawer() {

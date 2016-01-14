@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@android:string/untitled"
+        android:src="@drawable/welcome"
         android:scaleType="centerCrop"/>
 
     <ImageView
@@ -18,30 +19,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@android:string/untitled"
+        android:src="@drawable/welcome_blur"
         android:scaleType="centerCrop"
         android:visibility="gone"/>
 
     <io.romain.passport.ui.views.SvgLogoView
         android:id="@+id/svg_animated_logo"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:padding="8dp"
-        app:fillColor="@android:color/white"
+        app:fillColor="#88ffffff"
         app:makerSize="16dp"
         app:resource="@raw/logo_3"
-        app:strokeColor="#88ffffff"
+        app:strokeColor="@android:color/white"
         app:strokeWidth="4dp"/>
 
     <TextView
         android:id="@+id/app_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/svg_animated_logo"
+        android:layout_above="@+id/button_register"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
         android:textSize="63sp"
+        android:textColor="@color/accent"
+        android:layout_marginBottom="30dp"
+        android:textStyle="italic"
         android:text="@string/app_name"/>
 
     <TextView

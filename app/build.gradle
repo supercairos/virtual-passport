@@ -92,6 +92,7 @@ dependencies {
     compile "com.android.support:palette-v7:${support}"
 
     compile 'com.google.android.gms:play-services-gcm:8.+'
+    compile 'com.google.android.gms:play-services-location:8.+'
 
     // Dagger
     compile 'com.google.dagger:dagger:2.+'
@@ -124,7 +125,7 @@ dependencies {
 
     // Glide
     compile 'com.github.bumptech.glide:glide:3.6.+'
-    compile 'com.github.bumptech.glide:okhttp-integration:+'
+//    compile 'com.github.bumptech.glide:okhttp-integration:+'
 
     // Database Schematic
     apt 'net.simonvt.schematic:schematic-compiler:0.6.4'

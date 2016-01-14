@@ -1,27 +1,27 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Passport" parent="@style/Theme.AppCompat">
+    <style name="Passport" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- customize the color palette -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
-    </style>
-
-    <style name="Passport.NoActionBar">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="Passport.Home" parent="@style/Passport.NoActionBar" />
-    <style name="Passport.Register" parent="@style/Passport.NoActionBar" />
-    <style name="Passport.Login" parent="@style/Passport.NoActionBar" />
-    <style name="Passport.Main" parent="@style/Passport.NoActionBar" />
+    <style name="Passport.Home"/>
 
-    <style name="Passport.Translucent" parent="@style/Passport.NoActionBar">
+    <style name="Passport.Register"/>
+
+    <style name="Passport.Login"/>
+
+    <style name="Passport.Main"/>
+
+    <style name="Passport.Translucent">
         <!-- using a semi-transparent window background for the drag-back gesture -->
         <item name="android:windowBackground">@color/scrim</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -30,10 +30,43 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="Passport.Translucent.AddCity">
         <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <style name="Passport.Detail">
+        <item name="android:windowSharedElementEnterTransition">@transition/city_detail_shared_enter</item>
+        <item name="android:windowSharedElementReturnTransition">@transition/city_detail_shared_return</item>
+        <item name="android:windowEnterTransition">@transition/city_detail_enter</item>
+        <item name="android:windowReturnTransition">@transition/city_detail_return</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="Widget.Passport" parent="android:Widget"/>
+
+    <style name="Widget.Passport.DialogText">
+        <item name="android:textAppearance">@style/TextAppearance.DialogContent</item>
+    </style>
+
+    <style name="Widget.Passport.DialogTitle">
+        <item name="android:textAppearance">@style/TextAppearance.DialogTitle</item>
+    </style>
+
+    <style name="TextAppearance.DialogTitle" parent="@android:style/TextAppearance.Material.Title">
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.DialogContent" parent="@android:style/TextAppearance.Material.Subhead">
+        <item name="android:textColor">@color/text_secondary_dark</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.01</item>
     </style>
 
 </resources>

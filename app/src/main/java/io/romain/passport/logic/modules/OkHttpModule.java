@@ -86,7 +86,7 @@ public class OkHttpModule {
 			Request.Builder builder = request.newBuilder()
 					.addHeader("User-Agent", "VirtualPassport-Client {Android-" + Build.VERSION.SDK_INT + "}");
 
-			if (!request.httpUrl().encodedPath().contains("users/login") && !request.httpUrl().encodedPath().contains("users/register")) {
+			if (!request.httpUrl().encodedPath().contains("users")) {
 				builder.addHeader("Cache-Control", "public, max-stale=" + String.valueOf(MAX_STALE)); // tolerate 3 hours stale
 			}
 
@@ -115,15 +115,15 @@ public class OkHttpModule {
 				//Try to get response body
 				try {
 					NetworkException exception = mGson.fromJson(response.body().charStream(), NetworkException.class);
-
-					if (exception.status != NetworkException.UNSET && !TextUtils.isEmpty(exception.getMessage())) {
-						exception.code = response.code();
-						throw exception;
+					if (exception != null) {
+						if (exception.status != NetworkException.UNSET && !TextUtils.isEmpty(exception.getMessage())) {
+							exception.code = response.code();
+							throw exception;
+						}
 					}
-				} catch (IOException e) {
-					Dog.e(e, "IOException");
 				} catch (JsonSyntaxException e) {
-					Dog.v("JsonSyntaxException");
+					Dog.v("Couldn't parse into  a NetworkException.class");
+					Dog.v("Body was : " + (response.body() != null ? response.body().string() : null));
 					// Ignore
 				}
 			}

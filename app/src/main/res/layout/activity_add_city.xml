@@ -5,12 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="false"
     android:layout_height="match_parent"
     tools:context="io.romain.passport.ui.AddCityActivity">
 
     <LinearLayout
         android:id="@+id/dialog_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/spacing_large"
@@ -24,6 +25,15 @@
         android:paddingTop="@dimen/padding_dialog"
         android:transitionName="@string/transition_add_city">
 
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/dialog_title_spacing"
+            android:text="@string/add_city_description"
+            style="@style/Widget.Passport.DialogTitle" />
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/username_float_label"
             android:layout_width="match_parent"
@@ -34,21 +44,21 @@
                 android:id="@+id/add_city_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_my_location_black_24dp"
                 android:hint="@string/add_city_city"
                 android:inputType="textEmailAddress"
-                android:drawableEnd="@android:drawable/ic_menu_mylocation"
                 android:selectAllOnFocus="true"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:id="@+id/actions_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_normal">
 
             <Button
-                android:id="@+id/signup"
+                android:id="@+id/add_city_cancel"
                 style="?android:borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +72,7 @@
                 android:layout_weight="1"/>
 
             <Button
-                android:id="@+id/login"
+                android:id="@+id/add_city_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

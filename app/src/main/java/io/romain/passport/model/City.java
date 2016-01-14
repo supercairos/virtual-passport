@@ -24,21 +24,52 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
 
+import java.util.List;
+
+import retrofit.Call;
+import retrofit.http.GET;
+import retrofit.http.Query;
+
 public class City implements Parcelable {
+
+	// api endpoint
+	private static final String MODULE = "/cities";
+
+	// endpoints
+	private static final String GET_SEARCH = MODULE + "/search";
 
 	public long id = -1;
 
+	@Expose
+	@SerializedName("name")
 	public String name;
+	@Expose
+	@SerializedName("country")
+	public String country;
 
+	@Expose
+	@SerializedName("longitude")
 	public double longitude;
+	@Expose
+	@SerializedName("latitude")
 	public double latitude;
 
+	@Expose
+	@SerializedName("picture")
 	public Uri picture;
+
+	public interface CityService {
+		@GET(GET_SEARCH)
+		Call<List<City>> search(@Query("query") String sort);
+	}
 
 	public interface CityColumns {
 
@@ -50,6 +81,10 @@ public class City implements Parcelable {
 		@DataType(DataType.Type.TEXT)
 		@NotNull
 		String NAME = "name";
+
+		@DataType(DataType.Type.TEXT)
+		@NotNull
+		String COUNTRY = "country";
 
 		@DataType(DataType.Type.REAL)
 		@NonNull
@@ -66,6 +101,7 @@ public class City implements Parcelable {
 	public static final String[] _PROJECTION = new String[]{
 			CityColumns._ID,
 			CityColumns.NAME,
+			CityColumns.COUNTRY,
 			CityColumns.LONGITUDE,
 			CityColumns.LATITUDE,
 			CityColumns.PICTURE,
@@ -73,15 +109,16 @@ public class City implements Parcelable {
 
 	public static final int ID = 0;
 	public static final int NAME = 1;
-	public static final int LONGITUDE = 2;
-	public static final int LATITUDE = 3;
-	public static final int PICTURE = 4;
-
+	public static final int COUNTRY = 2;
+	public static final int LONGITUDE = 3;
+	public static final int LATITUDE = 4;
+	public static final int PICTURE = 5;
 
 	public static City fromCursor(Cursor cursor) {
 		City town = new City();
 		town.id = cursor.getLong(ID);
 		town.name = cursor.getString(NAME);
+		town.country = cursor.getString(COUNTRY);
 
 		town.longitude = cursor.getDouble(LONGITUDE);
 		town.latitude = cursor.getDouble(LATITUDE);
@@ -98,6 +135,7 @@ public class City implements Parcelable {
 		Object[] objects = new Object[_PROJECTION.length];
 		objects[ID] = id;
 		objects[NAME] = name;
+		objects[COUNTRY] = country;
 		objects[LONGITUDE] = longitude;
 		objects[LATITUDE] = latitude;
 		objects[PICTURE] = picture;
@@ -115,8 +153,12 @@ public class City implements Parcelable {
 			cv.put(CityColumns.NAME, name);
 		}
 
-		cv.put(CityColumns.LONGITUDE, name);
-		cv.put(CityColumns.LATITUDE, name);
+		if (!TextUtils.isEmpty(country)) {
+			cv.put(CityColumns.COUNTRY, country);
+		}
+
+		cv.put(CityColumns.LONGITUDE, longitude);
+		cv.put(CityColumns.LATITUDE, latitude);
 
 		if (picture != null) {
 			cv.put(CityColumns.PICTURE, picture.toString());
@@ -125,18 +167,10 @@ public class City implements Parcelable {
 		return cv;
 	}
 
-	// ## GENERATED CONSTRUCTOR
-	public City(String name, double longitude, double latitude, Uri picture) {
-		this.name = name;
-		this.longitude = longitude;
-		this.latitude = latitude;
-		this.picture = picture;
+	@Override
+	public String toString() {
+		return name + ", " + country;
 	}
-
-	public City() {
-		super();
-	}
-
 
 	// ## GENERATED PARCELABLE
 	@Override
@@ -148,20 +182,26 @@ public class City implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(this.id);
 		dest.writeString(this.name);
+		dest.writeString(this.country);
 		dest.writeDouble(this.longitude);
 		dest.writeDouble(this.latitude);
 		dest.writeParcelable(this.picture, 0);
 	}
 
+	public City() {
+		super();
+	}
+
 	protected City(Parcel in) {
 		this.id = in.readLong();
 		this.name = in.readString();
+		this.country = in.readString();
 		this.longitude = in.readDouble();
 		this.latitude = in.readDouble();
 		this.picture = in.readParcelable(Uri.class.getClassLoader());
 	}
 
-	public static final Parcelable.Creator<City> CREATOR = new Parcelable.Creator<City>() {
+	public static final Creator<City> CREATOR = new Creator<City>() {
 		public City createFromParcel(Parcel source) {
 			return new City(source);
 		}

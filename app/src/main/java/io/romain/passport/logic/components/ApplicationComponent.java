@@ -27,18 +27,25 @@ import io.romain.passport.logic.modules.SharedPrefModule;
 import io.romain.passport.logic.services.BaseIntentService;
 import io.romain.passport.logic.services.account.AuthenticatorService;
 import io.romain.passport.ui.BaseActivity;
+import io.romain.passport.ui.adaptater.CitySearchAdapter;
 import io.romain.passport.ui.fragments.BaseFragment;
 import io.romain.passport.ui.fragments.dialogs.BaseDialogFragment;
 import io.romain.passport.utils.glide.GlideConfiguration;
 
 @Singleton
-@Component(modules={AccountModule.class, SharedPrefModule.class, RetrofitModule.class, OkHttpModule.class, GsonModule.class, ApplicationContextModule.class})
+@Component(modules = {AccountModule.class, SharedPrefModule.class, RetrofitModule.class, OkHttpModule.class, GsonModule.class, ApplicationContextModule.class})
 public interface ApplicationComponent {
 	void inject(BaseActivity activity);
+
 	void inject(BaseFragment activity);
+
 	void inject(BaseIntentService baseIntentService);
+
 	void inject(BaseDialogFragment baseDialogFragment);
 
 	void inject(GlideConfiguration configuration);
+
 	void inject(AuthenticatorService.Authenticator authenticator);
+
+	void inject(CitySearchAdapter citySearchAdapter);
 }
