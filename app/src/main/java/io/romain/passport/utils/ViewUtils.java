@@ -112,13 +112,13 @@ public class ViewUtils {
      *
      * Adapted from https://github.com/grantland/android-autofittextview
      */
-    public static float getSingleLineTextSize(String text,
-                                              TextPaint paint,
-                                              float targetWidth,
-                                              float low,
-                                              float high,
-                                              float precision,
-                                              DisplayMetrics metrics) {
+    private static float getSingleLineTextSize(String text,
+                                               TextPaint paint,
+                                               float targetWidth,
+                                               float low,
+                                               float high,
+                                               float precision,
+                                               DisplayMetrics metrics) {
         final float mid = (low + high) / 2.0f;
 
         paint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mid, metrics));

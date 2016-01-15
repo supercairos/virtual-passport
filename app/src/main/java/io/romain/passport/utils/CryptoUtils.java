@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @SuppressWarnings("unused")
-public class CryptoUtils {
+class CryptoUtils {
 
 	public static String sha1(String toHash) {
 		String hash = null;

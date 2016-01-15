@@ -91,7 +91,7 @@ public class AnimUtils {
 
 		@Override
 		final public void set(T object, Integer value) {
-			setValue(object, value.intValue());
+			setValue(object, value);
 		}
 
 	}
@@ -105,7 +105,7 @@ public class AnimUtils {
 	public static class NoPauseAnimator extends Animator {
 		private final Animator mAnimator;
 		private final ArrayMap<AnimatorListener, AnimatorListener> mListeners =
-				new ArrayMap<AnimatorListener, AnimatorListener>();
+				new ArrayMap<>();
 
 		public NoPauseAnimator(Animator animator) {
 			mAnimator = animator;
@@ -147,7 +147,7 @@ public class AnimUtils {
 
 		@Override
 		public ArrayList<AnimatorListener> getListeners() {
-			return new ArrayList<AnimatorListener>(mListeners.keySet());
+			return new ArrayList<>(mListeners.keySet());
 		}
 
 		@Override
@@ -258,7 +258,7 @@ public class AnimUtils {
 		}
 	}
 
-	public static class TransitionListenerAdapter implements Transition.TransitionListener {
+	private static class TransitionListenerAdapter implements Transition.TransitionListener {
 
 		@Override
 		public void onTransitionStart(Transition transition) {

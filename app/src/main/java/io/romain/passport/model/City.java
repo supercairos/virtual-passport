@@ -107,12 +107,12 @@ public class City implements Parcelable {
 			CityColumns.PICTURE,
 	};
 
-	public static final int ID = 0;
-	public static final int NAME = 1;
-	public static final int COUNTRY = 2;
-	public static final int LONGITUDE = 3;
-	public static final int LATITUDE = 4;
-	public static final int PICTURE = 5;
+	private static final int ID = 0;
+	private static final int NAME = 1;
+	private static final int COUNTRY = 2;
+	private static final int LONGITUDE = 3;
+	private static final int LATITUDE = 4;
+	private static final int PICTURE = 5;
 
 	public static City fromCursor(Cursor cursor) {
 		City town = new City();
@@ -188,11 +188,11 @@ public class City implements Parcelable {
 		dest.writeParcelable(this.picture, 0);
 	}
 
-	public City() {
+	private City() {
 		super();
 	}
 
-	protected City(Parcel in) {
+	private City(Parcel in) {
 		this.id = in.readLong();
 		this.name = in.readString();
 		this.country = in.readString();

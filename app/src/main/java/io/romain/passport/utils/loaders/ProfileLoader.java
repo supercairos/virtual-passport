@@ -16,7 +16,7 @@ import io.romain.passport.utils.Dog;
 
 public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 
-	private Context mContext;
+	private final Context mContext;
 
 	public ProfileLoader(Context context) {
 		this.mContext = context.getApplicationContext();

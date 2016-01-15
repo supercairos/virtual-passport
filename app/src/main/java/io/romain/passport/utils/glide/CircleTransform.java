@@ -32,13 +32,13 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
  */
 public class CircleTransform extends BitmapTransformation {
 
-	private BitmapPool mBitmapPool;
+	private final BitmapPool mBitmapPool;
 
 	public CircleTransform(Context context) {
 		this(Glide.get(context).getBitmapPool());
 	}
 
-	public CircleTransform(BitmapPool pool) {
+	private CircleTransform(BitmapPool pool) {
 		super(pool);
 		this.mBitmapPool = pool;
 	}

@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * Fetches an {@link InputStream} using the okhttp library.
  */
-public class OkHttpStreamFetcher implements DataFetcher<InputStream> {
+class OkHttpStreamFetcher implements DataFetcher<InputStream> {
 	private final OkHttpClient client;
 	private final GlideUrl url;
 	private InputStream stream;

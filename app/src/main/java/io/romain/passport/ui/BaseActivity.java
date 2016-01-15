@@ -35,10 +35,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public SharedPrefHelper mSharedPref;
 
 	@Inject
-	public Retrofit mRetrofit;
+	Retrofit mRetrofit;
 
 	@Inject
-	public AccountManager mAccountManager;
+	AccountManager mAccountManager;
 
 //	@Inject
 //	public GoogleApiClient mGoogleApiClient;

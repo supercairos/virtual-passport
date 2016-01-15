@@ -83,7 +83,7 @@ public class RegisterActivity extends BaseActivity {
 	@Bind(R.id.register_button_register)
 	Button mRegisterButton;
 
-	ProgressDialog mDialog;
+	private ProgressDialog mDialog;
 
 	private Uri mProfilePictureUri;
 	private Uri mOutputFileUri;
@@ -150,7 +150,7 @@ public class RegisterActivity extends BaseActivity {
 	}
 
 	@OnClick(R.id.register_button_register)
-	public void onValidateClicked() {
+	void onValidateClicked() {
 		String name = mName.getEditableText().toString();
 		String email = mEmail.getEditableText().toString();
 		String password = mPassword.getEditableText().toString();
@@ -310,7 +310,7 @@ public class RegisterActivity extends BaseActivity {
 		}
 	}
 
-	private TextWatcher mRegisterFieldWatcher = new SimpleTextWatcher() {
+	private final TextWatcher mRegisterFieldWatcher = new SimpleTextWatcher() {
 
 		@Override
 		public void afterTextChanged(Editable s) {

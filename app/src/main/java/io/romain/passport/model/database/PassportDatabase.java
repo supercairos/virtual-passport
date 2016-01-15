@@ -22,9 +22,9 @@ import net.simonvt.schematic.annotation.Table;
 import io.romain.passport.model.City;
 
 @Database(version = PassportDatabase.VERSION, fileName = "passport_database.db")
-public final class PassportDatabase {
+final class PassportDatabase {
 
-	public static final int VERSION = 1;
+	static final int VERSION = 1;
 
 	@Table(City.CityColumns.class)
 	@IfNotExists

@@ -47,7 +47,7 @@ public class AddCityActivity extends BaseActivity {
 	@Bind(R.id.add_city_ok)
 	Button mValidateButton;
 
-	boolean isDismissing = false;
+	private boolean isDismissing = false;
 
 	private City mCity;
 
@@ -80,11 +80,11 @@ public class AddCityActivity extends BaseActivity {
 	}
 
 	@OnClick({R.id.dialog_outer_frame, R.id.add_city_cancel})
-	public void dismiss() {
+	void dismiss() {
 		dismiss(Activity.RESULT_CANCELED);
 	}
 
-	public void dismiss(int result) {
+	private void dismiss(int result) {
 		isDismissing = true;
 		setResult(result);
 		finishAfterTransition();

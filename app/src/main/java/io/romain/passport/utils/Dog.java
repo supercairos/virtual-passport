@@ -291,7 +291,7 @@ public final class Dog {
 		}
 
 		/** Return whether a message at {@code priority} should be logged. */
-		protected boolean isLoggable(int priority) {
+		boolean isLoggable(int priority) {
 			return true;
 		}
 
@@ -343,7 +343,7 @@ public final class Dog {
 		 * <p>
 		 * Note: This will not be called if a {@linkplain #tag(String) manual tag} was specified.
 		 */
-		protected String createStackElementTag(StackTraceElement element) {
+		String createStackElementTag(StackTraceElement element) {
 			String tag = element.getClassName();
 			Matcher m = ANONYMOUS_CLASS.matcher(tag);
 			if (m.find()) {

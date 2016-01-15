@@ -50,7 +50,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
 
 	private City mCity;
 
-	private Random mRandom = new Random();
+	private final Random mRandom = new Random();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +122,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
 		}
 	}
 
-	public static CharSequence getFormattedTemperature(Context context, float temp) {
+	private static CharSequence getFormattedTemperature(Context context, float temp) {
 		String unit = "°" + context.getString(R.string.temperature_unit_celsius);
 
 		String value = Integer.toString(Math.round(temp));
@@ -146,7 +146,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
 		return day.substring(0, 1).toUpperCase() + day.substring(1);
 	}
 
-	public static long getDayMidnight(int days) {
+	private static long getDayMidnight(int days) {
 		// today
 		Calendar date = Calendar.getInstance();
 		// reset hour, minutes, seconds and millis

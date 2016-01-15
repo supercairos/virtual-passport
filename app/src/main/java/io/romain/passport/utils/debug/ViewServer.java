@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -209,7 +210,7 @@ public class ViewServer implements Runnable {
 	 * @see #stop()
 	 * @see #isRunning()
 	 */
-	public boolean start() throws IOException {
+	boolean start() throws IOException {
 		if (mThread != null) {
 			return false;
 		}
@@ -278,7 +279,7 @@ public class ViewServer implements Runnable {
 	 * @see #start()
 	 * @see #stop()
 	 */
-	public boolean isRunning() {
+	boolean isRunning() {
 		return mThread != null && mThread.isAlive();
 	}
 
@@ -321,7 +322,7 @@ public class ViewServer implements Runnable {
 	 *
 	 * @see #removeWindow(View)
 	 */
-	public void addWindow(View view, String name) {
+	void addWindow(View view, String name) {
 		mWindowsLock.writeLock().lock();
 		try {
 			mWindows.put(view.getRootView(), name);
@@ -338,7 +339,7 @@ public class ViewServer implements Runnable {
 	 *
 	 * @see #addWindow(View, String)
 	 */
-	public void removeWindow(View view) {
+	void removeWindow(View view) {
 		mWindowsLock.writeLock().lock();
 		try {
 			mWindows.remove(view.getRootView());
@@ -364,7 +365,7 @@ public class ViewServer implements Runnable {
 	 * @param view A view that belongs to the view hierarchy/window that has focus,
 	 *             or null to remove focus
 	 */
-	public void setFocusedWindow(View view) {
+	void setFocusedWindow(View view) {
 		mFocusLock.writeLock().lock();
 		try {
 			mFocusedWindow = view == null ? null : view.getRootView();
@@ -482,12 +483,12 @@ public class ViewServer implements Runnable {
 			return mStream.toString();
 		}
 
-		public void write(byte[] buffer, int offset, int count)
+		public void write(@NonNull byte[] buffer, int offset, int count)
 				throws IOException {
 			mStream.write(buffer, offset, count);
 		}
 
-		public void write(byte[] buffer) throws IOException {
+		public void write(@NonNull byte[] buffer) throws IOException {
 			mStream.write(buffer);
 		}
 
@@ -545,7 +546,7 @@ public class ViewServer implements Runnable {
 	}
 
 	private class ViewServerWorker implements Runnable, WindowListener {
-		private Socket mClient;
+		private final Socket mClient;
 		private boolean mNeedWindowListUpdate;
 		private boolean mNeedFocusedWindowUpdate;
 

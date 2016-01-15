@@ -129,11 +129,6 @@ public abstract class DrawerActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) || super.onOptionsItemSelected(item);
 	}
@@ -157,5 +152,5 @@ public abstract class DrawerActivity extends BaseActivity {
 		}
 	}
 
-	public abstract boolean onNavItemSelected(MenuItem item);
+	protected abstract boolean onNavItemSelected(MenuItem item);
 }

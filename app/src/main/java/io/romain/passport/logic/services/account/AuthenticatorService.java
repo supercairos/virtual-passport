@@ -53,7 +53,7 @@ public class AuthenticatorService extends Service {
 		private final AccountManager mAccountManager;
 
 		@Inject
-		protected Retrofit mRetrofit;
+		Retrofit mRetrofit;
 
 		public Authenticator(Context context) {
 			super(context);

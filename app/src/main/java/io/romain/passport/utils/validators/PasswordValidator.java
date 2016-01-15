@@ -4,9 +4,9 @@ import android.text.TextUtils;
 
 public class PasswordValidator {
 
-    public static final String SPECIAL_CHARACTERS = "!@#$%^&*()~`-=_+[]{}|:\";',./<>?";
-    public static final int MIN_PASSWORD_LENGTH = 4;
-    public static final int MAX_PASSWORD_LENGTH = 64;
+    private static final String SPECIAL_CHARACTERS = "!@#$%^&*()~`-=_+[]{}|:\";',./<>?";
+    private static final int MIN_PASSWORD_LENGTH = 4;
+    private static final int MAX_PASSWORD_LENGTH = 64;
 
     public static boolean isAcceptablePassword(String password) {
         if (TextUtils.isEmpty(password)) {
@@ -19,21 +19,21 @@ public class PasswordValidator {
             return false;
         }
 
-        char[] aC = password.toCharArray();
-        boolean hasUpper= false, hasLower = false, hasDigit = false, hasSpecial =false;
-        for (char c : aC) {
-            if (Character.isUpperCase(c)) {
-                hasUpper = true;
-            } else if (Character.isLowerCase(c)) {
-                hasLower = true;
-            } else if (Character.isDigit(c)) {
-                hasDigit = true;
-            } else if (SPECIAL_CHARACTERS.contains(String.valueOf(c))) {
-                hasSpecial = true;
-            } else {
-                return false;
-            }
-        }
+//        char[] aC = password.toCharArray();
+//        boolean hasUpper= false, hasLower = false, hasDigit = false, hasSpecial =false;
+//        for (char c : aC) {
+//            if (Character.isUpperCase(c)) {
+//                hasUpper = true;
+//            } else if (Character.isLowerCase(c)) {
+//                hasLower = true;
+//            } else if (Character.isDigit(c)) {
+//                hasDigit = true;
+//            } else if (SPECIAL_CHARACTERS.contains(String.valueOf(c))) {
+//                hasSpecial = true;
+//            } else {
+//                return false;
+//            }
+//        }
 
         return true; //hasDigit && hasLower && hasUpper && hasSpecial;
     }

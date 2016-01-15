@@ -158,7 +158,7 @@ public class LoginActivity extends BaseActivity {
 		super.onStop();
 	}
 
-	private TextWatcher mLoginFieldWatcher = new SimpleTextWatcher() {
+	private final TextWatcher mLoginFieldWatcher = new SimpleTextWatcher() {
 
 		@Override
 		public void afterTextChanged(Editable s) {

@@ -43,7 +43,7 @@ public class ColorUtils {
     /**
      * Set the alpha component of {@code color} to be {@code alpha}.
      */
-    public static int modifyAlpha(@ColorInt int color, @IntRange(from = 0, to = 255) int alpha) {
+    private static int modifyAlpha(@ColorInt int color, @IntRange(from = 0, to = 255) int alpha) {
         return (color & 0x00ffffff) | (alpha << 24);
     }
 
@@ -110,10 +110,10 @@ public class ColorUtils {
      * Determines if a given bitmap is dark. This extracts a palette inline so should not be called
      * with a large image!! If palette fails then check the color of the specified pixel
      */
-    public static boolean isDark(@NonNull Bitmap bitmap, int backupPixelX, int backupPixelY) {
+    private static boolean isDark(@NonNull Bitmap bitmap, int backupPixelX, int backupPixelY) {
         // first try palette with a small color quant size
         Palette palette = Palette.from(bitmap).maximumColorCount(3).generate();
-        if (palette != null && palette.getSwatches().size() > 0) {
+        if (palette.getSwatches().size() > 0) {
             return isDark(palette) == IS_DARK;
         } else {
             // if palette failed, then check the color of the specified pixel
@@ -124,14 +124,14 @@ public class ColorUtils {
     /**
      * Check that the lightness value (0–1)
      */
-    public static boolean isDark(float[] hsl) { // @Size(3)
+    private static boolean isDark(float[] hsl) { // @Size(3)
         return hsl[2] < 0.5f;
     }
 
     /**
      * Convert to HSL & check that the lightness value
      */
-    public static boolean isDark(@ColorInt int color) {
+    private static boolean isDark(@ColorInt int color) {
         float[] hsl = new float[3];
         android.support.v4.graphics.ColorUtils.colorToHSL(color, hsl);
         return isDark(hsl);
@@ -146,7 +146,7 @@ public class ColorUtils {
      * @param lightnessMultiplier the amount to modify the color e.g. 0.1f will alter it by 10%
      * @return the adjusted color
      */
-    public static @ColorInt int scrimify(@ColorInt int color, boolean isDark, @FloatRange(from = 0f, to = 1f) float lightnessMultiplier) {
+    private static @ColorInt int scrimify(@ColorInt int color, boolean isDark, @FloatRange(from = 0f, to = 1f) float lightnessMultiplier) {
         float[] hsl = new float[3];
         android.support.v4.graphics.ColorUtils.colorToHSL(color, hsl);
 

@@ -50,26 +50,26 @@ import android.view.ViewGroup;
  */
 public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
-	protected boolean mDataValid;
-	protected Cursor mCursor;
+	private boolean mDataValid;
+	private Cursor mCursor;
 
 	private Context mContext;
-	public Context getContext() {
+	Context getContext() {
 		return mContext;
 	}
 
 	/**
 	 * This field should be made private, so it is hidden from the SDK.
 	 */
-	protected int mRowIDColumn;
+	private int mRowIDColumn;
 	/**
 	 * This field should be made private, so it is hidden from the SDK.
 	 */
-	protected ChangeObserver mChangeObserver;
+	private ChangeObserver mChangeObserver;
 	/**
 	 * This field should be made private, so it is hidden from the SDK.
 	 */
-	protected DataSetObserver mDataSetObserver;
+	private DataSetObserver mDataSetObserver;
 
 	/**
 	 * If set the adapter will register a content observer on the cursor and will call
@@ -79,18 +79,18 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 	 * when using a CursorAdapter with a
 	 * {@link android.content.CursorLoader}.
 	 */
-	public static final int FLAG_REGISTER_CONTENT_OBSERVER = 0x02;
+	private static final int FLAG_REGISTER_CONTENT_OBSERVER = 0x02;
 
 	/**
 	 * Recommended Constructor
 	 * @param c The cursor from which to get the data.
 	 * @param context The context
 	 */
-	public CursorRecyclerAdapter(Context context, Cursor c) {
+	CursorRecyclerAdapter(Context context, Cursor c) {
 		init(context, c, FLAG_REGISTER_CONTENT_OBSERVER);
 	}
 
-	void init(Context context, Cursor c, int flags) {
+	private void init(Context context, Cursor c, int flags) {
 		boolean cursorPresent = c != null;
 		mCursor = c;
 		mDataValid = cursorPresent;
@@ -132,7 +132,7 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 	/**
 	 * @see android.widget.ListAdapter#getItem(int)
 	 */
-	public Object getItem(int position) {
+	Object getItem(int position) {
 		if (mDataValid && mCursor != null) {
 			mCursor.moveToPosition(position);
 			return mCursor;
@@ -187,7 +187,7 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 	 * @param cursor The cursor from which to get the data. The cursor is already
 	 * moved to the correct position.
 	 */
-	public abstract void onBindViewHolder(VH view, Cursor cursor);
+	protected abstract void onBindViewHolder(VH view, Cursor cursor);
 
 	/**
 	 * Change the underlying cursor to a new cursor. If there is an existing cursor it will be
@@ -258,8 +258,8 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 	 *
 	 * @see ContentObserver#onChange(boolean)
 	 */
-	protected void onContentChanged() {
-
+	private void onContentChanged() {
+		// Overwrite
 	}
 
 	private class ChangeObserver extends ContentObserver {

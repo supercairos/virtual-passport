@@ -3,9 +3,9 @@ package io.romain.passport.utils.loaders;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-public abstract class BaseAsyncTaskLoader<D> extends AsyncTaskLoader<D> {
+abstract class BaseAsyncTaskLoader<D> extends AsyncTaskLoader<D> {
 
-	D mData;
+	private D mData;
 
 	public BaseAsyncTaskLoader(Context context) {
 		super(context);

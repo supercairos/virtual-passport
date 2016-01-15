@@ -30,10 +30,10 @@ public abstract class BaseIntentService extends IntentService {
 	public SharedPrefHelper mSharedPref;
 
 	@Inject
-	public Retrofit mRetrofit;
+	protected Retrofit mRetrofit;
 
 	@Inject
-	public AccountManager mAccountManager;
+	protected AccountManager mAccountManager;
 
 	/**
 	 * Creates an IntentService.  Invoked by your subclass's constructor.

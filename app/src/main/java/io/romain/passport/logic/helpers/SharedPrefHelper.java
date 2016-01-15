@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class SharedPrefHelper {
 
-	private SharedPreferences mPrefs;
+	private final SharedPreferences mPrefs;
 
 	public SharedPrefHelper(Context context) {
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(context);

@@ -20,7 +20,7 @@ import io.romain.passport.utils.Dog;
 
 public class LandingActivity extends BaseActivity {
 
-	private Handler mHandler = new Handler();
+	private final Handler mHandler = new Handler();
 
 	@Bind(R.id.background)
 	ImageView mBackground;

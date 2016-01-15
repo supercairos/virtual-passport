@@ -32,7 +32,7 @@ import android.view.animation.Interpolator;
 public class FabDialogMorphSetup {
 
 	public static final String EXTRA_SHARED_ELEMENT_START_COLOR = "EXTRA_SHARED_ELEMENT_START_COLOR";
-	public static final String EXTRA_SHARED_ELEMENT_START_CORNER_RADIUS = "EXTRA_SHARED_ELEMENT_START_CORNER_RADIUS";
+	private static final String EXTRA_SHARED_ELEMENT_START_CORNER_RADIUS = "EXTRA_SHARED_ELEMENT_START_CORNER_RADIUS";
 
 	private FabDialogMorphSetup() {
 	}

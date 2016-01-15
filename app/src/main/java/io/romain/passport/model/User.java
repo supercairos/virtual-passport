@@ -97,7 +97,7 @@ public class User implements Parcelable {
 		dest.writeParcelable(this.picture, 0);
 	}
 
-	protected User(Parcel in) {
+	private User(Parcel in) {
 		this.id = in.readString();
 		this.name = in.readString();
 		this.email = in.readString();

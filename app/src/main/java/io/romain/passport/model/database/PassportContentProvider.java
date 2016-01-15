@@ -27,7 +27,7 @@ import io.romain.passport.model.City;
 @ContentProvider(authority = PassportContentProvider.AUTHORITY, database = PassportDatabase.class)
 public class PassportContentProvider {
 
-	protected static final String AUTHORITY = "io.romain.passport";
+	static final String AUTHORITY = "io.romain.passport";
 	private static final Uri BASE_CONTENT_URI = new Uri.Builder()
 			.scheme(ContentResolver.SCHEME_CONTENT)
 			.authority(AUTHORITY)

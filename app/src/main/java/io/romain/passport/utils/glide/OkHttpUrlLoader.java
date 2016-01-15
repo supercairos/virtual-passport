@@ -26,14 +26,14 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.io.InputStream;
 
-public class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
+class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
 	/**
 	 * The default factory for {@link OkHttpUrlLoader}s.
 	 */
 	public static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
 		private static volatile OkHttpClient internalClient;
-		private OkHttpClient client;
+		private final OkHttpClient client;
 
 		private static OkHttpClient getInternalClient() {
 			if (internalClient == null) {
@@ -73,7 +73,7 @@ public class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
 	private final OkHttpClient client;
 
-	public OkHttpUrlLoader(OkHttpClient client) {
+	private OkHttpUrlLoader(OkHttpClient client) {
 		this.client = client;
 	}
 

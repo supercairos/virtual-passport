@@ -55,7 +55,7 @@ public class LocationAutocompleteTextView extends AutoCompleteTextView {
 	}
 
 	private GestureDetector mGestureDetector;
-	private GestureDetector.SimpleOnGestureListener mGestureDetectorListener = new GestureDetector.SimpleOnGestureListener() {
+	private final GestureDetector.SimpleOnGestureListener mGestureDetectorListener = new GestureDetector.SimpleOnGestureListener() {
 		@Override
 		public boolean onSingleTapConfirmed(MotionEvent e) {
 			if (mListener != null) {

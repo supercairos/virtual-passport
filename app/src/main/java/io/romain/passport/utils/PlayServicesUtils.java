@@ -11,7 +11,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 public final class PlayServicesUtils {
 
-	public final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	private static final String GCM_SHARED_PREF_NAME = "GcmStorePreferences";
 	private static final String PROPERTY_REG_ID = "gcm_registration_id";
 	private static final String PROPERTY_APP_VERSION = "gcm_app_version";

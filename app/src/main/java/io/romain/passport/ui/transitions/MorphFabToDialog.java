@@ -37,7 +37,7 @@ import io.romain.passport.ui.drawable.MorphDrawable;
  * A transition that morphs a circle into a rectangle, changing it's background color.
  * taken from nickbutcher's plaid app
  */
-public class MorphFabToDialog extends ChangeBounds {
+class MorphFabToDialog extends ChangeBounds {
 
 	private static final String PROPERTY_COLOR = "plaid:circleMorph:color";
 	private static final String PROPERTY_CORNER_RADIUS = "plaid:circleMorph:cornerRadius";
@@ -66,15 +66,15 @@ public class MorphFabToDialog extends ChangeBounds {
 		super(context, attrs);
 	}
 
-	public void setStartColor(@ColorInt int startColor) {
+	private void setStartColor(@ColorInt int startColor) {
 		this.startColor = startColor;
 	}
 
-	public void setEndCornerRadius(int endCornerRadius) {
+	private void setEndCornerRadius(int endCornerRadius) {
 		this.endCornerRadius = endCornerRadius;
 	}
 
-	public void setStartCornerRadius(int startCornerRadius) {
+	private void setStartCornerRadius(int startCornerRadius) {
 		this.startCornerRadius = startCornerRadius;
 	}
 

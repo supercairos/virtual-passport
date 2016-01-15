@@ -59,7 +59,7 @@ public class NetworkException extends IOException {
 
 	@Expose
 	@SerializedName("message")
-	public final String message;
+	private final String message;
 
 	public int code;
 

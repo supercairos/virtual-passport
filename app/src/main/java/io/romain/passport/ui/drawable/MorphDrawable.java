@@ -49,7 +49,7 @@ public class MorphDrawable extends Drawable {
 			return morphDrawable.getCornerRadius();
 		}
 	};
-	private Paint paint;
+	private final Paint paint;
 	public static final Property<MorphDrawable, Integer> COLOR = new AnimUtils
 			.IntProperty<MorphDrawable>("color") {
 
@@ -70,20 +70,20 @@ public class MorphDrawable extends Drawable {
 		paint.setColor(color);
 	}
 
-	public float getCornerRadius() {
+	private float getCornerRadius() {
 		return cornerRadius;
 	}
 
-	public void setCornerRadius(float cornerRadius) {
+	private void setCornerRadius(float cornerRadius) {
 		this.cornerRadius = cornerRadius;
 		invalidateSelf();
 	}
 
-	public int getColor() {
+	private int getColor() {
 		return paint.getColor();
 	}
 
-	public void setColor(int color) {
+	private void setColor(int color) {
 		paint.setColor(color);
 		invalidateSelf();
 	}

@@ -100,14 +100,16 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 		switch (item.getItemId()) {
 			case R.id.navigation_account_logout:
 				showLogoutDialog();
-				break;
+				mDrawerLayout.closeDrawer(mDrawerNavigation);
+				return true;
 			case R.id.navigation_add_city:
 				startActivityForResult(new Intent(this, AddCityActivity.class), REQUEST_CODE_ADD_CITY);
-				break;
+				mDrawerLayout.closeDrawer(mDrawerNavigation);
+				return true;
 		}
 
 		mDrawerLayout.closeDrawer(mDrawerNavigation);
-		return true;
+		return false;
 	}
 
 	@OnClick(R.id.floating_action_button)
@@ -157,7 +159,7 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 		return true;
 	}
 
-	public CityListFragment getCityListFragment() {
+	private CityListFragment getCityListFragment() {
 		if(mCityListFragment == null) {
 			mCityListFragment = (CityListFragment) getSupportFragmentManager().findFragmentById(R.id.city_list_fragment);
 		}

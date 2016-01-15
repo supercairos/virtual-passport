@@ -97,10 +97,6 @@ public class SyncService extends Service {
 
 			Dog.d("onPerformSync(" + account.name + ")");
 		}
-
-		private void onError() {
-
-		}
 	}
 
 }

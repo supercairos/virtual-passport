@@ -23,7 +23,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
 	public Retrofit mRetrofit;
 
 	@Inject
-	public AccountManager mAccountManager;
+	AccountManager mAccountManager;
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {

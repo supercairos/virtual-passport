@@ -5,8 +5,7 @@ import java.util.regex.Pattern;
 
 public class EmailValidator {
 
-    private Pattern mPattern;
-    private Matcher mMatcher;
+    private final Pattern mPattern;
 
     private static EmailValidator sSingleton = null;
 
@@ -33,7 +32,7 @@ public class EmailValidator {
      * @return true valid hex, false invalid hex
      */
     public boolean validate(final String hex) {
-        mMatcher = mPattern.matcher(hex);
-        return mMatcher.matches();
+        Matcher matcher = mPattern.matcher(hex);
+        return matcher.matches();
     }
 }

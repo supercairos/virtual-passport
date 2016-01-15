@@ -30,9 +30,9 @@ import retrofit.RxJavaCallAdapterFactory;
 @Module
 public class RetrofitModule {
 
-	public static final String PROTOCOL = "http";
-	public static final String HOST = "passport-supercairos.rhcloud.com";
-	public static final int PORT = 80;
+	private static final String PROTOCOL = "http";
+	private static final String HOST = "passport-supercairos.rhcloud.com";
+	private static final int PORT = 80;
 
 	@Provides
 	@Singleton
