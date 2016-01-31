@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.romain.passport"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+
+    <!-- Dangerous Permissions -->
+    <!-- Location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Profile autocomplete -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
 
     <application
         android:name=".MyApplication"
@@ -29,20 +37,20 @@
         android:theme="@style/Passport">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDM-L8egXEs9NL48t7ZhDuqW9By2XPXXFc"/>
+            android:value="AIzaSyDM-L8egXEs9NL48t7ZhDuqW9By2XPXXFc" />
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="io.romain.passport.utils.glide.GlideConfiguration"
-            android:value="GlideModule"/>
+            android:value="GlideModule" />
 
         <activity
             android:name=".ui.LandingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Passport.Home"/>
+            android:theme="@style/Passport.Home" />
         <activity
             android:name=".ui.RegisterActivity"
             android:label="@string/app_name"
@@ -51,7 +59,7 @@
             android:theme="@style/Passport.Register">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.romain.passport.ui.LandingActivity"/>
+                android:value="io.romain.passport.ui.LandingActivity" />
         </activity>
         <activity
             android:name=".ui.LoginActivity"
@@ -61,7 +69,7 @@
             android:theme="@style/Passport.Login">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.romain.passport.ui.LandingActivity"/>
+                android:value="io.romain.passport.ui.LandingActivity" />
         </activity>
         <activity
             android:name=".ui.AddCityActivity"
@@ -70,7 +78,7 @@
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/Passport.Translucent.AddCity"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
@@ -79,7 +87,7 @@
             android:theme="@style/Passport.Main">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.romain.passport.ui.LandingActivity"/>
+                android:value="io.romain.passport.ui.LandingActivity" />
         </activity>
 
         <activity
@@ -89,7 +97,7 @@
             android:theme="@style/Passport.Detail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.romain.passport.ui.MainActivity"/>
+                android:value="io.romain.passport.ui.MainActivity" />
         </activity>
 
         <activity-alias
@@ -97,16 +105,16 @@
             android:label="@string/app_name"
             android:targetActivity=".ui.LandingActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
 
         <provider
             android:name=".model.database.generated.PassportContentProvider"
             android:authorities="io.romain.passport"
-            android:exported="false"/>
+            android:exported="false" />
 
         <service
             android:name=".logic.services.account.SyncService"
@@ -114,23 +122,23 @@
             android:label="@string/app_name"
             android:process=":sync">
             <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
+                <action android:name="android.content.SyncAdapter" />
             </intent-filter>
 
             <meta-data
                 android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter"/>
+                android:resource="@xml/syncadapter" />
         </service>
         <service
             android:name=".logic.services.account.AuthenticatorService"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator"/>
+                android:resource="@xml/authenticator" />
         </service>
 
         <receiver
@@ -138,10 +146,10 @@
             android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="io.romain.passport"/>
+                <category android:name="io.romain.passport" />
             </intent-filter>
         </receiver>
 
@@ -149,20 +157,20 @@
             android:name=".logic.services.gcm.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
             </intent-filter>
         </service>
         <service
             android:name=".logic.services.gcm.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
         <service
             android:name=".logic.services.gcm.RegistrationIntentService"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

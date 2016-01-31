@@ -5,7 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+        classpath 'com.jakewharton.hugo:hugo-plugin:+'
+        classpath "com.fernandocejas.frodo:frodo-plugin:+"
     }
 }
 
@@ -13,6 +14,8 @@ apply plugin: 'build-announcements'
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+
+apply plugin: 'com.fernandocejas.frodo'
 apply plugin: 'com.jakewharton.hugo'
 
 def gitVersion() {
@@ -40,6 +43,9 @@ android {
         versionName gitTag()
 
         buildConfigField "String", "GCM_SENDER_ID", "\"${gcm_sender_id}\""
+
+        // Change the name of the apk.
+        archivesBaseName = "passport-${versionName}"
     }
 
     buildTypes {
@@ -47,9 +53,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            // Change the name of the apk.
-            archivesBaseName = "passport-${defaultConfig.versionName}"
         }
 
         lintOptions {

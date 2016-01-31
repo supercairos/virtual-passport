@@ -42,7 +42,8 @@ import android.widget.ImageView;
  */
 public class ViewUtils {
 
-    private ViewUtils() { }
+    private ViewUtils() {
+    }
 
     private static int actionBarSize = -1;
 
@@ -64,31 +65,33 @@ public class ViewUtils {
                 bounded ? new ColorDrawable(Color.WHITE) : null);
     }
 
-    public static RippleDrawable createRipple(@NonNull Palette palette,
+    public static RippleDrawable createRipple(Palette palette,
                                               @FloatRange(from = 0f, to = 1f) float darkAlpha,
                                               @FloatRange(from = 0f, to = 1f) float lightAlpha,
                                               @ColorInt int fallbackColor,
                                               boolean bounded) {
         int rippleColor = fallbackColor;
         // try the named swatches in preference order
-        if (palette.getVibrantSwatch() != null) {
-            rippleColor = ColorUtils.modifyAlpha(palette.getVibrantSwatch().getRgb(), darkAlpha);
-        } else if (palette.getLightVibrantSwatch() != null) {
-            rippleColor = ColorUtils.modifyAlpha(palette.getLightVibrantSwatch().getRgb(),
-                    lightAlpha);
-        } else if (palette.getDarkVibrantSwatch() != null) {
-            rippleColor = ColorUtils.modifyAlpha(palette.getDarkVibrantSwatch().getRgb(),
-                    darkAlpha);
-        } else if (palette.getMutedSwatch() != null) {
-            rippleColor = ColorUtils.modifyAlpha(palette.getMutedSwatch().getRgb(), darkAlpha);
-        } else if (palette.getLightMutedSwatch() != null) {
-            rippleColor = ColorUtils.modifyAlpha(palette.getLightMutedSwatch().getRgb(),
-                    lightAlpha);
-        } else if (palette.getDarkMutedSwatch() != null) {
-            rippleColor = ColorUtils.modifyAlpha(palette.getDarkMutedSwatch().getRgb(), darkAlpha);
+        if (palette != null) {
+            if (palette.getVibrantSwatch() != null) {
+                rippleColor = ColorUtils.modifyAlpha(palette.getVibrantSwatch().getRgb(), darkAlpha);
+            } else if (palette.getLightVibrantSwatch() != null) {
+                rippleColor = ColorUtils.modifyAlpha(palette.getLightVibrantSwatch().getRgb(),
+                        lightAlpha);
+            } else if (palette.getDarkVibrantSwatch() != null) {
+                rippleColor = ColorUtils.modifyAlpha(palette.getDarkVibrantSwatch().getRgb(),
+                        darkAlpha);
+            } else if (palette.getMutedSwatch() != null) {
+                rippleColor = ColorUtils.modifyAlpha(palette.getMutedSwatch().getRgb(), darkAlpha);
+            } else if (palette.getLightMutedSwatch() != null) {
+                rippleColor = ColorUtils.modifyAlpha(palette.getLightMutedSwatch().getRgb(),
+                        lightAlpha);
+            } else if (palette.getDarkMutedSwatch() != null) {
+                rippleColor = ColorUtils.modifyAlpha(palette.getDarkMutedSwatch().getRgb(), darkAlpha);
+            }
         }
-        return new RippleDrawable(ColorStateList.valueOf(rippleColor), null,
-                bounded ? new ColorDrawable(Color.WHITE) : null);
+
+        return new RippleDrawable(ColorStateList.valueOf(rippleColor), null, bounded ? new ColorDrawable(Color.WHITE) : null);
     }
 
     public static void setLightStatusBar(@NonNull View view) {
@@ -109,7 +112,7 @@ public class ViewUtils {
 
     /**
      * Recursive binary search to find the best size for the text.
-     *
+     * <p>
      * Adapted from https://github.com/grantland/android-autofittextview
      */
     private static float getSingleLineTextSize(String text,

@@ -17,14 +17,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.romain.passport.MyApplication;
-import io.romain.passport.R;
-import io.romain.passport.model.City;
+import io.romain.passport.model.CityAutocomplete;
 import io.romain.passport.utils.Dog;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class CitySearchAdapter extends ArrayAdapter<City> implements Filterable {
+public class CitySearchAdapter extends ArrayAdapter<CityAutocomplete> implements Filterable {
 
 	@Inject
 	Retrofit mRetrofit;
@@ -44,8 +43,7 @@ public class CitySearchAdapter extends ArrayAdapter<City> implements Filterable 
 			view = mLayoutInflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
 		}
 
-		City city = getItem(position);
-		((TextView) view).setText(getContext().getString(R.string.add_city_dropdown, city.name, city.country));
+		((TextView) view).setText(getItem(position).name);
 
 		return view;
 	}
@@ -61,11 +59,11 @@ public class CitySearchAdapter extends ArrayAdapter<City> implements Filterable 
 		@NonNull
 		protected FilterResults performFiltering(@Nullable CharSequence constraint) {
 			FilterResults results = new FilterResults();
-			Call<List<City>> call = mRetrofit.create(City.CityService.class).search((String) constraint);
+			Call<List<CityAutocomplete>> call = mRetrofit.create(CityAutocomplete.CityAutocompleteService.class).complete((String) constraint);
 			try {
-				Response<List<City>> response = call.execute();
+				Response<List<CityAutocomplete>> response = call.execute();
 				if(response.isSuccess()) {
-					List<City> cities = response.body();
+					List<CityAutocomplete> cities = response.body();
 					results.values = cities;
 					results.count = cities != null ? cities.size() : 0;
 				}
@@ -79,7 +77,7 @@ public class CitySearchAdapter extends ArrayAdapter<City> implements Filterable 
 		@Override
 		protected void publishResults(@Nullable CharSequence constraint, @NonNull FilterResults results) {
 			//noinspection unchecked
-			List<City> towns = (List<City>) results.values;
+			List<CityAutocomplete> towns = (List<CityAutocomplete>) results.values;
 			clear();
 			if (towns != null && towns.size() > 0) {
 				addAll(towns);

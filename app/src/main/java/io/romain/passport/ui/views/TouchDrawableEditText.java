@@ -31,7 +31,7 @@ public class TouchDrawableEditText extends EditText {
 //
 //	private OnDrawableTouched mListener;
 //
-//	public void setListener(OnDrawableTouched mListener) {
+//	public void setDrawableListener(OnDrawableTouched mListener) {
 //		this.mListener = mListener;
 //	}
 //

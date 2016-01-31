@@ -16,6 +16,8 @@ import io.romain.passport.utils.Dog;
 
 public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 
+	private static final String GOOGLE_ACCOUNT = "com.google";
+
 	private final Context mContext;
 
 	public ProfileLoader(Context context) {
@@ -133,7 +135,7 @@ public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cur
 	}
 
 	private static Account getAccount(AccountManager accountManager) {
-		Account[] accounts = accountManager.getAccountsByType("com.google");
+		Account[] accounts = accountManager.getAccountsByType(GOOGLE_ACCOUNT);
 		Account account;
 		if (accounts.length > 0) {
 			account = accounts[0];

@@ -17,4 +17,5 @@
     <dimen name="z_card_view_pressed">8dp</dimen>
 
     <dimen name="detail_backdrop_height">256dp</dimen>
+    <dimen name="weather_error_text_size">26sp</dimen>
 </resources>

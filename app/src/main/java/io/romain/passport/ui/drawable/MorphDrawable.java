@@ -36,8 +36,7 @@ import io.romain.passport.utils.AnimUtils;
 public class MorphDrawable extends Drawable {
 
 	private float cornerRadius;
-	public static final Property<MorphDrawable, Float> CORNER_RADIUS = new AnimUtils
-			.FloatProperty<MorphDrawable>("cornerRadius") {
+	public static final Property<MorphDrawable, Float> CORNER_RADIUS = new AnimUtils.FloatProperty<MorphDrawable>("cornerRadius") {
 
 		@Override
 		public void setValue(MorphDrawable morphDrawable, float value) {
@@ -49,9 +48,9 @@ public class MorphDrawable extends Drawable {
 			return morphDrawable.getCornerRadius();
 		}
 	};
+
 	private final Paint paint;
-	public static final Property<MorphDrawable, Integer> COLOR = new AnimUtils
-			.IntProperty<MorphDrawable>("color") {
+	public static final Property<MorphDrawable, Integer> COLOR = new AnimUtils.IntProperty<MorphDrawable>("color") {
 
 		@Override
 		public void setValue(MorphDrawable morphDrawable, int value) {
@@ -90,8 +89,15 @@ public class MorphDrawable extends Drawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.drawRoundRect(getBounds().left, getBounds().top, getBounds().right, getBounds()
-				.bottom, cornerRadius, cornerRadius, paint);
+		canvas.drawRoundRect(
+                getBounds().left,
+                getBounds().top,
+                getBounds().right,
+                getBounds().bottom,
+                cornerRadius,
+                cornerRadius,
+                paint
+        );
 	}
 
 	@Override

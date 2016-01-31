@@ -43,29 +43,32 @@ public class FabDialogMorphSetup {
 	 * and the dialog corner radius which is dynamically supplied depending upon where this screen
 	 * is launched from.
 	 */
-	public static void setupSharedEelementTransitions(@NonNull Activity activity, @Nullable View target, int dialogCornerRadius) {
+	public static void setupSharedElementTransitions(@NonNull Activity activity, @Nullable View target, int dialogCornerRadius) {
 		if (!activity.getIntent().hasExtra(EXTRA_SHARED_ELEMENT_START_COLOR)) return;
 
 		int startCornerRadius = activity.getIntent().getIntExtra(EXTRA_SHARED_ELEMENT_START_CORNER_RADIUS, -1);
 
-		ArcMotion arcMotion = new ArcMotion();
-		arcMotion.setMinimumHorizontalAngle(50f);
-		arcMotion.setMinimumVerticalAngle(50f);
+		ArcMotion motion = new ArcMotion();
+		motion.setMinimumHorizontalAngle(50f);
+		motion.setMinimumVerticalAngle(50f);
 
 		int color = activity.getIntent().getIntExtra(EXTRA_SHARED_ELEMENT_START_COLOR, Color.TRANSPARENT);
-		Interpolator easeInOut = AnimationUtils.loadInterpolator(activity, android.R.interpolator.fast_out_slow_in);
-		MorphFabToDialog sharedEnter = new MorphFabToDialog(color, dialogCornerRadius, startCornerRadius);
-		sharedEnter.setPathMotion(arcMotion);
-		sharedEnter.setInterpolator(easeInOut);
-		MorphDialogToFab sharedReturn = new MorphDialogToFab(color, startCornerRadius);
-		sharedReturn.setPathMotion(arcMotion);
-		sharedReturn.setInterpolator(easeInOut);
+		Interpolator interpolator = AnimationUtils.loadInterpolator(activity, android.R.interpolator.fast_out_slow_in);
+
+		MorphFabToDialog enter = new MorphFabToDialog(color, dialogCornerRadius, startCornerRadius);
+		enter.setPathMotion(motion);
+		enter.setInterpolator(interpolator);
+
+		MorphDialogToFab exit = new MorphDialogToFab(color, startCornerRadius);
+		exit.setPathMotion(motion);
+		exit.setInterpolator(interpolator);
+
 		if (target != null) {
-			sharedEnter.addTarget(target);
-			sharedReturn.addTarget(target);
+			enter.addTarget(target);
+			exit.addTarget(target);
 		}
-		activity.getWindow().setSharedElementEnterTransition(sharedEnter);
-		activity.getWindow().setSharedElementReturnTransition(sharedReturn);
+		activity.getWindow().setSharedElementEnterTransition(enter);
+		activity.getWindow().setSharedElementReturnTransition(exit);
 	}
 
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/dialog_outer_frame"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_outer_frame"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="false"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context="io.romain.passport.ui.AddCityActivity">
 
-    <LinearLayout
-        android:id="@+id/dialog_container"
+
+    <FrameLayout
+        android:id="@+id/dialog_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -17,69 +17,87 @@
         android:layout_marginStart="@dimen/spacing_large"
         android:background="@drawable/dialog_background"
         android:elevation="@dimen/z_floating_action_button"
-        android:orientation="vertical"
         android:paddingBottom="@dimen/padding_normal"
         android:paddingEnd="@dimen/padding_dialog"
         android:paddingStart="@dimen/padding_normal"
         android:paddingTop="@dimen/padding_dialog"
         android:transitionName="@string/transition_add_city">
 
-        <TextView
-            android:id="@+id/dialog_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginBottom="@dimen/dialog_title_spacing"
-            android:text="@string/add_city_description"
-            style="@style/Widget.Passport.DialogTitle" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/username_float_label"
+        <LinearLayout
+            android:id="@+id/dialog_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_micro">
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-            <io.romain.passport.ui.views.LocationAutocompleteTextView
-                android:id="@+id/add_city_city"
+            <TextView
+                android:id="@+id/dialog_title"
+                style="@style/Widget.Passport.DialogTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dialog_title_spacing"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:text="@string/add_city_description" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/username_float_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_my_location_black_24dp"
-                android:hint="@string/add_city_city"
-                android:inputType="textEmailAddress"
-                android:selectAllOnFocus="true"/>
+                android:layout_marginStart="@dimen/spacing_micro">
 
-        </android.support.design.widget.TextInputLayout>
+                <io.romain.passport.ui.views.LocationAutocompleteTextView
+                    android:id="@+id/add_city_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_my_location_black_24dp"
+                    android:hint="@string/add_city_city"
+                    android:inputType="textEmailAddress"
+                    android:selectAllOnFocus="true">
 
-        <LinearLayout
-            android:id="@+id/actions_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_normal">
+                    <requestFocus />
+                </io.romain.passport.ui.views.LocationAutocompleteTextView>
 
-            <Button
-                android:id="@+id/add_city_cancel"
-                style="?android:borderlessButtonStyle"
-                android:layout_width="wrap_content"
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/actions_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@android:string/cancel"
-                android:textColor="?android:colorAccent"/>
+                android:layout_marginTop="@dimen/padding_normal">
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/add_city_cancel"
+                    style="?android:borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@android:string/cancel"
+                    android:textColor="?android:colorAccent" />
 
-            <Button
-                android:id="@+id/add_city_ok"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:enabled="false"
-                android:text="@android:string/ok"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
+                <Button
+                    android:id="@+id/add_city_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:enabled="false"
+                    android:text="@android:string/ok" />
+
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/dialog_loading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 
 </FrameLayout>

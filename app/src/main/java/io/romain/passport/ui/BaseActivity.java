@@ -40,9 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 	@Inject
 	AccountManager mAccountManager;
 
-//	@Inject
-//	public GoogleApiClient mGoogleApiClient;
-
 	@Override
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);

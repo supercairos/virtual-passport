@@ -30,7 +30,7 @@
 
     <string name="logout_title">Logout</string>
     <string name="logout_message">Are you sure you want to logout ?</string>
-    <string name="add_city_dropdown">%1$s, %2$s</string>
+    <string name="city_concat_name_country">%1$s, %2$s</string>
     <string name="add_city_description">Add a city</string>
     <string name="search_title">Search</string>
     <string name="main_title_list">List</string>
@@ -45,6 +45,13 @@
     <string name="town_saved_successfully">Town added successfully</string>
     <string name="transition_detail_background">transition_detail_background</string>
     <string name="transition_picture">transition_picture</string>
-    <string name="wikipedia_demo">London is the capital and most populous city of England and the United Kingdom. Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium. London\'s ancient core, the City of London, largely retains its 1.12-square-mile (2.9 km2) medieval boundaries and in 2011 had a resident population of 7,375, making it the smallest city in England. Since at least the 19th century, the term London has also referred to the metropolis developed around this core. The bulk of this conurbation forms Greater London, a region of England governed by the Mayor of London and the London Assembly. </string>
+    <string name="wikipedia_demo">London is the capital and most populous city of England and the United Kingdom. Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium. London\'s ancient core, the City of London, largely retains its 1.12-square-mile (2.9 km2) medieval boundaries and in 2011 had a resident population of 7,375, making it the smallest city in England. Since at least the 19th century, the term London has also referred to the metropolis developed around this core… </string>
     <string name="temperature_unit_celsius">C</string>
+    <string name="weather_error">Weather coudn\'t be found</string>
+    <string name="get_accounts_permission_message">Autocomplete fields</string>
+    <string name="add_city_location_dialog_title">Location</string>
+    <string name="add_city_location_dialog_message">We need to use the location to retreive your position.</string>
+    <string name="undo">Undo</string>
+    <string name="city_removed">City removed</string>
+    <string name="add_city_error">Sorry, we coudn\'t resolve this place</string>
 </resources>

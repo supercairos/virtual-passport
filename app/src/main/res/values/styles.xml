@@ -10,16 +10,18 @@
         <item name="android:windowActionBarOverlay">true</item>
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
+
+        <item name="drawerArrowStyle">@style/Widget.Passport.DrawerArrowToggle</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="Passport.Home"/>
+    <style name="Passport.Home" />
 
-    <style name="Passport.Register"/>
+    <style name="Passport.Register" />
 
-    <style name="Passport.Login"/>
+    <style name="Passport.Login" />
 
-    <style name="Passport.Main"/>
+    <style name="Passport.Main" />
 
     <style name="Passport.Translucent">
         <!-- using a semi-transparent window background for the drag-back gesture -->
@@ -38,8 +40,12 @@
     </style>
 
     <style name="Passport.Detail">
-        <item name="android:windowSharedElementEnterTransition">@transition/city_detail_shared_enter</item>
-        <item name="android:windowSharedElementReturnTransition">@transition/city_detail_shared_return</item>
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/city_detail_shared_enter
+        </item>
+        <item name="android:windowSharedElementReturnTransition">
+            @transition/city_detail_shared_return
+        </item>
         <item name="android:windowEnterTransition">@transition/city_detail_enter</item>
         <item name="android:windowReturnTransition">@transition/city_detail_return</item>
 
@@ -47,7 +53,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="Widget.Passport" parent="android:Widget"/>
+    <style name="Widget.Passport" parent="android:Widget" />
 
     <style name="Widget.Passport.DialogText">
         <item name="android:textAppearance">@style/TextAppearance.DialogContent</item>
@@ -55,6 +61,14 @@
 
     <style name="Widget.Passport.DialogTitle">
         <item name="android:textAppearance">@style/TextAppearance.DialogTitle</item>
+    </style>
+
+    <style name="Widget.Passport.HintCheckBox" parent="@android:style/Widget.Material.CompoundButton.CheckBox">
+        <item name="android:textColor">@color/text_secondary_dark</item>
+    </style>
+
+    <style name="Widget.Passport.DrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
     </style>
 
     <style name="TextAppearance.DialogTitle" parent="@android:style/TextAppearance.Material.Title">

@@ -32,6 +32,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -165,5 +166,9 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 		}
 
 		return mCityListFragment;
+	}
+
+	public ViewGroup getCoordinatorLayout() {
+		return mFabCoordinatorLayout;
 	}
 }

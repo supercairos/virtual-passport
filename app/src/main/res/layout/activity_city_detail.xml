@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/city_detail_frame"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/city_detail_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -21,11 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:transitionName="transition_picture"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="32dp"
             app:expandedTitleMarginStart="16dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:transitionName="transition_picture"
             app:toolbarId="@+id/city_detail_toolbar">
 
             <ImageView
@@ -33,15 +32,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:src="@drawable/city_list_placeholder"
-                app:layout_collapseMode="parallax"/>
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/city_detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -54,83 +53,53 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/spacing_normal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:fontFamily="sans-serif-light"
-                android:paddingEnd="3dp"
-                android:paddingStart="3dp"
-                android:text="Map"
-                android:textColor="@color/text_primary_dark"
-                android:textSize="24sp"/>
+            android:orientation="vertical">
 
             <FrameLayout
                 android:id="@+id/content"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"/>
+                android:layout_height="220dp" />
 
-            <View
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:background="@android:color/black"
-                android:paddingEnd="3dp"
-                android:paddingStart="3dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:fontFamily="sans-serif-light"
-                android:paddingEnd="3dp"
-                android:paddingStart="3dp"
-                android:text="Weather"
-                android:textColor="@color/text_primary_dark"
-                android:textSize="24sp"/>
-
-            <HorizontalScrollView
-                android:id="@+id/horizontalScrollView"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/city_detail_weather_frame"
-                    android:layout_width="wrap_content"
+                <HorizontalScrollView
+                    android:id="@+id/city_detail_weather_scroll_view"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"/>
+                    android:visibility="invisible">
 
-            </HorizontalScrollView>
+                    <LinearLayout
+                        android:id="@+id/city_detail_weather_frame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:background="@android:color/black"
-                android:paddingEnd="3dp"
-                android:paddingStart="3dp"/>
+                        <include layout="@layout/item_city_detail_weather" />
+                    </LinearLayout>
+                </HorizontalScrollView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:fontFamily="sans-serif-light"
-                android:paddingEnd="3dp"
-                android:paddingStart="3dp"
-                android:text="Wikipedia"
-                android:textColor="@color/text_primary_dark"
-                android:textSize="24sp"/>
+                <ProgressBar
+                    android:id="@+id/city_detail_weather_scroll_progress"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/spacing_normal"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/grey_300"
+                    android:indeterminateTintMode="src_in" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wikipedia_demo"/>
-
+                <TextView
+                    android:id="@+id/city_detail_weather_empty_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/weather_error"
+                    android:textSize="@dimen/weather_error_text_size"
+                    android:visibility="gone" />
+            </FrameLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

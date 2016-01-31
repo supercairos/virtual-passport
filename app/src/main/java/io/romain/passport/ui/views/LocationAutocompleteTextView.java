@@ -25,75 +25,78 @@ import android.widget.EditText;
 
 public class LocationAutocompleteTextView extends AutoCompleteTextView {
 
-	public interface OnDrawableTouched {
-		boolean onDrawableTouched(EditText text);
-	}
+    private static final int DRAWABLE_NONE = -1;
+    public static final int DRAWABLE_LEFT = 0;
+    public static final int DRAWABLE_TOP = 1;
+    public static final int DRAWABLE_RIGHT = 2;
+    public static final int DRAWABLE_BOTTOM = 3;
 
-	private OnDrawableTouched mListener;
 
-	public void setListener(OnDrawableTouched mListener) {
-		this.mListener = mListener;
-	}
+    public interface OnDrawableTouched {
+        boolean onDrawableTouched(EditText text, int touched);
+    }
 
-	public OnDrawableTouched getListener() {
-		return mListener;
-	}
+    private OnDrawableTouched mListener;
 
-	public LocationAutocompleteTextView(Context context) {
-		super(context);
-		init();
-	}
+    public void setDrawableListener(OnDrawableTouched mListener) {
+        this.mListener = mListener;
+    }
 
-	public LocationAutocompleteTextView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
+    public OnDrawableTouched getListener() {
+        return mListener;
+    }
 
-	public LocationAutocompleteTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
+    public LocationAutocompleteTextView(Context context) {
+        super(context);
+        init();
+    }
 
-	private GestureDetector mGestureDetector;
-	private final GestureDetector.SimpleOnGestureListener mGestureDetectorListener = new GestureDetector.SimpleOnGestureListener() {
-		@Override
-		public boolean onSingleTapConfirmed(MotionEvent e) {
-			if (mListener != null) {
-				if (isDrawableTouched(e)) {
-					return mListener.onDrawableTouched(LocationAutocompleteTextView.this);
-				}
-			}
-			return false;
-		}
-	};
+    public LocationAutocompleteTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-	private void init() {
-		mGestureDetector = new GestureDetector(getContext(), mGestureDetectorListener);
-	}
+    public LocationAutocompleteTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		return mGestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
-	}
+    private GestureDetector mGestureDetector;
+    private final GestureDetector.SimpleOnGestureListener mGestureDetectorListener = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            if (mListener != null) {
+                int touched = getDrawableTouched(e);
+                if (touched >= DRAWABLE_NONE) {
+                    return mListener.onDrawableTouched(LocationAutocompleteTextView.this, touched );
+                }
+            }
+            return false;
+        }
+    };
 
-	private boolean isDrawableTouched(MotionEvent event) {
-		final Drawable[] drawables = getCompoundDrawables();
-		final int DRAWABLE_LEFT = 0;
-		final int DRAWABLE_TOP = 1;
-		final int DRAWABLE_RIGHT = 2;
-		final int DRAWABLE_BOTTOM = 3;
+    private void init() {
+        mGestureDetector = new GestureDetector(getContext(), mGestureDetectorListener);
+    }
 
-		if (drawables[DRAWABLE_RIGHT] != null && (event.getX() >= (getRight() - drawables[DRAWABLE_RIGHT].getBounds().width()))) {
-			return true;
-		} else if (drawables[DRAWABLE_LEFT] != null && (event.getX() <= drawables[DRAWABLE_LEFT].getBounds().width())) {
-			return true;
-		} else if (drawables[DRAWABLE_TOP] != null && (event.getY() <= drawables[DRAWABLE_TOP].getBounds().height())) {
-			return true;
-		} else if (drawables[DRAWABLE_BOTTOM] != null && (event.getY() >= (getBottom() - drawables[DRAWABLE_BOTTOM].getBounds().height()))) {
-			return true;
-		}
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mGestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
 
-		return false;
-	}
+    private int getDrawableTouched(MotionEvent event) {
+        final Drawable[] drawables = getCompoundDrawables();
+        if (drawables[DRAWABLE_RIGHT] != null && (event.getX() >= (getRight() - drawables[DRAWABLE_RIGHT].getBounds().width()))) {
+            return DRAWABLE_RIGHT;
+        } else if (drawables[DRAWABLE_LEFT] != null && (event.getX() <= drawables[DRAWABLE_LEFT].getBounds().width())) {
+            return DRAWABLE_LEFT;
+        } else if (drawables[DRAWABLE_TOP] != null && (event.getY() <= drawables[DRAWABLE_TOP].getBounds().height())) {
+            return DRAWABLE_TOP;
+        } else if (drawables[DRAWABLE_BOTTOM] != null && (event.getY() >= (getBottom() - drawables[DRAWABLE_BOTTOM].getBounds().height()))) {
+            return DRAWABLE_BOTTOM;
+        }
+
+        return DRAWABLE_NONE;
+    }
 
 }
