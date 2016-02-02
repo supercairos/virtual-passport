@@ -47,7 +47,7 @@ import io.romain.passport.utils.Dog;
 @Module
 public class OkHttpModule {
 
-    private static final long TIMEOUT = 120;
+    private static final long TIMEOUT = 180;
 
     @Provides
     @Singleton

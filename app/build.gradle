@@ -23,7 +23,7 @@ def gitVersion() {
 }
 
 def gitTag() {
-    return "git describe --tags".execute([], project.rootDir).text.trim()
+    return "git describe --tags --abbrev=0".execute([], project.rootDir).text.trim()
 }
 
 retrolambda {

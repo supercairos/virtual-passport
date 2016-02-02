@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     tools:context="io.romain.passport.ui.AddCityActivity">
 
 
@@ -27,8 +29,6 @@
             android:id="@+id/dialog_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <TextView
@@ -50,7 +50,6 @@
                     android:id="@+id/add_city_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_my_location_black_24dp"
                     android:hint="@string/add_city_city"
                     android:inputType="textEmailAddress"
                     android:selectAllOnFocus="true">

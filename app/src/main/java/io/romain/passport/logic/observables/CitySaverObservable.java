@@ -19,34 +19,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import io.romain.passport.model.City;
 import io.romain.passport.model.database.PassportContentProvider;
 import io.romain.passport.utils.Dog;
-import rx.Observable;
-import rx.Subscriber;
 
-public class CitySaverObservable implements Observable.OnSubscribe<Uri> {
+public class CitySaverObservable {
 
-    private final Context mContext;
-    private final City mCity;
-
-    @RxLogObservable
-    public static Observable<Uri> create(final Context context, City input) {
-        return Observable.create(new CitySaverObservable(context, input));
-    }
-
-    public CitySaverObservable(Context context, City input) {
-        mContext = context.getApplicationContext();
-        mCity = input;
-    }
-
-    @Override
-    public void call(Subscriber<? super Uri> subscriber) {
-        ContentResolver resolver = mContext.getContentResolver();
-        Dog.d("Inserted (Thread ID is : " + Thread.currentThread().getId() + ")");
-        subscriber.onNext(resolver.insert(PassportContentProvider.Cities.CONTENT_URI, mCity.toContentValues()));
-        subscriber.onCompleted();
+    public static Uri save(final Context context, City input) {
+        ContentResolver resolver = context.getContentResolver();
+        Dog.d("Inserted (Thread ID is : " + Thread.currentThread().getName() + ")");
+        return resolver.insert(PassportContentProvider.Cities.CONTENT_URI, input.toContentValues());
     }
 }
