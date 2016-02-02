@@ -122,7 +122,7 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
                             new String[]{String.valueOf(city.id)}
                     );
 
-                    Snackbar.make(((MainActivity) getActivity()).getCoordinatorLayout(), R.string.city_removed, Snackbar.LENGTH_LONG)
+                    Snackbar.make(((MainActivity) getActivity()).getCoordinatorLayout(), getString(R.string.city_removed_successfully, city.name), Snackbar.LENGTH_SHORT)
                             .setAction(R.string.undo, v -> {
                                 getContext().getContentResolver().insert(PassportContentProvider.Cities.CONTENT_URI, city.toContentValues());
                             })

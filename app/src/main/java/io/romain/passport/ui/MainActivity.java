@@ -38,137 +38,139 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import io.romain.passport.R;
 import io.romain.passport.logic.services.gcm.RegistrationIntentService;
+import io.romain.passport.model.City;
 import io.romain.passport.ui.fragments.CityListFragment;
 import io.romain.passport.ui.fragments.dialogs.LogoutDialogFragment;
 import io.romain.passport.ui.transitions.FabDialogMorphSetup;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.PlayServicesUtils;
 
-public class MainActivity extends DrawerActivity implements SearchView.OnQueryTextListener{
+public class MainActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
 
-	private static final int REQUEST_CODE_ADD_CITY = 1337;
+    private static final int REQUEST_CODE_ADD_CITY = 1337;
 
-	@Bind(R.id.action_bar)
-	Toolbar mActionBar;
+    @Bind(R.id.action_bar)
+    Toolbar mActionBar;
 
-	@Bind(R.id.floating_action_button_coordinator)
-	CoordinatorLayout mFabCoordinatorLayout;
-	@Bind(R.id.floating_action_button)
-	FloatingActionButton mFloatingActionButton;
+    @Bind(R.id.floating_action_button_coordinator)
+    CoordinatorLayout mFabCoordinatorLayout;
+    @Bind(R.id.floating_action_button)
+    FloatingActionButton mFloatingActionButton;
 
-	private CityListFragment mCityListFragment;
+    private CityListFragment mCityListFragment;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		setSupportActionBar(mActionBar);
-		//noinspection ConstantConditions
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        setSupportActionBar(mActionBar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-		registerGcm();
-	}
+        registerGcm();
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_city_list_activity, menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_city_list_activity, menu);
 
-		// Associate searchable configuration with the SearchView
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		searchView.setOnQueryTextListener(this);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(this);
 
-		return true;
-	}
+        return true;
+    }
 
-	private void registerGcm() {
-		if (PlayServicesUtils.checkPlayServices(this)) {
-			if (TextUtils.isEmpty(PlayServicesUtils.getRegistrationId(this))) {
-				startService(new Intent(this, RegistrationIntentService.class));
-			}
-		} else {
-			Dog.i("No valid Google Play Services APK found.");
-		}
-	}
+    private void registerGcm() {
+        if (PlayServicesUtils.checkPlayServices(this)) {
+            if (TextUtils.isEmpty(PlayServicesUtils.getRegistrationId(this))) {
+                startService(new Intent(this, RegistrationIntentService.class));
+            }
+        } else {
+            Dog.i("No valid Google Play Services APK found.");
+        }
+    }
 
-	@Override
-	public boolean onNavItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.navigation_account_logout:
-				showLogoutDialog();
-				mDrawerLayout.closeDrawer(mDrawerNavigation);
-				return true;
-			case R.id.navigation_add_city:
-				startActivityForResult(new Intent(this, AddCityActivity.class), REQUEST_CODE_ADD_CITY);
-				mDrawerLayout.closeDrawer(mDrawerNavigation);
-				return true;
-		}
+    @Override
+    public boolean onNavItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_account_logout:
+                showLogoutDialog();
+                mDrawerLayout.closeDrawer(mDrawerNavigation);
+                return true;
+            case R.id.navigation_add_city:
+                startActivityForResult(new Intent(this, AddCityActivity.class), REQUEST_CODE_ADD_CITY);
+                mDrawerLayout.closeDrawer(mDrawerNavigation);
+                return true;
+        }
 
-		mDrawerLayout.closeDrawer(mDrawerNavigation);
-		return false;
-	}
+        mDrawerLayout.closeDrawer(mDrawerNavigation);
+        return false;
+    }
 
-	@OnClick(R.id.floating_action_button)
-	protected void onFloatingActionButtonClicked() {
-		Intent intent = new Intent(this, AddCityActivity.class);
-		intent.putExtra(FabDialogMorphSetup.EXTRA_SHARED_ELEMENT_START_COLOR, ContextCompat.getColor(this, R.color.accent));
-		ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, mFloatingActionButton, getString(R.string.transition_add_city));
-		startActivityForResult(intent, REQUEST_CODE_ADD_CITY, options.toBundle());
-	}
+    @OnClick(R.id.floating_action_button)
+    protected void onFloatingActionButtonClicked() {
+        Intent intent = new Intent(this, AddCityActivity.class);
+        intent.putExtra(FabDialogMorphSetup.EXTRA_SHARED_ELEMENT_START_COLOR, ContextCompat.getColor(this, R.color.accent));
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, mFloatingActionButton, getString(R.string.transition_add_city));
+        startActivityForResult(intent, REQUEST_CODE_ADD_CITY, options.toBundle());
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-			case REQUEST_CODE_ADD_CITY:
-				switch (resultCode) {
-					case RESULT_OK:
-						Snackbar.make(mFabCoordinatorLayout, R.string.town_saved_successfully, Snackbar.LENGTH_SHORT).show();
-						break;
-					case RESULT_CANCELED:
-						break;
-				}
-		}
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_ADD_CITY:
+                switch (resultCode) {
+                    case RESULT_OK:
+                        City city = data.getParcelableExtra(AddCityActivity.EXTRA_CITY_RESULT);
+                        Snackbar.make(mFabCoordinatorLayout, getString(R.string.city_saved_successfully, city.name), Snackbar.LENGTH_SHORT).show();
+                        break;
+                    case RESULT_CANCELED:
+                        break;
+                }
+        }
+    }
 
-	private void showLogoutDialog() {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
-		if (prev != null) {
-			ft.remove(prev);
-		}
+    private void showLogoutDialog() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
 
-		ft.addToBackStack(null);
+        ft.addToBackStack(null);
 
-		// Create and show the dialog.
-		new LogoutDialogFragment().show(ft, "dialog");
-	}
+        // Create and show the dialog.
+        new LogoutDialogFragment().show(ft, "dialog");
+    }
 
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		return true;
-	}
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
 
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		getCityListFragment().setQuery(newText);
-		return true;
-	}
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        getCityListFragment().setQuery(newText);
+        return true;
+    }
 
-	private CityListFragment getCityListFragment() {
-		if(mCityListFragment == null) {
-			mCityListFragment = (CityListFragment) getSupportFragmentManager().findFragmentById(R.id.city_list_fragment);
-		}
+    private CityListFragment getCityListFragment() {
+        if (mCityListFragment == null) {
+            mCityListFragment = (CityListFragment) getSupportFragmentManager().findFragmentById(R.id.city_list_fragment);
+        }
 
-		return mCityListFragment;
-	}
+        return mCityListFragment;
+    }
 
-	public ViewGroup getCoordinatorLayout() {
-		return mFabCoordinatorLayout;
-	}
+    public ViewGroup getCoordinatorLayout() {
+        return mFabCoordinatorLayout;
+    }
 }

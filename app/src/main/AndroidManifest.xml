@@ -71,7 +71,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.romain.passport.ui.LandingActivity" />
         </activity>
-        
+
         <activity
             android:name=".ui.AddCityActivity"
             android:exported="false"

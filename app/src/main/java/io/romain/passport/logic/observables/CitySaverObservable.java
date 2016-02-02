@@ -17,7 +17,6 @@ package io.romain.passport.logic.observables;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.net.Uri;
 
 import io.romain.passport.model.City;
 import io.romain.passport.model.database.PassportContentProvider;
@@ -25,9 +24,11 @@ import io.romain.passport.utils.Dog;
 
 public class CitySaverObservable {
 
-    public static Uri save(final Context context, City input) {
+    public static City save(final Context context, City input) {
         ContentResolver resolver = context.getContentResolver();
         Dog.d("Inserted (Thread ID is : " + Thread.currentThread().getName() + ")");
-        return resolver.insert(PassportContentProvider.Cities.CONTENT_URI, input.toContentValues());
+        resolver.insert(PassportContentProvider.Cities.CONTENT_URI, input.toContentValues());
+
+        return input;
     }
 }

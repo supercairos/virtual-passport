@@ -61,6 +61,7 @@ import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleAnimatorListener;
 import io.romain.passport.utils.SimpleTextWatcher;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -84,6 +85,9 @@ public class AddCityActivity extends LocationPopupActivity {
             .setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS)
             .setNumUpdates(5)
             .setPriority(LocationRequest.PRIORITY_LOW_POWER);
+
+    public static final String EXTRA_CITY_RESULT = "extra_city_result";
+    private Subscription mSubscription;
 
     protected LocationRequest getLocationRequest() {
         return sLocationRequest;
@@ -121,13 +125,14 @@ public class AddCityActivity extends LocationPopupActivity {
         mEditText.setOnItemClickListener((parent, view, position, id) -> {
             showLoadingSpinner();
             CityAutocomplete autocomplete = (CityAutocomplete) mEditText.getAdapter().getItem(position);
-            mRetrofit.create(City.CityService.class)
+            unsubscribe();
+            mSubscription = mRetrofit.create(City.CityService.class)
                     .resolve(autocomplete.id)
                     .subscribeOn(Schedulers.io())
                     .map(city -> CitySaverObservable.save(this, city))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(uri -> {
-                        dismiss(Activity.RESULT_OK);
+                    .subscribe(city -> {
+                        dismiss(Activity.RESULT_OK, city);
                     }, throwable -> {
                         Dog.e(throwable, "EE >> ");
                         hideLoadingSpinner();
@@ -156,7 +161,8 @@ public class AddCityActivity extends LocationPopupActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             showLoadingSpinner();
-            GoogleApiObservable
+            unsubscribe();
+            mSubscription = GoogleApiObservable
                     .checkLocation(getGoogleApiClient(), getLocationRequest())
                     .doOnNext(result -> {
                         final Status status = result.getStatus();
@@ -231,8 +237,8 @@ public class AddCityActivity extends LocationPopupActivity {
                     .observeOn(Schedulers.io())
                     .map(city -> CitySaverObservable.save(this, city))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(uri -> {
-                        dismiss(Activity.RESULT_OK);
+                    .subscribe(city -> {
+                        dismiss(Activity.RESULT_OK, city);
                     }, throwable -> {
                         Dog.e(throwable, "An error occurred :'(");
                         hideLoadingSpinner();
@@ -246,18 +252,26 @@ public class AddCityActivity extends LocationPopupActivity {
     @OnClick({R.id.add_city_cancel})
         // R.id.dialog_outer_frame,
     void dismiss() {
-        dismiss(Activity.RESULT_CANCELED);
+        dismiss(Activity.RESULT_CANCELED, null);
     }
 
-    private void dismiss(int result) {
-        setResult(result);
+    private void dismiss(int result, City city) {
+        if (city != null) {
+            Intent i = new Intent();
+            i.putExtra(EXTRA_CITY_RESULT, city);
+
+            setResult(result, i);
+        } else {
+            setResult(result);
+        }
         finishAfterTransition();
     }
 
     @OnClick(R.id.add_city_ok)
     public void onValidate() {
         showLoadingSpinner();
-        GeocoderObservable.create(this, mEditText.getText().toString())
+        unsubscribe();
+        mSubscription = GeocoderObservable.create(this, mEditText.getText().toString())
                 .subscribeOn(Schedulers.io())
                 .flatMap(address -> Observable.zip(
                         Observable.just(address),
@@ -294,12 +308,24 @@ public class AddCityActivity extends LocationPopupActivity {
                 .filter(city -> !TextUtils.isEmpty(city.name) && !TextUtils.isEmpty(city.country))
                 .map(city -> CitySaverObservable.save(this, city))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(uri -> {
-                    dismiss(Activity.RESULT_OK);
+                .subscribe(city -> {
+                    dismiss(Activity.RESULT_OK, city);
                 }, throwable -> {
                     Dog.e(throwable, "An error occurred :'(");
                     hideLoadingSpinner();
                 });
+    }
+
+    private void unsubscribe() {
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unsubscribe();
     }
 
     private void hideLoadingSpinner() {

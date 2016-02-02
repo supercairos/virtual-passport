@@ -42,7 +42,6 @@
     <string name="error_dialog_title">Error</string>
     <string name="wrong_login">Wrong login</string>
     <string name="unknown_error">Unknown error</string>
-    <string name="town_saved_successfully">Town added successfully</string>
     <string name="transition_detail_background">transition_detail_background</string>
     <string name="transition_picture">transition_picture</string>
     <string name="wikipedia_demo">London is the capital and most populous city of England and the United Kingdom. Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium. London\'s ancient core, the City of London, largely retains its 1.12-square-mile (2.9 km2) medieval boundaries and in 2011 had a resident population of 7,375, making it the smallest city in England. Since at least the 19th century, the term London has also referred to the metropolis developed around this core… </string>
@@ -52,6 +51,10 @@
     <string name="add_city_location_dialog_title">Location</string>
     <string name="add_city_location_dialog_message">We need to use the location to retreive your position.</string>
     <string name="undo">Undo</string>
-    <string name="city_removed">City removed</string>
+
     <string name="add_city_error">Sorry, we coudn\'t resolve this place</string>
+
+    <string name="city_removed_successfully">%s removed successfully</string>
+    <string name="city_saved_successfully">%s added successfully</string>
+
 </resources>
