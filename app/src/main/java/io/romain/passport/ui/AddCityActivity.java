@@ -30,6 +30,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.transition.Transition;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -60,12 +61,13 @@ import io.romain.passport.ui.views.LocationAutocompleteTextView;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleAnimatorListener;
 import io.romain.passport.utils.SimpleTextWatcher;
+import io.romain.passport.utils.SimpleTransitionListener;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class AddCityActivity extends LocationPopupActivity {
+public class AddCityActivity extends LocationPermissionActivity {
 
     private static final int REQUEST_CHECK_SETTINGS = 1222;
 
@@ -87,9 +89,10 @@ public class AddCityActivity extends LocationPopupActivity {
             .setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
     public static final String EXTRA_CITY_RESULT = "extra_city_result";
+    public static final String EXTRA_INITIAL_TEXT = "extra_initial_text";
     private Subscription mSubscription;
 
-    protected LocationRequest getLocationRequest() {
+    public static LocationRequest getLocationRequest() {
         return sLocationRequest;
     }
 
@@ -119,7 +122,6 @@ public class AddCityActivity extends LocationPopupActivity {
         );
 
         Dog.d("Main thread is : " + Looper.getMainLooper().getThread().getName());
-
         final CitySearchAdapter adapter = new CitySearchAdapter(this);
         mEditText.setAdapter(adapter);
         mEditText.setOnItemClickListener((parent, view, position, id) -> {
@@ -155,6 +157,30 @@ public class AddCityActivity extends LocationPopupActivity {
                 mValidateButton.setEnabled(s.length() > 0);
             }
         });
+
+        String initial = getIntent().getStringExtra(EXTRA_INITIAL_TEXT);
+        if(!TextUtils.isEmpty(initial)) {
+            mEditText.setText(initial);
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        super.onConnected(bundle);
+        if (getWindow().getSharedElementEnterTransition() != null) {
+            getWindow().getSharedElementEnterTransition().addListener(new SimpleTransitionListener() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    if (!isResolvingError()) {
+                        setLocationPermission();
+                    }
+                }
+            });
+        } else {
+            if (!isResolvingError()) {
+                setLocationPermission();
+            }
+        }
     }
 
     private void getUserLocation() {
@@ -257,10 +283,7 @@ public class AddCityActivity extends LocationPopupActivity {
 
     private void dismiss(int result, City city) {
         if (city != null) {
-            Intent i = new Intent();
-            i.putExtra(EXTRA_CITY_RESULT, city);
-
-            setResult(result, i);
+            setResult(result, new Intent().putExtra(EXTRA_CITY_RESULT, city));
         } else {
             setResult(result);
         }

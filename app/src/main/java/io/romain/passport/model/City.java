@@ -70,6 +70,10 @@ public class City implements Parcelable {
     public Uri picture;
 
 
+    public City(String locality, String countryName, double latitude, double longitude) {
+        this(locality, countryName, latitude, longitude, null);
+    }
+
     public City(String locality, String countryName, double latitude, double longitude, String picture) {
         this.name = locality;
         this.country = countryName;

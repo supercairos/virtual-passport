@@ -25,7 +25,7 @@ import io.romain.passport.logic.helpers.AccountHelper;
 import io.romain.passport.utils.constants.AccountConstants;
 import io.romain.passport.utils.glide.CircleTransform;
 
-public abstract class DrawerActivity extends BaseActivity {
+public abstract class DrawerActivity extends LocationPermissionActivity {
 
 	@Bind(R.id.content_root_view)
 	DrawerLayout mDrawerLayout;

@@ -70,18 +70,6 @@ public class CityListAdapter extends CursorRecyclerAdapter<CityListAdapter.CityL
                 City city = City.fromCursor((Cursor) getItem(getAdapterPosition()));
                 mListener.onCityRemoved(v, city);
             });
-//            card.setOnTouchListener((v, event) -> {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        v.animate().z(v.getResources().getDimension(R.dimen.z_card_view_pressed)).start();
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        v.animate().z(v.getResources().getDimension(R.dimen.z_card_view)).start();
-//                        break;
-//                }
-//
-//                return false;
-//            });
         }
     }
 

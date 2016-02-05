@@ -25,20 +25,6 @@ import android.widget.EditText;
 
 public class TouchDrawableEditText extends EditText {
 
-//	public interface OnDrawableTouched {
-//		void onDrawableTouched(EditText text);
-//	}
-//
-//	private OnDrawableTouched mListener;
-//
-//	public void setDrawableListener(OnDrawableTouched mListener) {
-//		this.mListener = mListener;
-//	}
-//
-//	public OnDrawableTouched getListener() {
-//		return mListener;
-//	}
-
 	public TouchDrawableEditText(Context context) {
 		super(context);
 	}

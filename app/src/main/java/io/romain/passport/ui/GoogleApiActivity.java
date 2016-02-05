@@ -1,17 +1,12 @@
 package io.romain.passport.ui;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
-import android.transition.Transition;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -22,9 +17,8 @@ import com.google.android.gms.location.LocationServices;
 import io.romain.passport.R;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.GoogleApiUtils;
-import io.romain.passport.utils.SimpleTransitionListener;
 
-public abstract class LocationPopupActivity extends BaseActivity implements
+public abstract class GoogleApiActivity extends BaseActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -38,6 +32,10 @@ public abstract class LocationPopupActivity extends BaseActivity implements
 
     public GoogleApiClient getGoogleApiClient() {
         return mGoogleApiClient;
+    }
+
+    public boolean isResolvingError() {
+        return mResolvingError;
     }
 
     @Override
@@ -76,20 +74,6 @@ public abstract class LocationPopupActivity extends BaseActivity implements
     protected void onStart() {
         super.onStart();
         connect();
-        if (getWindow().getSharedElementEnterTransition() != null) {
-            getWindow().getSharedElementEnterTransition().addListener(new SimpleTransitionListener() {
-                @Override
-                public void onTransitionEnd(Transition transition) {
-                    if (!mResolvingError) {
-                        setLocationPermission();
-                    }
-                }
-            });
-        } else {
-            if (!mResolvingError) {
-                setLocationPermission();
-            }
-        }
     }
 
     @Override
@@ -128,43 +112,6 @@ public abstract class LocationPopupActivity extends BaseActivity implements
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
-    }
-
-    // ## Permission Management
-    protected void setLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            onLocationGranted();
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                    },
-                    REQUEST_PERMISSION
-            );
-        }
-    }
-
-    protected abstract void onLocationDenied(boolean isRecoverable);
-
-    protected abstract void onLocationGranted();
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                setLocationPermission();
-            } else {
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) &&
-                        !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    // The user doesn't want us helping him :'( #me-sad
-                    onLocationDenied(false);
-                } else {
-                    onLocationDenied(true);
-                }
-            }
-        }
     }
 
 
@@ -233,7 +180,7 @@ public abstract class LocationPopupActivity extends BaseActivity implements
 
         @Override
         public void onDismiss(DialogInterface dialog) {
-            ((LocationPopupActivity) getActivity()).onErrorDialogDismissed();
+            ((GoogleApiActivity) getActivity()).onErrorDialogDismissed();
         }
     }
 

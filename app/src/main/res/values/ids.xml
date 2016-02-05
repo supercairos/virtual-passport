@@ -2,4 +2,5 @@
 <resources>
     <item name="holder" type="id"/>
     <item name="binder" type="id"/>
+    <item name="data" type="id"/>
 </resources>

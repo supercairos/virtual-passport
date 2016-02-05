@@ -54,7 +54,8 @@
 
     <string name="add_city_error">Sorry, we coudn\'t resolve this place</string>
 
-    <string name="city_removed_successfully">%s removed successfully</string>
-    <string name="city_saved_successfully">%s added successfully</string>
+    <string name="city_removed_successfully">%1$s removed successfully</string>
+    <string name="city_saved_successfully">%1$s added successfully</string>
+    <string name="main_are_you_in">Are you in %1$s ?</string>
 
 </resources>

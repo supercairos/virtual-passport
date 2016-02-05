@@ -6,7 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'com.jakewharton.hugo:hugo-plugin:+'
-        classpath "com.fernandocejas.frodo:frodo-plugin:+"
+        classpath 'com.fernandocejas.frodo:frodo-plugin:+'
     }
 }
 

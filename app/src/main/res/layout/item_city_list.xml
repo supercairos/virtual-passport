@@ -46,7 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/spacing_micro"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_medium"
             android:src="@drawable/ic_close_black_36dp" />
     </RelativeLayout>
 
