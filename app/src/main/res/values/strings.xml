@@ -44,7 +44,6 @@
     <string name="unknown_error">Unknown error</string>
     <string name="transition_detail_background">transition_detail_background</string>
     <string name="transition_picture">transition_picture</string>
-    <string name="wikipedia_demo">London is the capital and most populous city of England and the United Kingdom. Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium. London\'s ancient core, the City of London, largely retains its 1.12-square-mile (2.9 km2) medieval boundaries and in 2011 had a resident population of 7,375, making it the smallest city in England. Since at least the 19th century, the term London has also referred to the metropolis developed around this core… </string>
     <string name="temperature_unit_celsius">C</string>
     <string name="weather_error">Weather coudn\'t be found</string>
     <string name="get_accounts_permission_message">Autocomplete fields</string>

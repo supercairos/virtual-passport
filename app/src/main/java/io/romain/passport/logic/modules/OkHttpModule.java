@@ -21,7 +21,6 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.CacheControl;
 import com.squareup.okhttp.ConnectionSpec;
@@ -41,100 +40,98 @@ import dagger.Module;
 import dagger.Provides;
 import io.romain.passport.BuildConfig;
 import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.model.exceptions.NetworkException;
 import io.romain.passport.utils.Dog;
 
 @Module
 public class OkHttpModule {
 
-    private static final long TIMEOUT = 180;
+	private static final long TIMEOUT = 180;
 
-    @Provides
-    @Singleton
-    protected static OkHttpClient getOkHttpClient(Context context, Gson gson, AccountManager manager) {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
+	@Provides
+	@Singleton
+	protected static OkHttpClient getOkHttpClient(Context context, Gson gson, AccountManager manager) {
+		OkHttpClient client = new OkHttpClient();
+		client.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
         client.interceptors().add(new HeaderInterceptor(manager));
-        client.interceptors().add(
-                new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
-                        .setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
-        );
-        client.networkInterceptors().add(new NetworkExceptionInterceptor(gson));
+		client.interceptors().add(
+				new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
+						.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
+		);
+//        client.networkInterceptors().add(new NetworkExceptionInterceptor(gson));
 
-        // Remove cleartext in the future
-        client.setConnectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT));
-        if (context != null) {
-            Cache cache = new Cache(context.getCacheDir(), 10 * 1024 * 1024); // 10 MiB
-            client.setCache(cache);
-        }
+		// Remove cleartext in the future
+		client.setConnectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT));
+		if (context != null) {
+			Cache cache = new Cache(context.getCacheDir(), 10 * 1024 * 1024); // 10 MiB
+			client.setCache(cache);
+		}
 
-        return client;
-    }
+		return client;
+	}
 
-    private static final class HeaderInterceptor implements Interceptor {
+	private static final class HeaderInterceptor implements Interceptor {
 
-        private static final int MAX_STALE = 60 * 3;
+		private static final int MAX_STALE = 60 * 3;
 
-        private final AccountManager mManager;
+		private final AccountManager mManager;
 
-        public HeaderInterceptor(AccountManager manager) {
-            mManager = manager;
-        }
+		public HeaderInterceptor(AccountManager manager) {
+			mManager = manager;
+		}
 
-        @Override
-        public Response intercept(Interceptor.Chain chain) throws IOException {
-            Request request = chain.request();
-            Request.Builder builder = request.newBuilder()
-                    .addHeader("User-Agent", "VirtualPassport-Client {Android-" + Build.VERSION.SDK_INT + "} {" + Build.DEVICE + "}");
+		@Override
+		public Response intercept(Interceptor.Chain chain) throws IOException {
+			Request request = chain.request();
+			Request.Builder builder = request.newBuilder()
+					.addHeader("User-Agent", "VirtualPassport-Client {Android-" + Build.VERSION.SDK_INT + "} {" + Build.DEVICE + "}");
 
-            if (request.header("Cache-Control") == null) {
-                builder.cacheControl(
-                        new CacheControl.Builder()
-                                .maxStale(MAX_STALE, TimeUnit.MINUTES)
-                                .build()
-                );
-            }
+			if (request.header("Cache-Control") == null) {
+				builder.cacheControl(
+						new CacheControl.Builder()
+								.maxStale(MAX_STALE, TimeUnit.MINUTES)
+								.build()
+				);
+			}
 
-            String s = AccountHelper.peekToken(mManager);
-            if (!TextUtils.isEmpty(s)) {
-                builder.addHeader("Authorization", "Bearer " + s);
-            }
+			String s = AccountHelper.peekToken(mManager);
+			if (!TextUtils.isEmpty(s)) {
+				builder.addHeader("Authorization", "Bearer " + s);
+			}
 
-            return chain.proceed(builder.build());
-        }
-    }
+			return chain.proceed(builder.build());
+		}
+	}
 
-    private static final class NetworkExceptionInterceptor implements Interceptor {
+	private static final class NetworkExceptionInterceptor implements Interceptor {
 
-        private final Gson mGson;
+		private final Gson mGson;
 
-        public NetworkExceptionInterceptor(Gson gson) {
-            mGson = gson;
-        }
+		public NetworkExceptionInterceptor(Gson gson) {
+			mGson = gson;
+		}
 
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Response response = chain.proceed(chain.request());
-            if (response != null && !response.isSuccessful()) {
+		@Override
+		public Response intercept(Chain chain) throws IOException {
+			Response response = chain.proceed(chain.request());
+			if (response != null && !response.isSuccessful()) {
 
-                //Try to get response body
-                String string = response.body().string();
-                try {
-                    NetworkException exception = mGson.fromJson(string, NetworkException.class);
-                    if (exception != null) {
-                        if (exception.status != NetworkException.UNSET && !TextUtils.isEmpty(exception.getMessage())) {
-                            exception.code = response.code();
-                            throw exception;
-                        }
-                    }
-                } catch (JsonSyntaxException e) {
-                    Dog.v("Couldn't parse into a NetworkException.class");
-                    Dog.v("Body was : " + string);
-                    // Ignore
-                }
-            }
+				//Try to get response body
+//				String string = response.body().string();
+//				try {
+//					NetworkException exception = mGson.fromJson(string, NetworkException.class);
+//					if (exception != null) {
+//						exception.status = response.code();
+//						throw exception;
+//					}
+//				} catch (JsonSyntaxException e) {
+//					Dog.v("Couldn't parse into a NetworkException.class");
+//					Dog.v("Body was : " + string);
+//					// Ignore
+//					throw new NetworkException(200, "Test");
+//				}
+			}
 
-            return response;
-        }
-    }
+			return response;
+		}
+	}
 }

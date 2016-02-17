@@ -1,7 +1,6 @@
 package io.romain.passport.ui.fragments.dialogs;
 
 import android.accounts.AccountManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
@@ -32,8 +31,8 @@ public abstract class BaseDialogFragment extends DialogFragment {
 	}
 
 	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		((MyApplication) context.getApplicationContext()).getApplicationComponent().inject(this);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		((MyApplication) getContext().getApplicationContext()).getApplicationComponent().inject(this);
 	}
 }
