@@ -19,7 +19,7 @@ apply plugin: 'com.fernandocejas.frodo'
 apply plugin: 'com.jakewharton.hugo'
 
 def gitVersion() {
-    return "git rev-list master --first-parent --count".execute([], project.rootDir).text.toInteger()
+    return "git rev-list HEAD --first-parent --count".execute([], project.rootDir).text.toInteger()
 }
 
 def gitTag() {
