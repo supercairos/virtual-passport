@@ -34,7 +34,7 @@ import android.widget.EditText;
 
 import com.squareup.okhttp.Credentials;
 
-import java.net.HttpURLConnection;
+import javax.net.ssl.HttpsURLConnection;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -42,14 +42,13 @@ import io.romain.passport.R;
 import io.romain.passport.logic.helpers.UserHelper;
 import io.romain.passport.model.User;
 import io.romain.passport.ui.fragments.dialogs.ErrorDialogFragment;
-import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleTextWatcher;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit.HttpException;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity {
 
@@ -128,32 +127,25 @@ public class LoginActivity extends BaseActivity {
 
 			mRetrofit.create(User.UserService.class)
 					.login(Credentials.basic(email, password))
-					.enqueue(new Callback<User>() {
-						@Override
-						public void onResponse(Response<User> response, Retrofit retrofit) {
-							mDialog.dismiss();
-							if (response.isSuccess()) {
-								UserHelper.save(LoginActivity.this, response.body());
-							} else {
-								switch (response.code()) {
-									case HttpURLConnection.HTTP_UNAUTHORIZED: // Unauthorized -> Wrong Login
-										ErrorDialogFragment.newInstance(getString(R.string.wrong_login)).show(getSupportFragmentManager(), "Error");
-										break;
-									default:
-										ErrorDialogFragment.newInstance("Server returned  (" + response.code() + ")").show(getSupportFragmentManager(), "Error");
-										break;
-
-								}
+					.subscribeOn(Schedulers.io())
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(user -> {
+						UserHelper.save(LoginActivity.this, user);
+					}, throwable -> {
+						mDialog.dismiss();
+						if (throwable instanceof HttpException) {
+							int code = ((HttpException) throwable).code();
+							switch (code) {
+								case HttpsURLConnection.HTTP_UNAUTHORIZED:
+									mEmailLayout.setError(getString(R.string.error_wrong_login));
+									mEmail.requestFocus();
+									mEmail.setSelection(mEmail.length());
+									return;
+								default:
 							}
 						}
 
-						@Override
-						public void onFailure(Throwable t) {
-							Dog.e(t, "Me sad :'(");
-							// ...
-							mDialog.dismiss();
-							ErrorDialogFragment.newInstance(t.getMessage()).show(getSupportFragmentManager(), "Error");
-						}
+						ErrorDialogFragment.newInstance(throwable.getMessage()).show(getSupportFragmentManager(), "Dialog");
 					});
 		}
 	}

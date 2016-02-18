@@ -61,7 +61,10 @@ public class User implements Parcelable {
 		Observable<User> register(@Body User user);
 
 		@GET(GET_LOGIN)
-		Call<User> login(@Header("Authorization") String basic);
+		Observable<User> login(@Header("Authorization") String basic);
+
+		@GET(GET_LOGIN)
+		Call<User> login(@Header("Authorization") String basic, boolean async);
 
 		@Multipart
 		@POST(POST_FILE)

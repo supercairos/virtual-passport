@@ -6,9 +6,15 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Errors -->
-    <string name="error_name">This name is not valid</string>
-    <string name="error_password">This password is not valid</string>
-    <string name="error_email">This email is not valid</string>
+    <string name="error_name">Error: this name is not valid</string>
+    <string name="error_password">Error: this password is not valid</string>
+    <string name="error_email">Error: this email is not valid</string>
+    <string name="error_email_already_used">Error: this email is already used</string>
+    <string name="error_wrong_login">Error: wrong login</string>
+
+    <string name="error_dialog_title">Error</string>
+
+
     <string name="picker_select_source">Select source</string>
 
     <string name="button_register">Register</string>
@@ -27,7 +33,6 @@
 
     <!-- -->
     <string name="navigation_account_subheader">Account</string>
-
     <string name="logout_title">Logout</string>
     <string name="logout_message">Are you sure you want to logout ?</string>
     <string name="city_concat_name_country">%1$s, %2$s</string>
@@ -39,8 +44,7 @@
     <string name="login">Login</string>
     <string name="please_wait">Please wait…</string>
     <string name="register">Register</string>
-    <string name="error_dialog_title">Error</string>
-    <string name="wrong_login">Wrong login</string>
+
     <string name="unknown_error">Unknown error</string>
     <string name="transition_detail_background">transition_detail_background</string>
     <string name="transition_picture">transition_picture</string>
@@ -48,7 +52,7 @@
     <string name="weather_error">Weather coudn\'t be found</string>
     <string name="get_accounts_permission_message">Autocomplete fields</string>
     <string name="add_city_location_dialog_title">Location</string>
-    <string name="add_city_location_dialog_message">We need to use the location to retreive your position.</string>
+    <string name="add_city_location_dialog_message">We need to use the location to retrieve your position.</string>
     <string name="undo">Undo</string>
 
     <string name="add_city_error">Sorry, we coudn\'t resolve this place</string>
@@ -56,5 +60,6 @@
     <string name="city_removed_successfully">%1$s removed successfully</string>
     <string name="city_saved_successfully">%1$s added successfully</string>
     <string name="main_are_you_in">Are you in %1$s ?</string>
+
 
 </resources>

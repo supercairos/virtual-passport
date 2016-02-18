@@ -94,7 +94,7 @@ public class AuthenticatorService extends Service {
 			if (password != null) {
 				Dog.d("> re-authenticating with the existing password");
 				try {
-					Response<User> response = mRetrofit.create(User.UserService.class).login(Credentials.basic(account.name, password)).execute();
+					Response<User> response = mRetrofit.create(User.UserService.class).login(Credentials.basic(account.name, password), false).execute();
 					if(response.isSuccess()) {
 						User user = response.body();
 						if (!TextUtils.isEmpty(user.token)) {

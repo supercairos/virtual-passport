@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import io.romain.passport.R;
@@ -57,6 +59,7 @@ import io.romain.passport.utils.glide.CircleTransform;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
+import retrofit.HttpException;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -200,6 +203,19 @@ public class RegisterActivity extends BaseActivity {
 							// onError();
 							throwable -> {
 								mDialog.dismiss();
+								if (throwable instanceof HttpException) {
+									int code = ((HttpException) throwable).code();
+									switch (code) {
+										case HttpsURLConnection.HTTP_INTERNAL_ERROR:
+										case HttpsURLConnection.HTTP_UNAVAILABLE:
+											mEmailLayout.setError(getString(R.string.error_email_already_used));
+											mEmail.requestFocus();
+											mEmail.setSelection(mEmail.length());
+											return;
+										default:
+									}
+								}
+
 								ErrorDialogFragment.newInstance(throwable.getLocalizedMessage()).show(getSupportFragmentManager(), "Dialog");
 							}
 					);
