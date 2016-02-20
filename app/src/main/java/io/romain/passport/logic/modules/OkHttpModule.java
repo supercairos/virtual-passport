@@ -55,7 +55,7 @@ public class OkHttpModule {
 		client.interceptors().add(new HeaderInterceptor(manager));
 		client.interceptors().add(
 				new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
-						.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY)
+						.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
 		);
 
 		// Remove cleartext in the future
