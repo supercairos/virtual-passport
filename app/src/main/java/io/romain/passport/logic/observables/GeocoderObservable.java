@@ -19,8 +19,6 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -34,7 +32,6 @@ public class GeocoderObservable implements Observable.OnSubscribe<Address> {
     private static final int MAX_RESULTS = 1;
     private final String mInput;
 
-    @RxLogObservable
     public static Observable<Address> create(Context context, String input) {
         return Observable.create(new GeocoderObservable(context, input));
     }

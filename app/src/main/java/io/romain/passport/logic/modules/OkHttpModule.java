@@ -52,12 +52,11 @@ public class OkHttpModule {
 	protected static OkHttpClient getOkHttpClient(Context context, Gson gson, AccountManager manager) {
 		OkHttpClient client = new OkHttpClient();
 		client.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
-        client.interceptors().add(new HeaderInterceptor(manager));
+		client.interceptors().add(new HeaderInterceptor(manager));
 		client.interceptors().add(
 				new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
-						.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
+						.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY)
 		);
-//        client.networkInterceptors().add(new NetworkExceptionInterceptor(gson));
 
 		// Remove cleartext in the future
 		client.setConnectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT));
@@ -99,39 +98,6 @@ public class OkHttpModule {
 			}
 
 			return chain.proceed(builder.build());
-		}
-	}
-
-	private static final class NetworkExceptionInterceptor implements Interceptor {
-
-		private final Gson mGson;
-
-		public NetworkExceptionInterceptor(Gson gson) {
-			mGson = gson;
-		}
-
-		@Override
-		public Response intercept(Chain chain) throws IOException {
-			Response response = chain.proceed(chain.request());
-			if (response != null && !response.isSuccessful()) {
-
-				//Try to get response body
-//				String string = response.body().string();
-//				try {
-//					NetworkException exception = mGson.fromJson(string, NetworkException.class);
-//					if (exception != null) {
-//						exception.status = response.code();
-//						throw exception;
-//					}
-//				} catch (JsonSyntaxException e) {
-//					Dog.v("Couldn't parse into a NetworkException.class");
-//					Dog.v("Body was : " + string);
-//					// Ignore
-//					throw new NetworkException(200, "Test");
-//				}
-			}
-
-			return response;
 		}
 	}
 }

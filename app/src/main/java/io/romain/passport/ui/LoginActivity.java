@@ -42,6 +42,7 @@ import io.romain.passport.R;
 import io.romain.passport.logic.helpers.UserHelper;
 import io.romain.passport.model.User;
 import io.romain.passport.ui.fragments.dialogs.ErrorDialogFragment;
+import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleTextWatcher;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
@@ -132,6 +133,7 @@ public class LoginActivity extends BaseActivity {
 					.subscribe(user -> {
 						UserHelper.save(LoginActivity.this, user);
 					}, throwable -> {
+						Dog.d(throwable, "Sorry an error appeared");
 						mDialog.dismiss();
 						if (throwable instanceof HttpException) {
 							int code = ((HttpException) throwable).code();

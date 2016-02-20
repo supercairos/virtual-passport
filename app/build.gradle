@@ -3,20 +3,12 @@ buildscript {
         jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
-
-    dependencies {
-        classpath 'com.jakewharton.hugo:hugo-plugin:+'
-        classpath 'com.fernandocejas.frodo:frodo-plugin:+'
-    }
 }
 
 apply plugin: 'build-announcements'
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
-
-apply plugin: 'com.fernandocejas.frodo'
-apply plugin: 'com.jakewharton.hugo'
 
 def gitVersion() {
     return "git rev-list HEAD --first-parent --count".execute([], project.rootDir).text.toInteger()
@@ -49,10 +41,14 @@ android {
     }
 
     buildTypes {
+        debug {
+
+        }
+
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         lintOptions {

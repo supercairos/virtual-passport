@@ -20,7 +20,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.content.ContextCompat;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -35,7 +34,6 @@ public class LocationUpdatesObservable implements Observable.OnSubscribe<Locatio
     private final GoogleApiClient mClient;
     private final LocationRequest mRequest;
 
-    @RxLogObservable
     public static Observable<Location> create(GoogleApiClient client, LocationRequest request) {
         return Observable.create(new LocationUpdatesObservable(client, request));
     }

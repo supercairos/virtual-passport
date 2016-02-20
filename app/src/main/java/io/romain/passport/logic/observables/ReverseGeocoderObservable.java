@@ -20,8 +20,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -36,7 +34,6 @@ public class ReverseGeocoderObservable implements Observable.OnSubscribe<Address
 
     private static final int MAX_RESULTS = 1;
 
-    @RxLogObservable
     public static Observable<Address> create(Context context, Location location) {
         return Observable.create(new ReverseGeocoderObservable(context, location.getLatitude(), location.getLongitude()));
     }
