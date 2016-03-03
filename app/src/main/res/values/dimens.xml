@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding_normal">16dp</dimen>
-    <dimen name="padding_dialog">24dp</dimen>
-
+    <!-- Set of pre-defined spacing -->
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="spacing_mini">6dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_medium_large">24dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="spacing_huge">64dp</dimen>
 
     <dimen name="dialog_corners">2dp</dimen>
-    <dimen name="dialog_title_spacing">12dp</dimen>
 
+    <!-- Values from the Google Design Manifesto : https://www.google.com/design/spec/what-is-material/elevation-shadows.html -->
+    <dimen name="z_toolbar">4dp</dimen>
     <dimen name="z_floating_action_button">6dp</dimen>
-    <dimen name="z_card_view">4dp</dimen>
+    <dimen name="z_card_view">2dp</dimen>
     <dimen name="z_card_view_pressed">8dp</dimen>
 
     <dimen name="detail_backdrop_height">256dp</dimen>
     <dimen name="weather_error_text_size">26sp</dimen>
     <dimen name="city_banner_text_size">20sp</dimen>
-    <dimen name="spacing_medium">16dp</dimen>
+
+
 </resources>

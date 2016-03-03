@@ -59,7 +59,7 @@ import io.romain.passport.utils.glide.CircleTransform;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
-import retrofit.HttpException;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -183,7 +183,8 @@ public class RegisterActivity extends BaseActivity {
 			mDialog.show();
 			User.UserService service = mRetrofit.create(User.UserService.class);
 
-			mSubscriber = service.register(new User(name, email, password, mProfilePictureUri))
+			mSubscriber = service
+					.register(new User(name, email, password, mProfilePictureUri))
 					.flatMap(user -> {
 						if (mProfilePictureUri != null) {
 							return service.upload("Bearer " + user.token, new UriRequestBody(getContentResolver(), mProfilePictureUri));
@@ -262,8 +263,8 @@ public class RegisterActivity extends BaseActivity {
 			final Intent chooserIntent = Intent.createChooser(gallery, getString(R.string.picker_select_source));
 
 			// Camera.
+			final List<Intent> extra = new ArrayList<>();
 			if (CameraUtils.checkCameraHardware(this)) {
-				final List<Intent> cameraIntents = new ArrayList<>();
 				final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				final PackageManager packageManager = getPackageManager();
 				final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -273,11 +274,12 @@ public class RegisterActivity extends BaseActivity {
 					intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
 					intent.setPackage(packageName);
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
-					cameraIntents.add(intent);
+					extra.add(intent);
 				}
+			}
 
-				// Add the camera options.
-				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
+			if (!extra.isEmpty()) {
+				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extra.toArray(new Parcelable[extra.size()]));
 			}
 
 			startActivityForResult(chooserIntent, requestCode);
@@ -320,7 +322,7 @@ public class RegisterActivity extends BaseActivity {
 					getContentResolver().takePersistableUriPermission(uri, takeFlags);
 				}
 
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 					// Save our own.
 					String path = PathUtils.getPath(this, data.getData());
 					if (path != null) {

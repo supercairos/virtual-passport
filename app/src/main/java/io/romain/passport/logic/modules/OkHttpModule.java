@@ -20,16 +20,6 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.CacheControl;
-import com.squareup.okhttp.ConnectionSpec;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +31,14 @@ import dagger.Provides;
 import io.romain.passport.BuildConfig;
 import io.romain.passport.logic.helpers.AccountHelper;
 import io.romain.passport.utils.Dog;
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.ConnectionSpec;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 @Module
 public class OkHttpModule {
@@ -49,23 +47,18 @@ public class OkHttpModule {
 
 	@Provides
 	@Singleton
-	protected static OkHttpClient getOkHttpClient(Context context, Gson gson, AccountManager manager) {
-		OkHttpClient client = new OkHttpClient();
-		client.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
-		client.interceptors().add(new HeaderInterceptor(manager));
-		client.interceptors().add(
-				new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
-						.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
-		);
+	protected static OkHttpClient getOkHttpClient(Context context, AccountManager manager) {
+		return new OkHttpClient.Builder()
+				.addInterceptor(new HeaderInterceptor(manager))
+				.addInterceptor(
+						new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
+								.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
+				)
+				.connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+				.connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
+				.cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024))
+				.build();
 
-		// Remove cleartext in the future
-		client.setConnectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT));
-		if (context != null) {
-			Cache cache = new Cache(context.getCacheDir(), 10 * 1024 * 1024); // 10 MiB
-			client.setCache(cache);
-		}
-
-		return client;
 	}
 
 	private static final class HeaderInterceptor implements Interceptor {

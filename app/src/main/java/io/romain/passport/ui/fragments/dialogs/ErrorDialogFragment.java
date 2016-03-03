@@ -16,6 +16,7 @@
 package io.romain.passport.ui.fragments.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +33,10 @@ public class ErrorDialogFragment extends BaseDialogFragment {
 	}
 
 	private static final String ARG_MESSAGE_DIALOG = "title";
+
+	public static ErrorDialogFragment newInstance(Context c, int string) {
+		return newInstance(c.getString(string));
+	}
 
 	public static ErrorDialogFragment newInstance(String title) {
 		ErrorDialogFragment frag = new ErrorDialogFragment();
@@ -51,12 +56,13 @@ public class ErrorDialogFragment extends BaseDialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		return new AlertDialog.Builder(getActivity())
-						.setTitle(R.string.error_dialog_title)
-						.setMessage(mMessage)
-						.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-							dialog.dismiss();
-						})
-						.create();
+				.setTitle(R.string.error_dialog_title)
+				.setMessage(mMessage)
+				.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+					dialog.dismiss();
+				})
+				.create();
 	}
+
 
 }

@@ -37,10 +37,9 @@ import io.romain.passport.model.Forecast;
 import io.romain.passport.model.wrappers.WeatherWrapper;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.glide.CityDetailTarget;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CityDetailActivity extends BaseActivity implements OnMapReadyCallback {
 
@@ -136,8 +135,9 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
         Forecast.ForecastService service = mRetrofit.create(Forecast.ForecastService.class);
         Call<WeatherWrapper> call = service.getForecast(mCity.latitude, mCity.longitude);
         call.enqueue(new Callback<WeatherWrapper>() {
+
             @Override
-            public void onResponse(Response<WeatherWrapper> response, Retrofit retrofit) {
+            public void onResponse(Call<WeatherWrapper> call, Response<WeatherWrapper> response) {
                 if (response.isSuccess()) {
                     List<Forecast> forecasts = response.body().forecasts;
                     if (!forecasts.isEmpty()) {
@@ -156,15 +156,15 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
                         mWeatherSpinner.setVisibility(View.GONE);
                         mWeatherScrollView.setVisibility(View.VISIBLE);
                     } else {
-                        onFailure(null);
+                        onFailure(call, null);
                     }
                 } else {
-                    onFailure(null);
+                    onFailure(call, null);
                 }
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<WeatherWrapper> call, Throwable t) {
                 Dog.d("Failure : " + t);
                 mWeatherEmptyView.setVisibility(View.VISIBLE);
                 mWeatherSpinner.setVisibility(View.GONE);

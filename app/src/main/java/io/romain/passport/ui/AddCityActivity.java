@@ -136,7 +136,6 @@ public class AddCityActivity extends LocationPermissionActivity {
                     .subscribe(city -> {
                         dismiss(Activity.RESULT_OK, city);
                     }, throwable -> {
-                        Dog.e(throwable, "EE >> ");
                         hideLoadingSpinner();
                     });
         });

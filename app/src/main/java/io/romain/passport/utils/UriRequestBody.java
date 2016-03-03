@@ -20,14 +20,13 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.RequestBody;
-
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okio.BufferedSink;
 
 public class UriRequestBody extends RequestBody {
@@ -84,9 +83,7 @@ public class UriRequestBody extends RequestBody {
 
 	private InputStream getInputStream(Uri uri) throws FileNotFoundException {
 		String scheme = uri.getScheme();
-		if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme) ||
-				ContentResolver.SCHEME_CONTENT.equals(scheme) ||
-				ContentResolver.SCHEME_FILE.equals(scheme)) {
+		if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme) || ContentResolver.SCHEME_CONTENT.equals(scheme) || ContentResolver.SCHEME_FILE.equals(scheme)) {
 			return mContentResolver.openInputStream(uri);
 		} else {
 			throw new UnsupportedOperationException();

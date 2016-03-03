@@ -19,9 +19,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.romain.passport.model.wrappers.WeatherWrapper;
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public class Forecast {
 

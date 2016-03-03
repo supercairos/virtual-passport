@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Passport</string>
 
     <!-- Navigation Drawer strings -->
@@ -13,33 +13,33 @@
     <string name="error_wrong_login">Error: wrong login</string>
 
     <string name="error_dialog_title">Error</string>
-
-
     <string name="picker_select_source">Select source</string>
 
-    <string name="button_register">Register</string>
-    <string name="button_login">Login</string>
+    <!-- Landing Page -->
+    <string name="button_register">REGISTER</string>
+    <string name="button_login">LOGIN</string>
 
+    <!-- Register -->
     <string name="register_hint_password">Password</string>
     <string name="register_hint_email">Email</string>
     <string name="register_hint_name">Name</string>
     <string name="register_display_name">%1$s %2$s</string>
 
+    <!-- Login -->
     <string name="login_hint_email">Email</string>
     <string name="login_hint_password">Password</string>
 
-    <string name="menu_register">Register</string>
     <string name="add_city_city">City</string>
 
     <!-- -->
     <string name="navigation_account_subheader">Account</string>
     <string name="logout_title">Logout</string>
     <string name="logout_message">Are you sure you want to logout ?</string>
-    <string name="city_concat_name_country">%1$s, %2$s</string>
+    <string name="city_concat_name_country" translatable="false"><xliff:g example="Paris" id="city">%1$s</xliff:g>, <xliff:g example="France" id="city">%2$s</xliff:g></string>
     <string name="add_city_description">Add a city</string>
     <string name="search_title">Search</string>
     <string name="main_title_list">List</string>
-    <string name="main_title_map">Map</string>
+
     <string name="menu_add_city">Add a new city</string>
     <string name="login">Login</string>
     <string name="please_wait">Please wait…</string>
@@ -57,9 +57,13 @@
 
     <string name="add_city_error">Sorry, we coudn\'t resolve this place</string>
 
-    <string name="city_removed_successfully">%1$s removed successfully</string>
-    <string name="city_saved_successfully">%1$s added successfully</string>
-    <string name="main_are_you_in">Are you in %1$s ?</string>
-
-
+    <string name="city_removed_successfully"><xliff:g example="Paris" id="city">%1$s</xliff:g> removed successfully</string>
+    <string name="city_saved_successfully"><xliff:g example="Paris" id="city">%1$s</xliff:g> added successfully</string>
+    <string name="main_are_you_in">Are you in <xliff:g example="Paris" id="city">%1$s</xliff:g> ?</string>
+    <string name="city_list_empty_text">Looks empty in here, add some city.</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="main_saving">Saving...</string>
+    <string name="navigation_account_help_title"><![CDATA[Help & About]]></string>
+    <string name="navigation_account_edit">Profile</string>
+    <string name="error_occurred_please_retry">An error occurred, please retry in a short while</string>
 </resources>

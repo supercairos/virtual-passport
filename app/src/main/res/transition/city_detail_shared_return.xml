@@ -29,7 +29,7 @@
 
     <transitionSet>
         <targets>
-            <target android:targetId="@id/city_detail_picture" />
+            <target android:targetId="@id/city_detail_app_bar_layout" />
         </targets>
         <changeBounds/>
         <changeTransform/>

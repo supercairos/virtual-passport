@@ -38,65 +38,59 @@ import io.romain.passport.utils.glide.CityItemTarget;
 
 public class CityListAdapter extends CursorRecyclerAdapter<CityListAdapter.CityListViewHolder> {
 
-    private final OnCityClicked mListener;
+	private final OnCityClicked mListener;
 
-    public interface OnCityClicked {
-        void onCityClicked(View v, City city);
+	public interface OnCityClicked {
+		void onCityClicked(CardView card, ImageView image, City city);
 
-        void onCityRemoved(View v, City city);
-    }
+		void onCityRemoved(View v, City city);
+	}
 
-    public class CityListViewHolder extends RecyclerView.ViewHolder {
+	public class CityListViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_city_list_picture)
-        FourThreeImageView picture;
-        @Bind(R.id.item_city_list_name)
-        TextView name;
-        @Bind(R.id.loading)
-        ProgressBar loading;
-        @Bind(R.id.item_city_list_card_view)
-        CardView card;
-        @Bind(R.id.item_city_list_remove)
-        ImageView remove;
+		@Bind(R.id.item_city_list_picture)
+		public FourThreeImageView picture;
+		@Bind(R.id.item_city_list_name)
+		public TextView name;
+		@Bind(R.id.loading)
+		public ProgressBar loading;
+		@Bind(R.id.item_city_list_card_view)
+		public CardView card;
+		@Bind(R.id.item_city_list_remove)
+		public ImageView remove;
 
-        public CityListViewHolder(final View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-            card.setOnClickListener(v -> {
-                City city = City.fromCursor((Cursor) getItem(getAdapterPosition()));
-                mListener.onCityClicked(v, city);
-            });
-            remove.setOnClickListener(v -> {
-                City city = City.fromCursor((Cursor) getItem(getAdapterPosition()));
-                mListener.onCityRemoved(v, city);
-            });
-        }
-    }
+		public CityListViewHolder(final View view) {
+			super(view);
+			ButterKnife.bind(this, view);
+			card.setOnClickListener(v -> mListener.onCityClicked(card, picture, City.fromCursor((Cursor) getItem(getAdapterPosition()))));
+			remove.setOnClickListener(v -> mListener.onCityRemoved(v, City.fromCursor((Cursor) getItem(getAdapterPosition()))));
+		}
+	}
 
-    private final LayoutInflater mLayoutInflater;
+	private final LayoutInflater mLayoutInflater;
 
-    public CityListAdapter(Activity activity, Cursor c, OnCityClicked listener) {
-        super(activity, c);
-        mLayoutInflater = LayoutInflater.from(activity);
-        mListener = listener;
-    }
+	public CityListAdapter(Activity activity, Cursor c, OnCityClicked listener) {
+		super(activity, c);
+		mLayoutInflater = LayoutInflater.from(activity);
+		mListener = listener;
+	}
 
-    @Override
-    public CityListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CityListViewHolder(mLayoutInflater.inflate(R.layout.item_city_list, parent, false));
-    }
+	@Override
+	public CityListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		return new CityListViewHolder(mLayoutInflater.inflate(R.layout.item_city_list, parent, false));
+	}
 
-    @Override
-    public void onBindViewHolder(CityListViewHolder view, Cursor cursor) {
-        City city = City.fromCursor(cursor);
-        view.name.setText(getContext().getString(R.string.city_concat_name_country, city.name, city.country));
-        Glide.with(getContext())
-                .load(city.picture)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fallback(R.drawable.no_picture_found)
-                .error(R.drawable.no_picture_found)
-                .centerCrop()
-                .into(new CityItemTarget(view.picture, view.name, view.loading, view.remove));
-    }
+	@Override
+	public void onBindViewHolder(CityListViewHolder view, Cursor cursor) {
+		City city = City.fromCursor(cursor);
+		view.name.setText(getContext().getString(R.string.city_concat_name_country, city.name, city.country));
+		Glide.with(getContext())
+				.load(city.picture)
+				.crossFade()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.fallback(R.drawable.no_picture_found)
+				.error(R.drawable.no_picture_found)
+				.centerCrop()
+				.into(new CityItemTarget(view.picture, view.name, view.loading, view.remove));
+	}
 }

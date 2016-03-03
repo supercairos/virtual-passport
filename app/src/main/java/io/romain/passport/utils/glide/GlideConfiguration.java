@@ -24,13 +24,13 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.GlideModule;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.io.InputStream;
 
 import javax.inject.Inject;
 
 import io.romain.passport.MyApplication;
+import okhttp3.OkHttpClient;
 
 /**
  * Configure Glide to set desired image quality.

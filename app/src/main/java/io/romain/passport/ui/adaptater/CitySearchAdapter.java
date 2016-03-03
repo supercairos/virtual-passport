@@ -19,9 +19,9 @@ import javax.inject.Inject;
 import io.romain.passport.MyApplication;
 import io.romain.passport.model.CityAutocomplete;
 import io.romain.passport.utils.Dog;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class CitySearchAdapter extends ArrayAdapter<CityAutocomplete> implements Filterable {
 

@@ -22,7 +22,7 @@ import javax.inject.Inject;
 
 import io.romain.passport.MyApplication;
 import io.romain.passport.logic.helpers.SharedPrefHelper;
-import retrofit.Retrofit;
+import retrofit2.Retrofit;
 
 public abstract class BaseIntentService extends IntentService {
 

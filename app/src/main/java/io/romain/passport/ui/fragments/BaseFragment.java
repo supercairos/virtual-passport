@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import io.romain.passport.MyApplication;
 import io.romain.passport.logic.helpers.SharedPrefHelper;
 import io.romain.passport.utils.GoogleApiUtils;
-import retrofit.Retrofit;
+import retrofit2.Retrofit;
 
 public abstract class BaseFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 

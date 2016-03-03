@@ -14,16 +14,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="300"
-    android:interpolator="@android:interpolator/fast_out_slow_in"
-    android:transitionOrdering="together">
+               android:duration="300"
+               android:interpolator="@android:interpolator/fast_out_slow_in"
+               android:transitionOrdering="together">
 
     <changeBounds>
         <targets>
             <target android:targetId="@id/city_detail_frame" />
         </targets>
     </changeBounds>
+
+    <transition
+        class="io.romain.passport.ui.transitions.CityDetailSharedEnter">
+        <targets>
+            <target android:targetId="@id/city_detail_app_bar_layout" />
+        </targets>
+    </transition>
 
 </transitionSet>

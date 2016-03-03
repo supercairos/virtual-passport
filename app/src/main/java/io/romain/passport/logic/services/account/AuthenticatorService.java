@@ -13,8 +13,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.squareup.okhttp.Credentials;
-
 import java.io.IOException;
 
 import javax.inject.Inject;
@@ -25,8 +23,9 @@ import io.romain.passport.ui.LandingActivity;
 import io.romain.passport.ui.RegisterActivity;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.constants.AuthenticatorConstants;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.Credentials;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class AuthenticatorService extends Service {
 

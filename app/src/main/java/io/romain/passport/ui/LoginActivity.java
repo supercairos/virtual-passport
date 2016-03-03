@@ -32,8 +32,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.squareup.okhttp.Credentials;
-
 import javax.net.ssl.HttpsURLConnection;
 
 import butterknife.Bind;
@@ -47,7 +45,8 @@ import io.romain.passport.utils.SimpleTextWatcher;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
-import retrofit.HttpException;
+import okhttp3.Credentials;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -77,6 +76,7 @@ public class LoginActivity extends BaseActivity {
 	Button mLoginButton;
 
 	private ProgressDialog mDialog;
+	private boolean isSaving = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,25 @@ public class LoginActivity extends BaseActivity {
 			return false;
 		});
 
+		if (isSaving) {
+			showSavingDialog();
+		}
+
 		setProfileAutocomplete();
+	}
+
+	private void showSavingDialog() {
+		mDialog = ProgressDialog.show(this, getString(R.string.login), getString(R.string.please_wait), true);
+		mDialog.show();
+		isSaving = true;
+	}
+
+	private void hideSavingDialog() {
+		if (mDialog != null) {
+			mDialog.dismiss();
+		}
+
+		isSaving = false;
 	}
 
 	@OnClick(R.id.login_button_login)
@@ -123,18 +141,17 @@ public class LoginActivity extends BaseActivity {
 		}
 
 		if (isEverythingOk) {
-			mDialog = ProgressDialog.show(this, getString(R.string.login), getString(R.string.please_wait), true);
-			mDialog.show();
-
+			showSavingDialog();
 			mRetrofit.create(User.UserService.class)
 					.login(Credentials.basic(email, password))
 					.subscribeOn(Schedulers.io())
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(user -> {
+						hideSavingDialog();
 						UserHelper.save(LoginActivity.this, user);
 					}, throwable -> {
-						Dog.d(throwable, "Sorry an error appeared");
-						mDialog.dismiss();
+						Dog.d(throwable, "Ex!");
+						hideSavingDialog();
 						if (throwable instanceof HttpException) {
 							int code = ((HttpException) throwable).code();
 							switch (code) {
@@ -147,16 +164,14 @@ public class LoginActivity extends BaseActivity {
 							}
 						}
 
-						ErrorDialogFragment.newInstance(throwable.getMessage()).show(getSupportFragmentManager(), "Dialog");
+						ErrorDialogFragment.newInstance(LoginActivity.this, R.string.error_occurred_please_retry).show(getSupportFragmentManager(), "Dialog");
 					});
 		}
 	}
 
 	@Override
 	protected void onStop() {
-		if (mDialog != null) {
-			mDialog.dismiss();
-		}
+		hideSavingDialog();
 		super.onStop();
 	}
 

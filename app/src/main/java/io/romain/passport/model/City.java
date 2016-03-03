@@ -26,15 +26,15 @@ import android.text.TextUtils;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.squareup.okhttp.ResponseBody;
 
 import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
 
-import retrofit.http.GET;
-import retrofit.http.Path;
+import okhttp3.ResponseBody;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 public class City implements Parcelable {

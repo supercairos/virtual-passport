@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_city_list_card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/spacing_mini"
-    android:layout_marginEnd="@dimen/spacing_normal"
-    android:layout_marginStart="@dimen/spacing_normal"
-    android:layout_marginTop="@dimen/spacing_mini"
-    android:elevation="@dimen/z_card_view"
-    card_view:cardCornerRadius="@dimen/dialog_corners">
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    android:id="@+id/item_city_list_card_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="@dimen/spacing_mini"
+                                    android:layout_marginEnd="@dimen/spacing_normal"
+                                    android:layout_marginStart="@dimen/spacing_normal"
+                                    android:layout_marginTop="@dimen/spacing_mini"
+                                    android:elevation="@dimen/z_card_view"
+                                    android:stateListAnimator="@anim/card_elevation"
+                                    card_view:cardCornerRadius="@dimen/dialog_corners">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,24 +22,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:foreground="@drawable/mid_grey_ripple" />
+            android:foreground="@drawable/mid_grey_ripple"
+            android:scaleType="centerCrop"/>
 
-        <TextView
-            android:id="@+id/item_city_list_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/item_city_list_picture"
             android:layout_alignEnd="@id/item_city_list_picture"
             android:layout_alignStart="@id/item_city_list_picture"
             android:layout_marginBottom="@dimen/spacing_mini"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-light"
-            android:lines="1"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingStart="@dimen/spacing_normal"
-            android:textColor="@color/text_primary_dark"
-            android:textSize="28sp" />
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal">
+
+            <TextView
+                android:id="@+id/item_city_list_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-light"
+                android:lines="1"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="28sp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/spacing_normal"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_star_white_24dp"/>
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/item_city_list_remove"
@@ -48,18 +64,19 @@
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/spacing_micro"
             android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@android:string/cancel"
             android:padding="@dimen/spacing_medium"
-            android:src="@drawable/ic_close_black_36dp" />
+            android:src="@drawable/ic_close_black_36dp"/>
     </RelativeLayout>
 
     <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/loading"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/spacing_huge"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/grey_300"
-        android:indeterminateTintMode="src_in" />
+                 android:id="@+id/loading"
+                 style="?android:attr/progressBarStyleLarge"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_margin="@dimen/spacing_huge"
+                 android:indeterminate="true"
+                 android:indeterminateTint="@color/grey_300"
+                 android:indeterminateTintMode="src_in"/>
 </android.support.v7.widget.CardView>

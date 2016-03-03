@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        android:elevation="@dimen/z_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
@@ -114,7 +115,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp">
 
-                <io.romain.passport.ui.views.TouchDrawableEditText
+                <io.romain.passport.ui.views.PasswordEditText
                     android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

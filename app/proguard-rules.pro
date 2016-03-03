@@ -17,8 +17,8 @@
 #}
 
 # This is an opensource project, let's keep the filename and line numbers
-#-renamesourcefileattribute SourceFile
-#-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
 
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
@@ -54,26 +54,9 @@
 
 # Retrofit
 -dontwarn retrofit2.**
--dontwarn org.codehaus.mojo.**
 -keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
--keepattributes *Annotation*
-
--keepattributes RuntimeVisibleAnnotations
--keepattributes RuntimeInvisibleAnnotations
--keepattributes RuntimeVisibleParameterAnnotations
--keepattributes RuntimeInvisibleParameterAnnotations
-
--keepattributes EnclosingMethod
-
--keepclasseswithmembers class * {
-    @retrofit.* <methods>;
-}
-
--keepclasseswithmembers interface * {
-    @retrofit.* <methods>;
-}
 
 # Okio
 -dontwarn okio.**

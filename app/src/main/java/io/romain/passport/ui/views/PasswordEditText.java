@@ -23,17 +23,17 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.EditText;
 
-public class TouchDrawableEditText extends EditText {
+public class PasswordEditText extends EditText {
 
-	public TouchDrawableEditText(Context context) {
+	public PasswordEditText(Context context) {
 		super(context);
 	}
 
-	public TouchDrawableEditText(Context context, AttributeSet attrs) {
+	public PasswordEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public TouchDrawableEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+	public PasswordEditText(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 	}
 
@@ -46,22 +46,16 @@ public class TouchDrawableEditText extends EditText {
 					int stop = getSelectionEnd();
 					setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 					setSelection(start, stop);
-//					if (mListener != null) {
-//						mListener.onDrawableTouched(this);
-//					}
 					return true;
 				}
+
+				break;
 			case MotionEvent.ACTION_UP:
-				if (isDrawableTouched(event)) {
-					int start = getSelectionStart();
-					int stop = getSelectionEnd();
-					setTransformationMethod(PasswordTransformationMethod.getInstance());
-					setSelection(start, stop);
-//					if (mListener != null) {
-//						mListener.onDrawableTouched(this);
-//					}
-					return true;
-				}
+				int start = getSelectionStart();
+				int stop = getSelectionEnd();
+				setTransformationMethod(PasswordTransformationMethod.getInstance());
+				setSelection(start, stop);
+				return true;
 		}
 
 		return super.onTouchEvent(event);

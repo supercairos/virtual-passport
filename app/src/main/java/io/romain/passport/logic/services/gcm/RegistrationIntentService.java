@@ -17,7 +17,7 @@ import io.romain.passport.model.User;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.PlayServicesUtils;
 import io.romain.passport.utils.constants.AccountConstants;
-import retrofit.Response;
+import retrofit2.Response;
 
 public class RegistrationIntentService extends BaseIntentService {
 

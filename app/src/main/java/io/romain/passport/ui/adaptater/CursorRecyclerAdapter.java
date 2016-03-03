@@ -54,6 +54,7 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 	private Cursor mCursor;
 
 	private Context mContext;
+
 	Context getContext() {
 		return mContext;
 	}
@@ -83,7 +84,8 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 
 	/**
 	 * Recommended Constructor
-	 * @param c The cursor from which to get the data.
+	 *
+	 * @param c       The cursor from which to get the data.
 	 * @param context The context
 	 */
 	CursorRecyclerAdapter(Context context, Cursor c) {
@@ -112,6 +114,7 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 
 	/**
 	 * Returns the cursor.
+	 *
 	 * @return the cursor.
 	 */
 	public Cursor getCursor() {
@@ -132,7 +135,7 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 	/**
 	 * @see android.widget.ListAdapter#getItem(int)
 	 */
-	Object getItem(int position) {
+	public Object getItem(int position) {
 		if (mDataValid && mCursor != null) {
 			mCursor.moveToPosition(position);
 			return mCursor;
@@ -158,7 +161,11 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 
 	@Override
 	public int getItemCount() {
-		return mCursor.getCount();
+		if (mCursor != null) {
+			return mCursor.getCount();
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -183,9 +190,10 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
 
 	/**
 	 * Bind an existing view to the data pointed to by cursor
-	 * @param view Existing view, returned earlier by newView
+	 *
+	 * @param view   Existing view, returned earlier by newView
 	 * @param cursor The cursor from which to get the data. The cursor is already
-	 * moved to the correct position.
+	 *               moved to the correct position.
 	 */
 	protected abstract void onBindViewHolder(VH view, Cursor cursor);
 
