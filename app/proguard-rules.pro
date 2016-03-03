@@ -52,19 +52,16 @@
 # Android SVG
 -dontwarn com.caverock.androidsvg.**
 
+# OkHttp
+#-dontwarn okhttp3.**
+#-keep class okhttp3.** { *; }
+-dontwarn okio.**
+
 # Retrofit
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
-
-# Okio
--dontwarn okio.**
-
-# OkHttp
--dontwarn com.squareup.okhttp.**
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.** { *; }
 
 # Retrolamba
 -dontwarn java.lang.invoke.*
@@ -95,16 +92,5 @@
 }
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
-# Keep annotation
--keep @android.support.annotation.Keep class *
--keep @android.support.annotation.Keep interface *
--keep @android.support.annotation.Keep enum  *
--keepclasseswithmembers class * {
-    @android.support.annotation.Keep <methods>;
-}
--keepclasseswithmembers interface * {
-    @android.support.annotation.Keep <methods>;
 }
 

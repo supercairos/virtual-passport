@@ -28,7 +28,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.romain.passport.BuildConfig;
 import io.romain.passport.logic.helpers.AccountHelper;
 import io.romain.passport.utils.Dog;
 import okhttp3.Cache;
@@ -52,13 +51,12 @@ public class OkHttpModule {
 				.addInterceptor(new HeaderInterceptor(manager))
 				.addInterceptor(
 						new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
-								.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC)
+								.setLevel(HttpLoggingInterceptor.Level.BODY)
 				)
 				.connectTimeout(TIMEOUT, TimeUnit.SECONDS)
 				.connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
 				.cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024))
 				.build();
-
 	}
 
 	private static final class HeaderInterceptor implements Interceptor {
