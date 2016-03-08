@@ -19,4 +19,9 @@
     <color name="text_secondary_dark">#8a000000</color> <!-- 54% -->
     <color name="text_tertiary_dark">#61000000</color> <!-- 38% -->
 
+    <!-- common colours -->
+    <color name="text_primary_light">#deFFFFFF</color> <!-- 87% -->
+    <color name="text_secondary_light">#8aFFFFFF</color> <!-- 54% -->
+    <color name="text_tertiary_light">#61FFFFFF</color> <!-- 38% -->
+
 </resources>

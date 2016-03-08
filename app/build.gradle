@@ -76,6 +76,20 @@ android {
     }
 }
 
+//add zopfli to variants with release build type
+android.applicationVariants.all { variant ->
+    if (variant.buildType.name == 'release') {
+        variant.outputs.each { output ->
+            output.assemble.doLast {
+                println "Zopflifying... it might take a while"
+                exec {
+                    commandLine output.zipAlign.zipAlignExe,'-f','-z', '4', output.outputFile.absolutePath , output.outputFile.absolutePath.replaceAll('\\.apk$', '-zopfli.apk')
+                }
+            }
+        }
+    }
+}
+
 ext {
     support = '23.2.0'
     play_services = '8.4.0'

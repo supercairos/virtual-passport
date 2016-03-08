@@ -54,18 +54,25 @@
             android:scaleType="centerCrop"
             android:src="@drawable/welcome_blur"/>
 
-        <io.romain.passport.ui.views.SvgLogoView
-            android:id="@+id/svg_animated_logo"
-            android:layout_width="260dp"
-            android:layout_height="260dp"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="@dimen/spacing_huge"
-            android:padding="8dp"
-            app:fillColor="#88ffffff"
-            app:makerSize="16dp"
-            app:resource="@raw/logo_3"
-            app:strokeColor="@android:color/white"
-            app:strokeWidth="4dp"/>
+        <!--<io.romain.passport.ui.views.SvgLogoView-->
+            <!--android:id="@+id/svg_animated_logo"-->
+            <!--android:layout_width="260dp"-->
+            <!--android:layout_height="260dp"-->
+            <!--android:layout_gravity="center_horizontal|top"-->
+            <!--android:layout_marginTop="@dimen/spacing_huge"-->
+            <!--android:padding="8dp"-->
+            <!--app:fillColor="#88ffffff"-->
+            <!--app:makerSize="16dp"-->
+            <!--app:resource="@raw/logo_3"-->
+            <!--app:strokeColor="@android:color/white"-->
+            <!--app:strokeWidth="4dp"/>-->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:layout_gravity="top|center_horizontal"
+            android:src="@drawable/logo_app_name"/>
 
         <LinearLayout
             android:id="@+id/landing_button_layout"

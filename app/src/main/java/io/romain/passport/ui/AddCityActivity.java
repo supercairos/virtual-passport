@@ -416,7 +416,7 @@ public class AddCityActivity extends LocationPermissionActivity {
     }
 
     private void showLocationIcon() {
-        mEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_location_black_24dp, 0);
+        mEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_location_24dp, 0);
     }
 
     @Override

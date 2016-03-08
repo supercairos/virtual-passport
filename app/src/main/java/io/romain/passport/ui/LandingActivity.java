@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import butterknife.OnClick;
 import io.romain.passport.R;
 import io.romain.passport.logic.helpers.AccountHelper;
 import io.romain.passport.logic.helpers.UserHelper;
-import io.romain.passport.ui.views.SvgLogoView;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleAnimatorListener;
 
@@ -25,8 +23,7 @@ public class LandingActivity extends BaseActivity {
 
 	private static final long ICON_DISOLVE_DURATION = 500;
 	private static final long FADE_IN_DURATION = 300;
-
-	private final Handler mHandler = new Handler();
+	private static final long CROSSFADE_DURATION = 500;
 
 	@Bind(R.id.content_root_view)
 	FrameLayout mRootView;
@@ -47,8 +44,8 @@ public class LandingActivity extends BaseActivity {
 	@Bind(R.id.background_blur)
 	ImageView mBackgroundBlur;
 
-	@Bind(R.id.svg_animated_logo)
-	SvgLogoView mLogoView;
+//	@Bind(R.id.svg_animated_logo)
+//	SvgLogoView mLogoView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,14 +58,31 @@ public class LandingActivity extends BaseActivity {
 
 		setContentView(R.layout.activity_landing);
 
+		// Black
 		ObjectAnimator a1 = ObjectAnimator.ofFloat(mLandingIcon, View.SCALE_X, 0.0f).setDuration(ICON_DISOLVE_DURATION);
 		ObjectAnimator a2 = ObjectAnimator.ofFloat(mLandingIcon, View.SCALE_Y, 0.0f).setDuration(ICON_DISOLVE_DURATION);
-
 		ObjectAnimator a3 = ObjectAnimator.ofFloat(mButtonScreen, View.ALPHA, 1.0f).setDuration(FADE_IN_DURATION);
-		ObjectAnimator a4 = ObjectAnimator.ofFloat(mSplashScreen, View.ALPHA, 0.0f).setDuration(FADE_IN_DURATION);
-
 		a3.setStartDelay(ICON_DISOLVE_DURATION - FADE_IN_DURATION);
+		ObjectAnimator a4 = ObjectAnimator.ofFloat(mSplashScreen, View.ALPHA, 0.0f).setDuration(FADE_IN_DURATION);
 		a4.setStartDelay(ICON_DISOLVE_DURATION - FADE_IN_DURATION);
+
+		// Rest
+		ObjectAnimator a6 = ObjectAnimator.ofFloat(mLandingButtonLayout, View.TRANSLATION_Y, 0.0f).setDuration(CROSSFADE_DURATION);
+		ObjectAnimator a7 = ObjectAnimator.ofFloat(mLandingButtonLayout, View.ALPHA, 1.0f).setDuration(CROSSFADE_DURATION);
+		ObjectAnimator a8 = ObjectAnimator.ofFloat(mBackgroundBlur, View.ALPHA, 1.0f).setDuration(CROSSFADE_DURATION);
+		ObjectAnimator a9 = ObjectAnimator.ofFloat(mBackground, View.ALPHA, 0.0f).setDuration(CROSSFADE_DURATION);
+
+		final AnimatorSet animator = new AnimatorSet();
+		animator.playTogether(a6, a7, a8, a9);
+		animator.addListener(new SimpleAnimatorListener() {
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				mBackground.setVisibility(View.GONE);
+			}
+		});
+
+
 		final AnimatorSet set = new AnimatorSet();
 		set.playTogether(a1, a2, a3, a4);
 		set.addListener(new SimpleAnimatorListener() {
@@ -76,33 +90,11 @@ public class LandingActivity extends BaseActivity {
 			@Override
 			public void onAnimationEnd(Animator animation) {
 				mSplashScreen.setVisibility(View.GONE);
-				mLogoView.start();
+				animator.start();
 			}
 		});
-		mHandler.postDelayed(set::start, 1500);
 
-		mLogoView.setOnStateChangeListenerListener(state -> {
-			switch (state) {
-				case SvgLogoView.STATE_FILL_STARTED:
-					ObjectAnimator a6 = ObjectAnimator.ofFloat(mLandingButtonLayout, View.TRANSLATION_Y, 0).setDuration(500);
-					ObjectAnimator a7 = ObjectAnimator.ofFloat(mLandingButtonLayout, View.ALPHA, 1).setDuration(500);
-
-					ObjectAnimator a8 = ObjectAnimator.ofFloat(mBackgroundBlur, View.ALPHA, 1).setDuration(500);
-					ObjectAnimator a9 = ObjectAnimator.ofFloat(mBackground, View.ALPHA, 0).setDuration(500);
-
-					AnimatorSet animator = new AnimatorSet();
-					animator.playTogether(a6, a7, a8, a9);
-					animator.addListener(new SimpleAnimatorListener() {
-
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mBackground.setVisibility(View.GONE);
-						}
-					});
-					animator.start();
-					break;
-			}
-		});
+		mRootView.postDelayed(set::start, 1500);
 	}
 
 	@OnClick(R.id.button_register)

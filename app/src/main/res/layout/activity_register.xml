@@ -119,7 +119,7 @@
                     android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_visibility_black_24dp"
+                    android:drawableEnd="@drawable/ic_visibility_24dp"
                     android:drawablePadding="5dp"
                     android:hint="@string/register_hint_password"
                     android:imeOptions="actionDone"

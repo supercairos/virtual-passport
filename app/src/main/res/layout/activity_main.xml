@@ -66,7 +66,8 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@android:string/cancel"
                     android:padding="@dimen/spacing_medium"
-                    android:src="@drawable/ic_close_white_24dp"/>
+                    android:tint="@android:color/white"
+                    android:src="@drawable/ic_close_36dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -113,7 +114,8 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:elevation="@dimen/z_floating_action_button"
-            android:src="@drawable/ic_add_white_24dp"/>
+            android:tint="@android:color/white"
+            android:src="@drawable/ic_add_24dp"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

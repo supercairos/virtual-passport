@@ -15,9 +15,12 @@
  */
 package io.romain.passport.utils.glide;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -38,13 +41,13 @@ public class CityDetailTarget extends GlideDrawableImageViewTarget implements Pa
 
 	private final CollapsingToolbarLayout mCollapsingToolbarLayout;
 	private final Toolbar mToolbar;
-	private final Resources mResources;
+	private final Context mContext;
 
 	public CityDetailTarget(ImageView view, CollapsingToolbarLayout text, Toolbar toolbar) {
 		super(view);
 		mCollapsingToolbarLayout = text;
 		mToolbar = toolbar;
-		mResources = view.getResources();
+		mContext = view.getContext();
 	}
 
 	@Override
@@ -62,30 +65,49 @@ public class CityDetailTarget extends GlideDrawableImageViewTarget implements Pa
 	@Override
 	public void onLoadStarted(Drawable placeholder) {
 		super.onLoadStarted(placeholder);
-		mCollapsingToolbarLayout.setExpandedTitleColor(mResources.getColor(android.R.color.white));
+		mCollapsingToolbarLayout.setExpandedTitleColor(getColor(mContext, R.color.text_primary_dark));
+		mCollapsingToolbarLayout.setCollapsedTitleTextColor(getColor(mContext, R.color.text_primary_dark));
 	}
 
 	@Override
 	public void onGenerated(Palette palette) {
+		int color;
 		switch (ColorUtils.isDark(palette)) {
 			default:
 			case ColorUtils.LIGHTNESS_UNKNOWN:
 			case ColorUtils.IS_DARK:
-				mCollapsingToolbarLayout.setExpandedTitleColor(mResources.getColor(android.R.color.white));
-				mCollapsingToolbarLayout.setCollapsedTitleTextColor(mResources.getColor(android.R.color.white));
-				mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+				mCollapsingToolbarLayout.setExpandedTitleColor(getColor(mContext, R.color.text_primary_light));
+				mCollapsingToolbarLayout.setCollapsedTitleTextColor(getColor(mContext, R.color.text_primary_light));
+				color = getColor(mContext, android.R.color.white);
 				break;
 			case ColorUtils.IS_LIGHT:
-				mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-				mCollapsingToolbarLayout.setExpandedTitleColor(mResources.getColor(R.color.text_primary_dark));
-				mCollapsingToolbarLayout.setCollapsedTitleTextColor(mResources.getColor(R.color.text_primary_dark));
+				mCollapsingToolbarLayout.setExpandedTitleColor(getColor(mContext, R.color.text_primary_dark));
+				mCollapsingToolbarLayout.setCollapsedTitleTextColor(getColor(mContext, R.color.text_primary_dark));
+				color = getColor(mContext, android.R.color.black);
 				break;
+		}
+
+		Drawable dwb = mContext.getDrawable(R.drawable.ic_arrow_back_24dp);
+		if (dwb != null) {
+			dwb.setTint(color);
+			mToolbar.setNavigationIcon(dwb);
 		}
 
 		Palette.Swatch colors = ColorUtils.getMostPopulousSwatch(palette);
 		if (colors != null) {
 			mCollapsingToolbarLayout.setContentScrimColor(colors.getRgb());
 			mCollapsingToolbarLayout.setStatusBarScrimColor(ColorUtils.scrimify(colors.getRgb(), SCRIM_ADJUSTMENT));
+		}
+
+	}
+
+	@SuppressWarnings("deprecation")
+	@ColorInt
+	private int getColor(Context context, @ColorRes int res) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			return context.getColor(res);
+		} else {
+			return context.getResources().getColor(res);
 		}
 	}
 }
