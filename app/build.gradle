@@ -95,7 +95,7 @@ if(System.getenv('TRAVIS') == null) {
      
 
 ext {
-    support = '23.2.0'
+    support = '23.2.1'
     play_services = '8.4.0'
 }
 

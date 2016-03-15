@@ -23,6 +23,8 @@ import android.support.v4.content.ContextCompat;
 
 public abstract class LocationPermissionActivity extends GoogleApiActivity {
 
+    protected static final int REQUEST_PERMISSION = 22;
+
     // ## Permission Management
     protected void setLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&

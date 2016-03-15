@@ -22,7 +22,6 @@ public abstract class GoogleApiActivity extends BaseActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    protected static final int REQUEST_PERMISSION = 22;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     private static final String STATE_RESOLVING_ERROR = "resolving_error";
