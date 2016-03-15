@@ -62,7 +62,7 @@ public class CitySearchAdapter extends ArrayAdapter<CityAutocomplete> implements
 			Call<List<CityAutocomplete>> call = mRetrofit.create(CityAutocomplete.CityAutocompleteService.class).complete((String) constraint);
 			try {
 				Response<List<CityAutocomplete>> response = call.execute();
-				if(response.isSuccess()) {
+				if(response.isSuccessful()) {
 					List<CityAutocomplete> cities = response.body();
 					results.values = cities;
 					results.count = cities != null ? cities.size() : 0;

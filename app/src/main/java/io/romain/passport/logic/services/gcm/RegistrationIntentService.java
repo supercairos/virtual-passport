@@ -78,7 +78,7 @@ public class RegistrationIntentService extends BaseIntentService {
 			String userId = mAccountManager.getUserData(AccountHelper.getAccount(mAccountManager), AccountConstants.KEY_SERVER_ID);
 			if(!TextUtils.isEmpty(userId)) {
 				Response<User> user = mRetrofit.create(User.UserService.class).registerGcm(regid).execute();
-				if(user.isSuccess()) {
+				if(user.isSuccessful()) {
 					if(BuildConfig.DEBUG) {
 						Toast.makeText(this, "GCM Register completed!", Toast.LENGTH_SHORT).show();
 					}

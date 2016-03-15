@@ -138,7 +138,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
 
             @Override
             public void onResponse(Call<WeatherWrapper> call, Response<WeatherWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     List<Forecast> forecasts = response.body().forecasts;
                     if (!forecasts.isEmpty()) {
                         mWeatherLayout.removeAllViews();
