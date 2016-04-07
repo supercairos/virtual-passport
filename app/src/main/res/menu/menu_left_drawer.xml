@@ -7,17 +7,14 @@
         android:title="@string/menu_add_city"/>
 
     <item
-        android:id="@+id/navigation_account_subheader"
         android:title="@string/navigation_account_subheader">
         <menu>
 
             <item
-                android:id="@+id/navigation_account_edit"
                 android:icon="@drawable/ic_account_circle_24dp"
                 android:title="@string/navigation_account_edit"/>
 
             <item
-                android:id="@+id/navigation_account_help"
                 android:icon="@drawable/ic_help_24dp"
                 android:title="@string/navigation_account_help_title"/>
 

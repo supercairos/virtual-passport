@@ -27,7 +27,6 @@
 
     <!-- Login -->
     <string name="login_hint_email">Email</string>
-    <string name="login_hint_password">Password</string>
 
     <string name="add_city_city">City</string>
 
@@ -38,21 +37,17 @@
     <string name="city_concat_name_country" translatable="false"><xliff:g example="Paris" id="city">%1$s</xliff:g>, <xliff:g example="France" id="city">%2$s</xliff:g></string>
     <string name="add_city_description">Add a city</string>
     <string name="search_title">Search</string>
-    <string name="main_title_list">List</string>
 
     <string name="menu_add_city">Add a new city</string>
     <string name="login">Login</string>
     <string name="please_wait">Please wait…</string>
     <string name="register">Register</string>
 
-    <string name="unknown_error">Unknown error</string>
     <string name="transition_detail_background">transition_detail_background</string>
     <string name="transition_picture">transition_picture</string>
     <string name="temperature_unit_celsius">C</string>
     <string name="weather_error">Weather coudn\'t be found</string>
     <string name="get_accounts_permission_message">Autocomplete fields</string>
-    <string name="add_city_location_dialog_title">Location</string>
-    <string name="add_city_location_dialog_message">We need to use the location to retrieve your position.</string>
     <string name="undo">Undo</string>
 
     <string name="add_city_error">Sorry, we coudn\'t resolve this place</string>

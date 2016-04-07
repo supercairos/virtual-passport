@@ -17,7 +17,6 @@ package io.romain.passport;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.os.StrictMode;
 
 import io.romain.passport.logic.components.ApplicationComponent;
@@ -28,6 +27,7 @@ import io.romain.passport.utils.Dog;
 public class MyApplication extends Application {
 
 	private ApplicationComponent mApplicationComponent;
+
 	public ApplicationComponent getApplicationComponent() {
 		return mApplicationComponent;
 	}
@@ -47,13 +47,18 @@ public class MyApplication extends Application {
 	}
 
 	private void enabledStrictMode() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
-					.detectAll() //
-					.penaltyFlashScreen() //
-					.penaltyLog()
-					.build());
-		}
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
+				.detectAll() //
+				.penaltyFlashScreen() //
+				.penaltyLog()
+				.build()
+		);
+
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+				.detectAll()
+				.penaltyLog()
+				.build()
+		);
 	}
 
 	public static MyApplication getApplication(Context context) {
