@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -35,36 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0">
-
-        <ImageView
-            android:id="@+id/background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@android:string/untitled"
-            android:scaleType="centerCrop"
-            android:src="@drawable/welcome"/>
-
-        <ImageView
-            android:id="@+id/background_blur"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0"
-            android:contentDescription="@android:string/untitled"
-            android:scaleType="centerCrop"
-            android:src="@drawable/welcome_blur"/>
-
-        <!--<io.romain.passport.ui.views.SvgLogoView-->
-            <!--android:id="@+id/svg_animated_logo"-->
-            <!--android:layout_width="260dp"-->
-            <!--android:layout_height="260dp"-->
-            <!--android:layout_gravity="center_horizontal|top"-->
-            <!--android:layout_marginTop="@dimen/spacing_huge"-->
-            <!--android:padding="8dp"-->
-            <!--app:fillColor="#88ffffff"-->
-            <!--app:makerSize="16dp"-->
-            <!--app:resource="@raw/logo_3"-->
-            <!--app:strokeColor="@android:color/white"-->
-            <!--app:strokeWidth="4dp"/>-->
 
         <ImageView
             android:layout_width="wrap_content"

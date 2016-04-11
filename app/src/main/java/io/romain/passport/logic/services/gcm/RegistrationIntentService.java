@@ -2,7 +2,6 @@ package io.romain.passport.logic.services.gcm;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -66,7 +65,7 @@ public class RegistrationIntentService extends BaseIntentService {
 
 	/**
 	 * Persist registration to third-party servers.
-	 * <p/>
+	 * <p>
 	 * Modify this method to associate the user's GCM registration token with any server-side account
 	 * maintained by your application.
 	 *
@@ -76,12 +75,10 @@ public class RegistrationIntentService extends BaseIntentService {
 		Dog.d("Got token : %s", regid);
 		try {
 			String userId = mAccountManager.getUserData(AccountHelper.getAccount(mAccountManager), AccountConstants.KEY_SERVER_ID);
-			if(!TextUtils.isEmpty(userId)) {
+			if (!TextUtils.isEmpty(userId)) {
 				Response<User> user = mRetrofit.create(User.UserService.class).registerGcm(regid).execute();
-				if(user.isSuccessful()) {
-					if(BuildConfig.DEBUG) {
-						Toast.makeText(this, "GCM Register completed!", Toast.LENGTH_SHORT).show();
-					}
+				if (user.isSuccessful()) {
+					Dog.d("GCM Register completed! (" + user + ")");
 				}
 			}
 		} catch (IOException e) {

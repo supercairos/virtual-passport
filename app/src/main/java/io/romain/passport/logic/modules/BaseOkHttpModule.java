@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015 Romain
+ *    Copyright 2016 Romain
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,12 +24,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.utils.Dog;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.ConnectionSpec;
@@ -37,26 +32,17 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 
-@Module
-public class OkHttpModule {
+public class BaseOkHttpModule {
 
 	private static final long TIMEOUT = 180;
 
-	@Provides
-	@Singleton
-	protected static OkHttpClient getOkHttpClient(Context context, AccountManager manager) {
+	protected static OkHttpClient.Builder getBaseOkHttpClientBuilder(Context context, AccountManager manager) {
 		return new OkHttpClient.Builder()
 				.addInterceptor(new HeaderInterceptor(manager))
-				.addInterceptor(
-						new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
-								.setLevel(HttpLoggingInterceptor.Level.BODY)
-				)
 				.connectTimeout(TIMEOUT, TimeUnit.SECONDS)
 				.connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
-				.cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024))
-				.build();
+				.cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024));
 	}
 
 	private static final class HeaderInterceptor implements Interceptor {
@@ -70,7 +56,7 @@ public class OkHttpModule {
 		}
 
 		@Override
-		public Response intercept(Interceptor.Chain chain) throws IOException {
+		public Response intercept(Chain chain) throws IOException {
 			Request request = chain.request();
 			Request.Builder builder = request.newBuilder()
 					.addHeader("User-Agent", "VirtualPassport-Client {Android-" + Build.VERSION.SDK_INT + "} {" + Build.DEVICE + "}");
@@ -91,4 +77,5 @@ public class OkHttpModule {
 			return chain.proceed(builder.build());
 		}
 	}
+
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015 Romain
+ *    Copyright 2016 Romain
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package io.romain.passport.logic.modules;
 
 import android.net.Uri;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -28,32 +27,16 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.text.DateFormat;
 
-import javax.inject.Singleton;
+public class BaseGsonModule {
 
-import dagger.Module;
-import dagger.Provides;
-import io.romain.passport.BuildConfig;
-
-@Module
-public class GsonModule {
-
-	@Provides
-	@Singleton
-	Gson getGson() {
-		GsonBuilder gb = new GsonBuilder()
+	protected static GsonBuilder getBaseGsonBuilder() {
+		return new GsonBuilder()
 				.excludeFieldsWithoutExposeAnnotation()
 				.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
 				.registerTypeAdapter(Uri.class, new UriAdapter())
 				.setDateFormat(DateFormat.LONG)
 				.setVersion(1.0);
-
-		if (BuildConfig.DEBUG) {
-			gb.setPrettyPrinting();
-		}
-
-		return gb.create();
 	}
-
 
 	private static class UriAdapter extends TypeAdapter<Uri> {
 		public Uri read(JsonReader reader) throws IOException {

@@ -111,6 +111,7 @@ public class RegisterActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(R.style.Passport_Register);
 		setContentView(R.layout.activity_register);
 
 		setSupportActionBar(mActionBar);

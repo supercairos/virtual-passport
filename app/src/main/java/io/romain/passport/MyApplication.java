@@ -17,12 +17,10 @@ package io.romain.passport;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.StrictMode;
 
 import io.romain.passport.logic.components.ApplicationComponent;
 import io.romain.passport.logic.components.DaggerApplicationComponent;
 import io.romain.passport.logic.modules.ApplicationContextModule;
-import io.romain.passport.utils.Dog;
 
 public class MyApplication extends Application {
 
@@ -35,30 +33,9 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Dog.bury(new Dog.DebugBone());
-
-		if (BuildConfig.DEBUG) {
-			enabledStrictMode();
-		}
-
 		mApplicationComponent = DaggerApplicationComponent.builder()
 				.applicationContextModule(new ApplicationContextModule(this))
 				.build();
-	}
-
-	private void enabledStrictMode() {
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
-				.detectAll() //
-				.penaltyFlashScreen() //
-				.penaltyLog()
-				.build()
-		);
-
-		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-				.detectAll()
-				.penaltyLog()
-				.build()
-		);
 	}
 
 	public static MyApplication getApplication(Context context) {

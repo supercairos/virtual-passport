@@ -39,14 +39,6 @@ public class LandingActivity extends BaseActivity {
 	@Bind(R.id.landing_button_layout)
 	ViewGroup mLandingButtonLayout;
 
-	@Bind(R.id.background)
-	ImageView mBackground;
-	@Bind(R.id.background_blur)
-	ImageView mBackgroundBlur;
-
-//	@Bind(R.id.svg_animated_logo)
-//	SvgLogoView mLogoView;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +48,7 @@ public class LandingActivity extends BaseActivity {
 			UserHelper.next(this);
 		}
 
+		setTheme(R.style.Passport_Home);
 		setContentView(R.layout.activity_landing);
 
 		// Black
@@ -69,19 +62,9 @@ public class LandingActivity extends BaseActivity {
 		// Rest
 		ObjectAnimator a6 = ObjectAnimator.ofFloat(mLandingButtonLayout, View.TRANSLATION_Y, 0.0f).setDuration(CROSSFADE_DURATION);
 		ObjectAnimator a7 = ObjectAnimator.ofFloat(mLandingButtonLayout, View.ALPHA, 1.0f).setDuration(CROSSFADE_DURATION);
-		ObjectAnimator a8 = ObjectAnimator.ofFloat(mBackgroundBlur, View.ALPHA, 1.0f).setDuration(CROSSFADE_DURATION);
-		ObjectAnimator a9 = ObjectAnimator.ofFloat(mBackground, View.ALPHA, 0.0f).setDuration(CROSSFADE_DURATION);
 
 		final AnimatorSet animator = new AnimatorSet();
-		animator.playTogether(a6, a7, a8, a9);
-		animator.addListener(new SimpleAnimatorListener() {
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				mBackground.setVisibility(View.GONE);
-			}
-		});
-
+		animator.playTogether(a6, a7);
 
 		final AnimatorSet set = new AnimatorSet();
 		set.playTogether(a1, a2, a3, a4);

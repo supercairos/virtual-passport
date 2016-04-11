@@ -92,6 +92,7 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(R.style.Passport_Main);
 		setContentView(R.layout.activity_main);
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer

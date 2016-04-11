@@ -1,5 +1,11 @@
 <resources>
 
+    <style name="Passport.LoadingScreen" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="Passport" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- customize the color palette -->
@@ -14,10 +20,14 @@
         <item name="drawerArrowStyle">@style/Widget.Passport.DrawerArrowToggle</item>
     </style>
 
-    <!-- Base application theme. -->
     <style name="Passport.Home">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowBackground">@drawable/welcome</item>
+    </style>
+
+    <style name="Passport.Home.Black">
+        <item name="android:windowBackground">@android:color/black</item>
     </style>
 
     <style name="Passport.Register"/>

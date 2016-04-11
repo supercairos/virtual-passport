@@ -81,6 +81,7 @@ public class LoginActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(R.style.Passport_Login);
 		setContentView(R.layout.activity_login);
 
 		setSupportActionBar(mActionBar);

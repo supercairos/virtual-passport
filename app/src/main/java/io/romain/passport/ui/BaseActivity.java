@@ -26,7 +26,6 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import io.romain.passport.MyApplication;
 import io.romain.passport.logic.helpers.SharedPrefHelper;
-import io.romain.passport.utils.debug.ViewServer;
 import retrofit2.Retrofit;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -60,7 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	private void onPostContentView() {
 		ButterKnife.bind(this);
-		ViewServer.get(this).addWindow(this);
 	}
 
 	@Override
@@ -68,17 +66,4 @@ public abstract class BaseActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		MyApplication.getApplication(this).getApplicationComponent().inject(this);
 	}
-
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		ViewServer.get(this).setFocusedWindow(this);
-	}
-
-	public void onDestroy() {
-		super.onDestroy();
-		ViewServer.get(this).removeWindow(this);
-	}
-
 }

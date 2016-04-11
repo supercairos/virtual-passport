@@ -75,6 +75,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
             throw new RuntimeException("Please provide a city");
         }
 
+        setTheme(R.style.Passport_Detail);
         setContentView(R.layout.activity_city_detail);
         setFragment(SupportMapFragment.newInstance(
                 new GoogleMapOptions()
