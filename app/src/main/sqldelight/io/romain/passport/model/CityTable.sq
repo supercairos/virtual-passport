@@ -1,0 +1,13 @@
+CREATE TABLE cities (
+    _id LONG NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name STRING NOT NULL,
+    favorite BOOLEAN NOT NULL,
+    country STRING NOT NULL,
+    longitude DOUBLE NOT NULL,
+    latitude DOUBLE NOT NULL,
+    picture CLASS('android.net.Uri')
+);
+
+-- Further SQL statements are proceeded by an identifier.
+add_favorite_column:
+ALTER TABLE cities ADD favorite INT NOT NULL DEFAULT 0;

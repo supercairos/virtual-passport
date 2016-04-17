@@ -28,10 +28,10 @@ import android.transition.TransitionValues;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import io.romain.passport.R;
 import io.romain.passport.ui.drawable.MorphDrawable;
+import io.romain.passport.utils.AnimUtils;
 
 
 /**
@@ -135,7 +135,7 @@ public class MorphDialogToFab extends ChangeBounds {
                         .translationY(v.getHeight() / 3)
                         .setStartDelay(0L)
                         .setDuration(50L)
-                        .setInterpolator(AnimationUtils.loadInterpolator(vg.getContext(), android.R.interpolator.fast_out_linear_in))
+                        .setInterpolator(AnimUtils.getFastOutSlowInInterpolator(vg.getContext()))
                         .start();
             }
         }
@@ -143,7 +143,7 @@ public class MorphDialogToFab extends ChangeBounds {
         AnimatorSet transition = new AnimatorSet();
         transition.playTogether(changeBounds, corners, color);
         transition.setDuration(300);
-        transition.setInterpolator(AnimationUtils.loadInterpolator(sceneRoot.getContext(), android.R.interpolator.fast_out_slow_in));
+        transition.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(sceneRoot.getContext()));
 
         return transition;
     }

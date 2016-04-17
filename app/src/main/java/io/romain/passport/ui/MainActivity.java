@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.OnClick;
 import io.romain.passport.R;
+import io.romain.passport.logic.helpers.AccountHelper;
 import io.romain.passport.logic.observables.CitySaverObservable;
 import io.romain.passport.logic.observables.LocationUpdatesObservable;
 import io.romain.passport.logic.observables.ReverseGeocoderObservable;
@@ -89,9 +90,32 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 
 	private CityListFragment mCityListFragment;
 
+	public static void start(Context context) {
+		Intent intent = new Intent(context, MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		String token = AccountHelper.peekToken(mAccountManager);
+		if (TextUtils.isEmpty(token)) {
+			Dog.d("Auto disconnect");
+			AccountHelper.removeAccount(mAccountManager, new AccountHelper.AccountRemovedCallback() {
+				@Override
+				public void onSuccess() {
+					LandingActivity.start(MainActivity.this);
+				}
+
+				@Override
+				public void onFailure() {
+					LandingActivity.start(MainActivity.this);
+				}
+			});
+		}
+
 		setTheme(R.style.Passport_Main);
 		setContentView(R.layout.activity_main);
 
@@ -111,13 +135,14 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 			mDetectedPositionLayout.showNext();
 			mDetectedPositionLayout.setEnabled(false);
 			mRetrofit.create(City.CityService.class)
-					.picture(city.latitude, city.longitude)
+					.picture(city.latitude(), city.longitude())
 					.map(body -> {
 						if (body != null) {
 							try {
 								String picture = body.string();
 								if (!TextUtils.isEmpty(picture)) {
-									city.picture = Uri.parse(picture);
+									// FIXME : Find a better method to do that.
+									return City.create(city.name(), city.country(), city.longitude(), city.latitude(), Uri.parse(picture));
 								}
 							} catch (IOException e) {
 								Dog.e(e, "IOException");
@@ -133,7 +158,7 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 						mDetectedPositionLayout.showPrevious();
 						mDetectedPositionLayout.setEnabled(true);
 						mDetectedPositionLayout.setVisibility(View.GONE);
-						Snackbar.make(mFabCoordinatorLayout, getString(R.string.city_saved_successfully, city.name), Snackbar.LENGTH_SHORT).show();
+						Snackbar.make(mFabCoordinatorLayout, getString(R.string.city_saved_successfully, city.name()), Snackbar.LENGTH_SHORT).show();
 					}, throwable -> {
 						Dog.e(throwable, "An error occurred :'(");
 						Toast.makeText(MainActivity.this, R.string.no_internet_connection, Toast.LENGTH_LONG).show();
@@ -176,9 +201,9 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 
 						Cursor c = getContentResolver().query(
 								PassportContentProvider.Cities.CONTENT_URI,
-								City._PROJECTION,
-								City.CityColumns.LATITUDE + " < ? AND " + City.CityColumns.LONGITUDE + " < ? AND " +
-										City.CityColumns.LATITUDE + " > ? AND " + City.CityColumns.LONGITUDE + " > ?",
+								null,
+								City.LATITUDE + " < ? AND " + City.LONGITUDE + " < ? AND " +
+										City.LATITUDE + " > ? AND " + City.LONGITUDE + " > ?",
 								new String[]{
 										String.valueOf(address.getLatitude() + delta_lat),
 										String.valueOf(address.getLongitude() + delta_lon),
@@ -187,15 +212,23 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 								},
 								null);
 
-						return c != null && c.getCount() == 0;
+						if (c != null) {
+							int count = c.getCount();
+							c.close();
+							return count == 0;
+						} else {
+							return false;
+						}
 
 					})
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(address -> {
-						mDetectedPositionAvailableLayout.setTag(R.id.data, new City(address.getLocality(), address.getCountryName(), address.getLatitude(), address.getLongitude()));
-						mDetectedPositionAvailableTextView.setText(getString(R.string.main_are_you_in, address.getLocality()));
+						if(mDetectedPositionAvailableLayout != null) {
+							mDetectedPositionAvailableLayout.setTag(R.id.data, City.create(address.getLocality(), address.getCountryName(), address.getLongitude(), address.getLatitude()));
+							mDetectedPositionAvailableTextView.setText(getString(R.string.main_are_you_in, address.getLocality()));
 
-						mDetectedPositionLayout.setVisibility(View.VISIBLE);
+							mDetectedPositionLayout.setVisibility(View.VISIBLE);
+						}
 					}, throwable -> {
 						Dog.e(throwable, "An error occurred :'(");
 					});
@@ -264,7 +297,7 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 				switch (resultCode) {
 					case RESULT_OK:
 						City city = data.getParcelableExtra(AddCityActivity.EXTRA_CITY_RESULT);
-						Snackbar.make(mFabCoordinatorLayout, getString(R.string.city_saved_successfully, city.name), Snackbar.LENGTH_SHORT).show();
+						Snackbar.make(mFabCoordinatorLayout, getString(R.string.city_saved_successfully, city.name()), Snackbar.LENGTH_SHORT).show();
 						break;
 					case RESULT_CANCELED:
 						break;

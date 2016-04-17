@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -33,7 +34,6 @@ import android.text.TextUtils;
 import android.transition.Transition;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -58,6 +58,7 @@ import io.romain.passport.model.CityAutocomplete;
 import io.romain.passport.ui.adaptater.CitySearchAdapter;
 import io.romain.passport.ui.transitions.FabDialogMorphSetup;
 import io.romain.passport.ui.views.LocationAutocompleteTextView;
+import io.romain.passport.utils.AnimUtils;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleAnimatorListener;
 import io.romain.passport.utils.SimpleTextWatcher;
@@ -69,399 +70,401 @@ import rx.schedulers.Schedulers;
 
 public class AddCityActivity extends LocationPermissionActivity {
 
-    private static final int REQUEST_CHECK_SETTINGS = 1222;
+	private static final int REQUEST_CHECK_SETTINGS = 1222;
 
-    private static final long LOCATION_REQUEST_TIMEOUT = 5L * 60L * 1000L; // request for at most 5 minutes
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10L * 1000L; // 10s
-    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
-    private static final LocationRequest sLocationRequest = new LocationRequest()
-            // Sets the desired interval for active location updates. This interval is
-            // inexact. You may not receive updates at all if no location sources are available, or
-            // you may receive them slower than requested. You may also receive updates faster than
-            // requested if other applications are requesting location at a faster interval.
-            .setInterval(UPDATE_INTERVAL_IN_MILLISECONDS)
-            .setExpirationDuration(LOCATION_REQUEST_TIMEOUT)
+	private static final long LOCATION_REQUEST_TIMEOUT = 5L * 60L * 1000L; // request for at most 5 minutes
+	private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10L * 1000L; // 10s
+	private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+	private static final LocationRequest sLocationRequest = new LocationRequest()
+			// Sets the desired interval for active location updates. This interval is
+			// inexact. You may not receive updates at all if no location sources are available, or
+			// you may receive them slower than requested. You may also receive updates faster than
+			// requested if other applications are requesting location at a faster interval.
+			.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS)
+			.setExpirationDuration(LOCATION_REQUEST_TIMEOUT)
 
-            // Sets the fastest rate for active location updates. This interval is exact, and your
-            // application will never receive updates faster than this value.
-            .setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS)
-            .setNumUpdates(5)
-            .setPriority(LocationRequest.PRIORITY_LOW_POWER);
+			// Sets the fastest rate for active location updates. This interval is exact, and your
+			// application will never receive updates faster than this value.
+			.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS)
+			.setNumUpdates(5)
+			.setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
-    public static final String EXTRA_CITY_RESULT = "extra_city_result";
-    public static final String EXTRA_INITIAL_TEXT = "extra_initial_text";
-    private Subscription mSubscription;
+	public static final String EXTRA_CITY_RESULT = "extra_city_result";
+	public static final String EXTRA_INITIAL_TEXT = "extra_initial_text";
 
-    public static LocationRequest getLocationRequest() {
-        return sLocationRequest;
-    }
+	private Subscription mSubscription;
 
-    @Bind(R.id.dialog_root)
-    ViewGroup mRoot;
+	public static LocationRequest getLocationRequest() {
+		return sLocationRequest;
+	}
 
-    @Bind(R.id.dialog_loading)
-    ProgressBar mLoading;
+	@Bind(R.id.dialog_root)
+	ViewGroup mRoot;
 
-    @Bind(R.id.dialog_container)
-    ViewGroup mContainer;
+	@Bind(R.id.dialog_loading)
+	ProgressBar mLoading;
 
-    @Bind(R.id.add_city_city)
-    LocationAutocompleteTextView mEditText;
+	@Bind(R.id.dialog_container)
+	ViewGroup mContainer;
 
-    @Bind(R.id.add_city_ok)
-    Button mValidateButton;
+	@Bind(R.id.add_city_city)
+	LocationAutocompleteTextView mEditText;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_city);
-        FabDialogMorphSetup.setupSharedElementTransitions(
-                this,
-                mRoot,
-                getResources().getDimensionPixelSize(R.dimen.dialog_corners)
-        );
+	@Bind(R.id.add_city_ok)
+	Button mValidateButton;
 
-        Dog.d("Main thread is : " + Looper.getMainLooper().getThread().getName());
-        final CitySearchAdapter adapter = new CitySearchAdapter(this);
-        mEditText.setAdapter(adapter);
-        mEditText.setOnItemClickListener((parent, view, position, id) -> {
-            showLoadingSpinner();
-            CityAutocomplete autocomplete = (CityAutocomplete) mEditText.getAdapter().getItem(position);
-            unsubscribe();
-            mSubscription = mRetrofit.create(City.CityService.class)
-                    .resolve(autocomplete.id)
-                    .subscribeOn(Schedulers.io())
-                    .map(city -> CitySaverObservable.save(this, city))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(city -> {
-                        dismiss(Activity.RESULT_OK, city);
-                    }, throwable -> {
-                        hideLoadingSpinner();
-                    });
-        });
-        mEditText.setDrawableListener((text, touched) -> {
-            switch (touched) {
-                case LocationAutocompleteTextView.DRAWABLE_RIGHT:
-                    getUserLocation();
-                    return true;
-            }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_add_city);
+		FabDialogMorphSetup.setupSharedElementTransitions(
+				this,
+				mRoot,
+				getResources().getDimensionPixelSize(R.dimen.dialog_corners)
+		);
 
-            return false;
-        });
-        mEditText.setThreshold(2);
-        mEditText.addTextChangedListener(new SimpleTextWatcher() {
+		Dog.d("Main thread is : " + Looper.getMainLooper().getThread().getName());
+		final CitySearchAdapter adapter = new CitySearchAdapter(this);
+		mEditText.setAdapter(adapter);
+		mEditText.setOnItemClickListener((parent, view, position, id) -> {
+			showLoadingSpinner();
+			CityAutocomplete autocomplete = (CityAutocomplete) mEditText.getAdapter().getItem(position);
+			unsubscribe();
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                mValidateButton.setEnabled(s.length() > 0);
-            }
-        });
+			mEditText.setText(autocomplete.name());
+			mSubscription = mRetrofit.create(City.CityService.class)
+					.resolve(autocomplete.id())
+					.subscribeOn(Schedulers.io())
+					.map(city -> CitySaverObservable.save(this, city))
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(city -> {
+						dismiss(Activity.RESULT_OK, city);
+					}, throwable -> {
+						Dog.e(throwable, "An error occurred :'(");
+						hideLoadingSpinner();
+					});
+		});
+		mEditText.setDrawableListener((text, touched) -> {
+			switch (touched) {
+				case LocationAutocompleteTextView.DRAWABLE_RIGHT:
+					getUserLocation();
+					return true;
+			}
 
-        String initial = getIntent().getStringExtra(EXTRA_INITIAL_TEXT);
-        if(!TextUtils.isEmpty(initial)) {
-            mEditText.setText(initial);
-        }
-    }
+			return false;
+		});
+		mEditText.setThreshold(2);
+		mEditText.addTextChangedListener(new SimpleTextWatcher() {
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        super.onConnected(bundle);
-        if (getWindow().getSharedElementEnterTransition() != null) {
-            getWindow().getSharedElementEnterTransition().addListener(new SimpleTransitionListener() {
-                @Override
-                public void onTransitionEnd(Transition transition) {
-                    if (!isResolvingError()) {
-                        setLocationPermission();
-                    }
-                }
-            });
-        } else {
-            if (!isResolvingError()) {
-                setLocationPermission();
-            }
-        }
-    }
+			@Override
+			public void afterTextChanged(Editable s) {
+				mValidateButton.setEnabled(s.length() > 0);
+			}
+		});
 
-    private void getUserLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            showLoadingSpinner();
-            unsubscribe();
-            mSubscription = GoogleApiObservable
-                    .checkLocation(getGoogleApiClient(), getLocationRequest())
-                    .doOnNext(result -> {
-                        final Status status = result.getStatus();
-                        switch (status.getStatusCode()) {
-                            case LocationSettingsStatusCodes.SUCCESS:
-                                // All location settings are satisfied. The client can initialize location
-                                // requests here.
-                                Dog.i("All location settings are satisfied.");
-                                // Our work is done here
-                                break;
-                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                                // Location settings are not satisfied. But could be fixed by showing the user
-                                // a dialog.
-                                Dog.i("Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
-                                try {
-                                    // Show the dialog by calling startResolutionForResult(),
-                                    // and check the result in onActivityResult().
-                                    status.startResolutionForResult(
-                                            AddCityActivity.this,
-                                            REQUEST_CHECK_SETTINGS
-                                    );
-                                } catch (IntentSender.SendIntentException e) {
-                                    // Ignore the error.
-                                    Dog.i("PendingIntent unable to execute request.");
-                                }
-                                break;
-                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                // Location settings are not satisfied. However, we have no way to fix the
-                                // settings so we won't show the dialog.
-                                Dog.i("Location settings are inadequate, and cannot be fixed here. Dialog not created.");
-                                hideLocationIcon();
-                                break;
-                        }
-                    })
-                    .flatMap(request -> LocationUpdatesObservable.create(getGoogleApiClient(), getLocationRequest()))
-                    .timeout(60L, TimeUnit.SECONDS)
-                    .filter(location -> location.getAccuracy() < 5000)
-                    .take(1)
-                    .flatMap(location -> Observable.zip(
-                            ReverseGeocoderObservable.create(AddCityActivity.this, location),
-                            mRetrofit.create(City.CityService.class).picture(location.getLatitude(), location.getLongitude()),
-                            (address1, body) -> {
-                                if (body != null) {
-                                    try {
-                                        String picture = body.string();
-                                        if (!TextUtils.isEmpty(picture)) {
-                                            return new City(
-                                                    address1.getLocality(),
-                                                    address1.getCountryName(),
-                                                    address1.getLatitude(),
-                                                    address1.getLongitude(),
-                                                    picture
-                                            );
-                                        }
-                                    } catch (IOException e) {
-                                        Dog.e(e, "IOException");
-                                    }
-                                }
+		String initial = getIntent().getStringExtra(EXTRA_INITIAL_TEXT);
+		if (!TextUtils.isEmpty(initial)) {
+			mEditText.setText(initial);
+		}
+	}
 
-                                return new City(
-                                        address1.getLocality(),
-                                        address1.getCountryName(),
-                                        address1.getLatitude(),
-                                        address1.getLongitude(),
-                                        null
-                                );
-                            })
-                            .subscribeOn(Schedulers.io())
-                    )
-                    .filter(city -> city != null)
-                    .filter(city -> !TextUtils.isEmpty(city.name) && !TextUtils.isEmpty(city.country))
-                    .observeOn(Schedulers.io())
-                    .map(city -> CitySaverObservable.save(this, city))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(city -> {
-                        dismiss(Activity.RESULT_OK, city);
-                    }, throwable -> {
-                        Dog.e(throwable, "An error occurred :'(");
-                        hideLoadingSpinner();
-                    });
+	@Override
+	public void onConnected(Bundle bundle) {
+		super.onConnected(bundle);
+		if (getWindow().getSharedElementEnterTransition() != null) {
+			getWindow().getSharedElementEnterTransition().addListener(new SimpleTransitionListener() {
+				@Override
+				public void onTransitionEnd(Transition transition) {
+					if (!isResolvingError()) {
+						setLocationPermission();
+					}
+				}
+			});
+		} else {
+			if (!isResolvingError()) {
+				setLocationPermission();
+			}
+		}
+	}
 
-        } else {
-            setLocationPermission();
-        }
-    }
+	private void getUserLocation() {
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+				ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+			showLoadingSpinner();
+			unsubscribe();
+			mSubscription = GoogleApiObservable
+					.checkLocation(getGoogleApiClient(), getLocationRequest())
+					.doOnNext(result -> {
+						final Status status = result.getStatus();
+						switch (status.getStatusCode()) {
+							case LocationSettingsStatusCodes.SUCCESS:
+								// All location settings are satisfied. The client can initialize location
+								// requests here.
+								Dog.i("All location settings are satisfied.");
+								// Our work is done here
+								break;
+							case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+								// Location settings are not satisfied. But could be fixed by showing the user
+								// a dialog.
+								Dog.i("Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+								try {
+									// Show the dialog by calling startResolutionForResult(),
+									// and check the result in onActivityResult().
+									status.startResolutionForResult(
+											AddCityActivity.this,
+											REQUEST_CHECK_SETTINGS
+									);
+								} catch (IntentSender.SendIntentException e) {
+									// Ignore the error.
+									Dog.i("PendingIntent unable to execute request.");
+								}
+								break;
+							case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+								// Location settings are not satisfied. However, we have no way to fix the
+								// settings so we won't show the dialog.
+								Dog.i("Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+								hideLocationIcon();
+								break;
+						}
+					})
+					.flatMap(request -> LocationUpdatesObservable.create(getGoogleApiClient(), getLocationRequest()))
+					.timeout(60L, TimeUnit.SECONDS)
+					.filter(location -> location.getAccuracy() < 5000)
+					.take(1)
+					.flatMap(location -> Observable.zip(
+							ReverseGeocoderObservable.create(AddCityActivity.this, location),
+							mRetrofit.create(City.CityService.class).picture(location.getLatitude(), location.getLongitude()),
+							(address1, body) -> {
+								if (body != null) {
+									try {
+										String picture = body.string();
+										if (!TextUtils.isEmpty(picture)) {
+											return City.create(
+													address1.getLocality(),
+													address1.getCountryName(),
+													address1.getLatitude(),
+													address1.getLongitude(),
+													Uri.parse(picture)
+											);
+										}
+									} catch (IOException e) {
+										Dog.e(e, "IOException");
+									}
+								}
 
-    @OnClick({R.id.add_city_cancel})
-        // R.id.dialog_outer_frame,
-    void dismiss() {
-        dismiss(Activity.RESULT_CANCELED, null);
-    }
+								return City.create(
+										address1.getLocality(),
+										address1.getCountryName(),
+										address1.getLatitude(),
+										address1.getLongitude()
+								);
+							})
+							.subscribeOn(Schedulers.io())
+					)
+					.filter(city -> city != null)
+					.filter(city -> !TextUtils.isEmpty(city.name()) && !TextUtils.isEmpty(city.country()))
+					.observeOn(Schedulers.io())
+					.map(city -> CitySaverObservable.save(this, city))
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(city -> {
+						dismiss(Activity.RESULT_OK, city);
+					}, throwable -> {
+						Dog.e(throwable, "An error occurred :'(");
+						hideLoadingSpinner();
+					});
 
-    private void dismiss(int result, City city) {
-        if (city != null) {
-            setResult(result, new Intent().putExtra(EXTRA_CITY_RESULT, city));
-        } else {
-            setResult(result);
-        }
-        finishAfterTransition();
-    }
+		} else {
+			setLocationPermission();
+		}
+	}
 
-    @OnClick(R.id.add_city_ok)
-    public void onValidate() {
-        showLoadingSpinner();
-        unsubscribe();
-        mSubscription = GeocoderObservable.create(this, mEditText.getText().toString())
-                .subscribeOn(Schedulers.io())
-                .flatMap(address -> Observable.zip(
-                        Observable.just(address),
-                        mRetrofit.create(City.CityService.class).picture(address.getLatitude(), address.getLongitude()),
-                        (address1, body) -> {
-                            if (body != null) {
-                                try {
-                                    String picture = body.string();
-                                    if (!TextUtils.isEmpty(picture)) {
-                                        return new City(
-                                                address1.getLocality(),
-                                                address1.getCountryName(),
-                                                address1.getLatitude(),
-                                                address1.getLongitude(),
-                                                picture
-                                        );
-                                    }
-                                } catch (IOException e) {
-                                    Dog.e(e, "IOException");
-                                }
-                            }
+	@OnClick({R.id.add_city_cancel})
+		// R.id.dialog_outer_frame,
+	void dismiss() {
+		dismiss(Activity.RESULT_CANCELED, null);
+	}
 
-                            return new City(
-                                    address1.getLocality(),
-                                    address1.getCountryName(),
-                                    address1.getLatitude(),
-                                    address1.getLongitude(),
-                                    null
-                            );
-                        })
-                        .subscribeOn(Schedulers.io())
-                )
-                .filter(city -> city != null)
-                .filter(city -> !TextUtils.isEmpty(city.name) && !TextUtils.isEmpty(city.country))
-                .map(city -> CitySaverObservable.save(this, city))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(city -> {
-                    dismiss(Activity.RESULT_OK, city);
-                }, throwable -> {
-                    Dog.e(throwable, "An error occurred :'(");
-                    hideLoadingSpinner();
-                });
-    }
+	private void dismiss(int result, City city) {
+		if (city != null) {
+			setResult(result, new Intent().putExtra(EXTRA_CITY_RESULT, city));
+		} else {
+			setResult(result);
+		}
+		finishAfterTransition();
+	}
 
-    private void unsubscribe() {
-        if (mSubscription != null) {
-            mSubscription.unsubscribe();
-        }
-    }
+	@OnClick(R.id.add_city_ok)
+	public void onValidate() {
+		showLoadingSpinner();
+		unsubscribe();
+		mSubscription = GeocoderObservable.create(this, mEditText.getText().toString())
+				.subscribeOn(Schedulers.io())
+				.flatMap(address -> Observable.zip(
+						Observable.just(address),
+						mRetrofit.create(City.CityService.class).picture(address.getLatitude(), address.getLongitude()),
+						(address1, body) -> {
+							if (body != null) {
+								try {
+									String picture = body.string();
+									if (!TextUtils.isEmpty(picture)) {
+										return City.create(
+												address1.getLocality(),
+												address1.getCountryName(),
+												address1.getLatitude(),
+												address1.getLongitude(),
+												Uri.parse(picture)
+										);
+									}
+								} catch (IOException e) {
+									Dog.e(e, "IOException");
+								}
+							}
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        unsubscribe();
-    }
+							return City.create(
+									address1.getLocality(),
+									address1.getCountryName(),
+									address1.getLatitude(),
+									address1.getLongitude()
+							);
+						})
+						.subscribeOn(Schedulers.io())
+				)
+				.filter(city -> city != null)
+				.filter(city -> !TextUtils.isEmpty(city.name()) && !TextUtils.isEmpty(city.country()))
+				.map(city -> CitySaverObservable.save(this, city))
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(city -> {
+					dismiss(Activity.RESULT_OK, city);
+				}, throwable -> {
+					Dog.e(throwable, "An error occurred :'(");
+					hideLoadingSpinner();
+				});
+	}
 
-    private void hideLoadingSpinner() {
-        ObjectAnimator a = ObjectAnimator.ofFloat(mLoading, View.ALPHA, 1, 0);
-        a.addListener(new SimpleAnimatorListener() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mLoading.setVisibility(View.GONE);
-            }
-        });
-        ObjectAnimator b = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0, 1);
-        b.addListener(new SimpleAnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                mContainer.setAlpha(0);
-                mContainer.setVisibility(View.VISIBLE);
-                mEditText.requestFocus();
-                mEditText.setError(getString(R.string.add_city_error));
+	private void unsubscribe() {
+		if (mSubscription != null) {
+			mSubscription.unsubscribe();
+		}
+	}
 
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
-            }
-        });
+	@Override
+	public void onStop() {
+		super.onStop();
+		unsubscribe();
+	}
 
-        AnimatorSet transition = new AnimatorSet();
-        transition.playTogether(a, b);
-        transition.setDuration(300);
-        transition.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.fast_out_slow_in));
+	private void hideLoadingSpinner() {
+		ObjectAnimator a = ObjectAnimator.ofFloat(mLoading, View.ALPHA, 1, 0);
+		a.addListener(new SimpleAnimatorListener() {
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				mLoading.setVisibility(View.GONE);
+			}
+		});
+		ObjectAnimator b = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0, 1);
+		b.addListener(new SimpleAnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				mContainer.setAlpha(0);
+				mContainer.setVisibility(View.VISIBLE);
+				mEditText.requestFocus();
+				mEditText.setError(getString(R.string.add_city_error));
 
-        transition.start();
-    }
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+			}
+		});
 
-    private void showLoadingSpinner() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+		AnimatorSet transition = new AnimatorSet();
+		transition.playTogether(a, b);
+		transition.setDuration(300);
+		transition.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(this));
 
-        ObjectAnimator a = ObjectAnimator.ofFloat(mLoading, View.ALPHA, 0, 1);
-        a.addListener(new SimpleAnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                mLoading.setAlpha(0);
-                mLoading.setVisibility(View.VISIBLE);
-            }
-        });
-        ObjectAnimator b = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 1, 0);
-        b.addListener(new SimpleAnimatorListener() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mContainer.setVisibility(View.INVISIBLE);
-            }
-        });
+		transition.start();
+	}
 
-        AnimatorSet transition = new AnimatorSet();
-        transition.playTogether(a, b);
-        transition.setDuration(300);
-        transition.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.fast_out_slow_in));
+	private void showLoadingSpinner() {
+		View view = getCurrentFocus();
+		if (view != null) {
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
 
-        transition.start();
-    }
+		ObjectAnimator a = ObjectAnimator.ofFloat(mLoading, View.ALPHA, 0, 1);
+		a.addListener(new SimpleAnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				mLoading.setAlpha(0);
+				mLoading.setVisibility(View.VISIBLE);
+			}
+		});
+		ObjectAnimator b = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 1, 0);
+		b.addListener(new SimpleAnimatorListener() {
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				mContainer.setVisibility(View.INVISIBLE);
+			}
+		});
 
-    private void hideLocationIcon() {
-        mEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-    }
+		AnimatorSet transition = new AnimatorSet();
+		transition.playTogether(a, b);
+		transition.setDuration(300);
+		transition.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(this));
 
-    private void showLocationIcon() {
-        mEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_location_24dp, 0);
-    }
+		transition.start();
+	}
 
-    @Override
-    public void onBackPressed() {
-        dismiss();
-    }
+	private void hideLocationIcon() {
+		mEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+	}
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        // All required changes were successfully made
-                        Dog.i("User agreed to make required location settings changes.");
-                        getUserLocation();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        // The user was asked to change settings, but chose not
-                        Dog.i("User chose not to make required location settings changes.");
-                        hideLocationIcon();
-                    default:
-                        break;
-                }
-                break;
-        }
-    }
+	private void showLocationIcon() {
+		mEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_location_24dp, 0);
+	}
 
-    @Override
-    protected void onLocationDenied(boolean isRecoverable) {
-        if (!isRecoverable) {
-            hideLocationIcon();
-        } else {
-            showLocationIcon();
-        }
-    }
+	@Override
+	public void onBackPressed() {
+		dismiss();
+	}
 
-    @Override
-    protected void onLocationGranted() {
-        showLocationIcon();
-    }
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+			case REQUEST_CHECK_SETTINGS:
+				switch (resultCode) {
+					case Activity.RESULT_OK:
+						// All required changes were successfully made
+						Dog.i("User agreed to make required location settings changes.");
+						getUserLocation();
+						break;
+					case Activity.RESULT_CANCELED:
+						// The user was asked to change settings, but chose not
+						Dog.i("User chose not to make required location settings changes.");
+						hideLocationIcon();
+					default:
+						break;
+				}
+				break;
+		}
+	}
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+	@Override
+	protected void onLocationDenied(boolean isRecoverable) {
+		if (!isRecoverable) {
+			hideLocationIcon();
+		} else {
+			showLocationIcon();
+		}
+	}
+
+	@Override
+	protected void onLocationGranted() {
+		showLocationIcon();
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
 }

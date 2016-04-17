@@ -1,5 +1,6 @@
 package io.romain.passport.logic.services.gcm;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -31,6 +32,11 @@ public class RegistrationIntentService extends BaseIntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		Account account = AccountHelper.getAccount(mAccountManager);
+		if(account == null) {
+			return;
+		}
+
 		try {
 			// In the (unlikely) event that multiple refresh operations occur simultaneously,
 			// ensure that they are processed sequentially.
@@ -44,7 +50,7 @@ public class RegistrationIntentService extends BaseIntentService {
 				// [END get_token]
 				Dog.i("GCM Registration Token: " + token);
 
-				sendRegistrationToServer(token);
+				sendRegistrationToServer(token, account);
 
 				// Subscribe to topic channels
 				subscribeTopics(token);
@@ -71,10 +77,10 @@ public class RegistrationIntentService extends BaseIntentService {
 	 *
 	 * @param regid The new token.
 	 */
-	private void sendRegistrationToServer(String regid) {
+	private void sendRegistrationToServer(String regid, Account account) {
 		Dog.d("Got token : %s", regid);
 		try {
-			String userId = mAccountManager.getUserData(AccountHelper.getAccount(mAccountManager), AccountConstants.KEY_SERVER_ID);
+			String userId = mAccountManager.getUserData(account, AccountConstants.KEY_SERVER_ID);
 			if (!TextUtils.isEmpty(userId)) {
 				Response<User> user = mRetrofit.create(User.UserService.class).registerGcm(regid).execute();
 				if (user.isSuccessful()) {

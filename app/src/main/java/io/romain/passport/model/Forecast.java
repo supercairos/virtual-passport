@@ -15,7 +15,12 @@
  */
 package io.romain.passport.model;
 
-import com.google.gson.annotations.Expose;
+
+import android.os.Parcelable;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import io.romain.passport.model.wrappers.WeatherWrapper;
@@ -23,7 +28,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public class Forecast {
+@AutoValue
+public abstract class Forecast implements Parcelable {
 
     // api endpoint
     private static final String MODULE = "/weather";
@@ -31,21 +37,21 @@ public class Forecast {
     // endpoints
     private static final String GET_FORECAST = MODULE + "/forecast/{latitude}/{longitude}";
 
-    @Expose
     @SerializedName("min")
-    public float min;
+    public abstract float min();
 
-    @Expose
     @SerializedName("max")
-    public float max;
+    public abstract float max();
 
-    @Expose
     @SerializedName("date")
-    public long date;
+    public abstract long date();
 
-    @Expose
     @SerializedName("icon")
-    public int icon;
+    public abstract int icon();
+
+	public static TypeAdapter<Forecast> fromJson(Gson gson) {
+		return new AutoValue_Forecast.GsonTypeAdapter(gson);
+	}
 
     public interface ForecastService {
         @GET(GET_FORECAST)

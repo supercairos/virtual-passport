@@ -28,10 +28,10 @@ import android.transition.TransitionValues;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import io.romain.passport.R;
 import io.romain.passport.ui.drawable.MorphDrawable;
+import io.romain.passport.utils.AnimUtils;
 
 /**
  * A transition that morphs a circle into a rectangle, changing it's background color.
@@ -146,8 +146,7 @@ public class MorphFabToDialog extends ChangeBounds {
 						.translationY(0f)
 						.setDuration(150)
 						.setStartDelay(150)
-						.setInterpolator(AnimationUtils.loadInterpolator(vg.getContext(),
-								android.R.interpolator.fast_out_slow_in));
+						.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(vg.getContext()));
 				offset *= 1.8f;
 			}
 		}
@@ -155,8 +154,7 @@ public class MorphFabToDialog extends ChangeBounds {
 		AnimatorSet transition = new AnimatorSet();
 		transition.playTogether(changeBounds, corners, color);
 		transition.setDuration(300);
-		transition.setInterpolator(AnimationUtils.loadInterpolator(sceneRoot.getContext(),
-				android.R.interpolator.fast_out_slow_in));
+		transition.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(sceneRoot.getContext()));
 		return transition;
 	}
 

@@ -93,29 +93,34 @@ public final class AccountHelper {
 	@SuppressWarnings("deprecation")
 	public static void removeAccount(final AccountManager manager, final AccountRemovedCallback callback) {
 		Dog.d("Loging out");
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-			manager.removeAccount(getAccount(manager), null, future -> {
-				try {
-					Bundle bundle = future.getResult();
-					if (bundle.getBoolean(AccountManager.KEY_BOOLEAN_RESULT, false)) {
-						callback.onSuccess();
+		Account account = getAccount(manager);
+		if(account != null) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+				manager.removeAccount(account, null, future -> {
+					try {
+						Bundle bundle = future.getResult();
+						if (bundle.getBoolean(AccountManager.KEY_BOOLEAN_RESULT, false)) {
+							callback.onSuccess();
+						}
+					} catch (OperationCanceledException | IOException | AuthenticatorException e) {
+						Dog.e(e, "Failed to delete the account... :(");
+						callback.onFailure();
 					}
-				} catch (OperationCanceledException | IOException | AuthenticatorException e) {
-					Dog.e(e, "Failed to delete the account... :(");
-					callback.onFailure();
-				}
-			}, null);
+				}, null);
+			} else {
+				manager.removeAccount(account, future -> {
+					try {
+						if (future.getResult()) {
+							callback.onSuccess();
+						}
+					} catch (OperationCanceledException | IOException | AuthenticatorException e) {
+						Dog.e(e, "Failed to delete the account... :(");
+						callback.onFailure();
+					}
+				}, null);
+			}
 		} else {
-			manager.removeAccount(getAccount(manager), future -> {
-				try {
-					if (future.getResult()) {
-						callback.onSuccess();
-					}
-				} catch (OperationCanceledException | IOException | AuthenticatorException e) {
-					Dog.e(e, "Failed to delete the account... :(");
-					callback.onFailure();
-				}
-			}, null);
+			callback.onFailure();
 		}
 	}
 

@@ -15,7 +15,11 @@
  */
 package io.romain.passport.model;
 
-import com.google.gson.annotations.Expose;
+import android.os.Parcelable;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -24,8 +28,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-
-public class CityAutocomplete {
+@AutoValue
+public abstract class CityAutocomplete implements Parcelable{
 
     // api endpoint
     private static final String MODULE = "/cities";
@@ -33,22 +37,18 @@ public class CityAutocomplete {
     // endpoints
     private static final String GET_FORECAST = MODULE + "/search";
 
-    @Expose
     @SerializedName("name")
-    public String name;
+    public abstract String name();
 
-    @Expose
     @SerializedName("placeid")
-    public String id;
+    public abstract String id();
 
+    public static TypeAdapter<CityAutocomplete> fromJson(Gson gson) {
+        return new AutoValue_CityAutocomplete.GsonTypeAdapter(gson);
+    }
 
     public interface CityAutocompleteService {
         @GET(GET_FORECAST)
         Call<List<CityAutocomplete>> complete(@Query("query") String name);
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

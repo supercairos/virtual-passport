@@ -36,7 +36,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Passport">
+        android:theme="@style/Passport.LoadingScreen">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDM-L8egXEs9NL48t7ZhDuqW9By2XPXXFc"/>
@@ -51,15 +52,14 @@
             android:name=".ui.LandingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Passport.Home.Black"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.RegisterActivity"
             android:label="@string/app_name"
             android:parentActivityName=".ui.LandingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Passport.LoadingScreen">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.romain.passport.ui.LandingActivity"/>
@@ -68,8 +68,7 @@
             android:name=".ui.LoginActivity"
             android:label="@string/app_name"
             android:parentActivityName=".ui.LandingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Passport.LoadingScreen">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.romain.passport.ui.LandingActivity"/>
@@ -86,36 +85,35 @@
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:parentActivityName=".ui.LandingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Passport.LoadingScreen">
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.romain.passport.ui.LandingActivity"/>
         </activity>
 
+        <activity-alias
+            android:name=".Launcher"
+            android:label="@string/app_name"
+            android:targetActivity=".ui.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name=".ui.CityDetailActivity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Passport.LoadingScreen">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.romain.passport.ui.MainActivity"/>
         </activity>
 
-        <activity-alias
-            android:name=".Launcher"
-            android:label="@string/app_name"
-            android:targetActivity=".ui.LandingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity-alias>
-
         <provider
-            android:name=".model.database.generated.PassportContentProvider"
+            android:name=".model.database.PassportContentProvider"
             android:authorities="io.romain.passport"
             android:exported="false"/>
 

@@ -3,6 +3,7 @@ package io.romain.passport.ui;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,7 +16,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import io.romain.passport.R;
 import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.logic.helpers.UserHelper;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleAnimatorListener;
 
@@ -39,13 +39,20 @@ public class LandingActivity extends BaseActivity {
 	@Bind(R.id.landing_button_layout)
 	ViewGroup mLandingButtonLayout;
 
+	public static void start(Context context) {
+		Intent intent = new Intent(context, LandingActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		String token = AccountHelper.peekToken(mAccountManager);
 		if (!TextUtils.isEmpty(token)) {
 			Dog.d("Auto login : %s", token.substring(0, token.length() < 10 ? token.length() : 10));
-			UserHelper.next(this);
+			MainActivity.start(this);
 		}
 
 		setTheme(R.style.Passport_Home);

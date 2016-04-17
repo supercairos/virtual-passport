@@ -27,7 +27,7 @@ public class CitySaverObservable {
     public static City save(final Context context, City input) {
         ContentResolver resolver = context.getContentResolver();
         Dog.d("Inserted (Thread ID is : " + Thread.currentThread().getName() + ")");
-        resolver.insert(PassportContentProvider.Cities.CONTENT_URI, input.toContentValues());
+        resolver.insert(PassportContentProvider.Cities.CONTENT_URI, new City.Marshal(input).asContentValues());
 
         return input;
     }

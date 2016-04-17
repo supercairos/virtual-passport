@@ -20,6 +20,7 @@ import android.os.StrictMode;
 import com.facebook.stetho.Stetho;
 
 import io.romain.passport.utils.Dog;
+import io.romain.passport.utils.StethoBone;
 
 public class DebugApplication extends MyApplication {
 
@@ -28,6 +29,7 @@ public class DebugApplication extends MyApplication {
 		super.onCreate();
 
 		Dog.bury(new Dog.DebugBone());
+		Dog.bury(new StethoBone());
 
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
 				.detectAll() //

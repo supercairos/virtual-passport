@@ -22,8 +22,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.transition.ArcMotion;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Interpolator;
+
+import io.romain.passport.utils.AnimUtils;
 
 /**
  * Helper class for setting up Fab <-> Dialog shared element transitions.
@@ -53,15 +53,14 @@ public class FabDialogMorphSetup {
 		motion.setMinimumVerticalAngle(50f);
 
 		int color = activity.getIntent().getIntExtra(EXTRA_SHARED_ELEMENT_START_COLOR, Color.TRANSPARENT);
-		Interpolator interpolator = AnimationUtils.loadInterpolator(activity, android.R.interpolator.fast_out_slow_in);
 
 		MorphFabToDialog enter = new MorphFabToDialog(color, dialogCornerRadius, startCornerRadius);
 		enter.setPathMotion(motion);
-		enter.setInterpolator(interpolator);
+		enter.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(activity));
 
 		MorphDialogToFab exit = new MorphDialogToFab(color, startCornerRadius);
 		exit.setPathMotion(motion);
-		exit.setInterpolator(interpolator);
+		exit.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(activity));
 
 		if (target != null) {
 			enter.addTarget(target);

@@ -94,7 +94,7 @@ public abstract class DrawerActivity extends LocationPermissionActivity {
 			}
 		};
 
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		mDrawerLayout.addDrawerListener(mDrawerToggle);
 		mDrawerNavigation.setNavigationItemSelectedListener(this::onNavItemSelected);
 
 		Account account = AccountHelper.getAccount(mAccountManager);

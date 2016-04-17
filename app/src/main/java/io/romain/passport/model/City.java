@@ -15,220 +15,92 @@
  */
 package io.romain.passport.model;
 
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
+import android.support.annotation.Nullable;
 
-import com.google.gson.annotations.Expose;
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import net.simonvt.schematic.annotation.AutoIncrement;
-import net.simonvt.schematic.annotation.DataType;
-import net.simonvt.schematic.annotation.NotNull;
-import net.simonvt.schematic.annotation.PrimaryKey;
-
+import io.romain.passport.model.database.DatabaseTypeAdapters;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
 
-public class City implements Parcelable {
+@AutoValue
+public abstract class City implements Parcelable, CityTableModel {
 
-    // api endpoint
-    private static final String MODULE = "/cities";
+	// api endpoint
+	private static final String MODULE = "/cities";
 
-    // endpoints
-    private static final String GET_RESOLVE_ID = MODULE + "/resolve/{id}";
-    private static final String GET_PICTURE = MODULE + "/picture/{latitude}/{longitude}";
+	// endpoints
+	private static final String GET_RESOLVE_ID = MODULE + "/resolve/{id}";
+	private static final String GET_PICTURE = MODULE + "/picture/{latitude}/{longitude}";
 
-    private static final String GET_SEARCH = MODULE + "/search";
-    private static final String GET_REVERSE_GEOCODE = MODULE + "/search";
+	public abstract long _id();
 
-    public long id = -1;
+	@SerializedName("name")
+	public abstract String name();
 
-    @Expose
-    @SerializedName("name")
-    public String name;
-    @Expose
-    @SerializedName("country")
-    public String country;
+	@SerializedName("country")
+	public abstract String country();
 
-    @Expose
-    @SerializedName("longitude")
-    public double longitude;
-    @Expose
-    @SerializedName("latitude")
-    public double latitude;
+	@SerializedName("longitude")
+	public abstract double longitude();
 
-    @Expose
-    @SerializedName("picture")
-    public Uri picture;
+	@SerializedName("latitude")
+	public abstract double latitude();
 
+	@SerializedName("picture")
+	@Nullable
+	public abstract Uri picture();
 
-    public City(String locality, String countryName, double latitude, double longitude) {
-        this(locality, countryName, latitude, longitude, null);
-    }
+	public static final Mapper<City> MAPPER = new Mapper<>(City::create, DatabaseTypeAdapters.URI_ADAPTER);
 
-    public City(String locality, String countryName, double latitude, double longitude, String picture) {
-        this.name = locality;
-        this.country = countryName;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        if(picture != null) {
-            this.picture = Uri.parse(picture);
-        }
-    }
+	public interface CityService {
+		@GET(GET_RESOLVE_ID)
+		Observable<City> resolve(@Path("id") String id);
 
-    public interface CityService {
-        @GET(GET_RESOLVE_ID)
-        Observable<City> resolve(@Path("id") String id);
+		@GET(GET_PICTURE)
+		Observable<ResponseBody> picture(@Path("latitude") double latitude, @Path("longitude") double longitude);
+	}
 
-        @GET(GET_PICTURE)
-        Observable<ResponseBody> picture(@Path("latitude") double latitude, @Path("longitude") double longitude);
-    }
+	public static City create(String name, String country, double longitude, double latitude) {
+		return create(-1, name, false, country, longitude, latitude, null);
+	}
 
-    public interface CityColumns {
+	public static City create(String name, boolean favorite, String country, double longitude, double latitude) {
+		return create(-1, name, favorite, country, longitude, latitude, null);
+	}
 
-        @DataType(DataType.Type.INTEGER)
-        @PrimaryKey
-        @AutoIncrement
-        String _ID = BaseColumns._ID;
+	public static City create(String name, String country, double longitude, double latitude, Uri picture) {
+		return create(-1, name, false, country, longitude, latitude, picture);
+	}
 
-        @DataType(DataType.Type.TEXT)
-        @NotNull
-        String NAME = "name";
+	public static City create(String name, boolean favorite, String country, double longitude, double latitude, Uri picture) {
+		return create(-1, name, favorite, country, longitude, latitude, picture);
+	}
 
-        @DataType(DataType.Type.TEXT)
-        @NotNull
-        String COUNTRY = "country";
+	public static City create(long id, String name, boolean favorite, String country, double longitude, double latitude, Uri picture) {
+		return new AutoValue_City(favorite, id, name, country, longitude, latitude, picture);
+	}
 
-        @DataType(DataType.Type.REAL)
-        @NonNull
-        String LATITUDE = "latitude";
+	public static TypeAdapter<City> fromJson(Gson gson) {
+		return new AutoValue_City.GsonTypeAdapter(gson);
+	}
 
-        @DataType(DataType.Type.REAL)
-        @NotNull
-        String LONGITUDE = "longitude";
+	public static final class Marshal extends CityTableMarshal<Marshal> {
+		public Marshal() {
+			super(DatabaseTypeAdapters.URI_ADAPTER);
+		}
 
-        @DataType(DataType.Type.TEXT)
-        String PICTURE = "picture";
-    }
-
-    public static final String[] _PROJECTION = new String[]{
-            CityColumns._ID,
-            CityColumns.NAME,
-            CityColumns.COUNTRY,
-            CityColumns.LONGITUDE,
-            CityColumns.LATITUDE,
-            CityColumns.PICTURE,
-    };
-
-    private static final int ID = 0;
-    private static final int NAME = 1;
-    private static final int COUNTRY = 2;
-    private static final int LONGITUDE = 3;
-    private static final int LATITUDE = 4;
-    private static final int PICTURE = 5;
-
-    public static City fromCursor(Cursor cursor) {
-        City town = new City();
-        town.id = cursor.getLong(ID);
-        town.name = cursor.getString(NAME);
-        town.country = cursor.getString(COUNTRY);
-
-        town.longitude = cursor.getDouble(LONGITUDE);
-        town.latitude = cursor.getDouble(LATITUDE);
-
-        String p = cursor.getString(PICTURE);
-        if (!TextUtils.isEmpty(p)) {
-            town.picture = Uri.parse(p);
-        }
-
-        return town;
-    }
-
-    public Object[] toArray() {
-        Object[] objects = new Object[_PROJECTION.length];
-        objects[ID] = id;
-        objects[NAME] = name;
-        objects[COUNTRY] = country;
-        objects[LONGITUDE] = longitude;
-        objects[LATITUDE] = latitude;
-        objects[PICTURE] = picture;
-
-        return objects;
-    }
-
-    public ContentValues toContentValues() {
-        ContentValues cv = new ContentValues();
-        if (id > 0) {
-            cv.put(CityColumns._ID, id);
-        }
-
-        if (!TextUtils.isEmpty(name)) {
-            cv.put(CityColumns.NAME, name);
-        }
-
-        if (!TextUtils.isEmpty(country)) {
-            cv.put(CityColumns.COUNTRY, country);
-        }
-
-        cv.put(CityColumns.LONGITUDE, longitude);
-        cv.put(CityColumns.LATITUDE, latitude);
-
-        if (picture != null) {
-            cv.put(CityColumns.PICTURE, picture.toString());
-        }
-
-        return cv;
-    }
-
-    @Override
-    public String toString() {
-        return name + ", " + country;
-    }
-
-    // ## GENERATED PARCELABLE
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
-        dest.writeString(this.name);
-        dest.writeString(this.country);
-        dest.writeDouble(this.longitude);
-        dest.writeDouble(this.latitude);
-        dest.writeParcelable(this.picture, 0);
-    }
-
-    private City() {
-        super();
-    }
-
-    private City(Parcel in) {
-        this.id = in.readLong();
-        this.name = in.readString();
-        this.country = in.readString();
-        this.longitude = in.readDouble();
-        this.latitude = in.readDouble();
-        this.picture = in.readParcelable(Uri.class.getClassLoader());
-    }
-
-    public static final Creator<City> CREATOR = new Creator<City>() {
-        public City createFromParcel(Parcel source) {
-            return new City(source);
-        }
-
-        public City[] newArray(int size) {
-            return new City[size];
-        }
-    };
+		public Marshal(City city) {
+			super(city, DatabaseTypeAdapters.URI_ADAPTER);
+			// Make sure to not save the ID;
+			contentValues.remove(_ID);
+		}
+	}
 }

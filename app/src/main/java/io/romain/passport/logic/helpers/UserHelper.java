@@ -18,7 +18,6 @@ package io.romain.passport.logic.helpers;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -51,14 +50,6 @@ public class UserHelper {
 		manager.addAccountExplicitly(myAccount, user.password, data);
 		manager.setAuthToken(myAccount, AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL, user.token);
 
-		UserHelper.next(context);
-	}
-
-	public static void next(Activity context) {
-		Intent intent = new Intent(context, MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(intent);
-		context.finish();
+		MainActivity.start(context);
 	}
 }

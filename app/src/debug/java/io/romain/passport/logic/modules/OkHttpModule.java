@@ -34,7 +34,8 @@ public class OkHttpModule {
 	@Provides
 	@Singleton
 	protected static OkHttpClient getOkHttpClient(Context context, AccountManager manager) {
-		return BaseOkHttpModule.getBaseOkHttpClientBuilder(context, manager)
+		return BaseOkHttpModule
+				.getBaseOkHttpClientBuilder(context, manager)
 				.addInterceptor(
 						new HttpLoggingInterceptor(message -> Dog.tag("OkHttp").d(message))
 								.setLevel(HttpLoggingInterceptor.Level.HEADERS)

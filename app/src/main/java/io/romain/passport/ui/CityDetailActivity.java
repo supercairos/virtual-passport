@@ -82,7 +82,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
                         .liteMode(true)
                         .camera(
                                 new CameraPosition.Builder()
-                                        .target(new LatLng(mCity.latitude, mCity.longitude))
+                                        .target(new LatLng(mCity.latitude(), mCity.longitude()))
                                         .zoom(11)
                                         .build()
                         )
@@ -92,9 +92,9 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCollapsingToolbar.setTitle(mCity.name + ", " + mCity.country);
+        mCollapsingToolbar.setTitle(mCity.name() + ", " + mCity.country());
         Glide.with(this)
-                .load(mCity.picture)
+                .load(mCity.picture())
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fallback(R.drawable.no_picture_found)
@@ -116,7 +116,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap map) {
         map.addMarker(
                 new MarkerOptions()
-                        .position(new LatLng(mCity.latitude, mCity.longitude))
+                        .position(new LatLng(mCity.latitude(), mCity.longitude()))
         );
     }
 
@@ -134,7 +134,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
         mWeatherSpinner.setVisibility(View.VISIBLE);
         mWeatherScrollView.setVisibility(View.INVISIBLE);
         Forecast.ForecastService service = mRetrofit.create(Forecast.ForecastService.class);
-        Call<WeatherWrapper> call = service.getForecast(mCity.latitude, mCity.longitude);
+        Call<WeatherWrapper> call = service.getForecast(mCity.latitude(), mCity.longitude());
         call.enqueue(new Callback<WeatherWrapper>() {
 
             @Override
@@ -145,10 +145,10 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
                         mWeatherLayout.removeAllViews();
                         for (Forecast forecast : forecasts) {
                             View v = getLayoutInflater().inflate(R.layout.item_city_detail_weather, mWeatherLayout, false);
-                            ((TextView) v.findViewById(R.id.item_city_detail_weather_min)).setText(getFormattedTemperature(CityDetailActivity.this, forecast.min));
-                            ((TextView) v.findViewById(R.id.item_city_detail_weather_max)).setText(getFormattedTemperature(CityDetailActivity.this, forecast.max));
-                            ((TextView) v.findViewById(R.id.item_city_detail_weather_day)).setText(getAbbreviatedDay(forecast.date));
-                            ((ImageView) v.findViewById(R.id.item_city_detail_weather_icon)).setImageResource(getIcon(forecast.icon));
+                            ((TextView) v.findViewById(R.id.item_city_detail_weather_min)).setText(getFormattedTemperature(CityDetailActivity.this, forecast.min()));
+                            ((TextView) v.findViewById(R.id.item_city_detail_weather_max)).setText(getFormattedTemperature(CityDetailActivity.this, forecast.max()));
+                            ((TextView) v.findViewById(R.id.item_city_detail_weather_day)).setText(getAbbreviatedDay(forecast.date()));
+                            ((ImageView) v.findViewById(R.id.item_city_detail_weather_icon)).setImageResource(getIcon(forecast.icon()));
 
                             mWeatherLayout.addView(v);
                         }

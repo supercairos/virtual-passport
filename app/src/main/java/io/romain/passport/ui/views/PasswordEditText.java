@@ -46,7 +46,6 @@ public class PasswordEditText extends EditText {
 					int stop = getSelectionEnd();
 					setTransformationMethod(HideReturnsTransformationMethod.getInstance());
 					setSelection(start, stop);
-					return true;
 				}
 
 				break;
@@ -55,7 +54,6 @@ public class PasswordEditText extends EditText {
 				int stop = getSelectionEnd();
 				setTransformationMethod(PasswordTransformationMethod.getInstance());
 				setSelection(start, stop);
-				return true;
 		}
 
 		return super.onTouchEvent(event);

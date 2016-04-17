@@ -43,7 +43,7 @@ public class CitySearchAdapter extends ArrayAdapter<CityAutocomplete> implements
 			view = mLayoutInflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
 		}
 
-		((TextView) view).setText(getItem(position).name);
+		((TextView) view).setText(getItem(position).name());
 
 		return view;
 	}
@@ -75,8 +75,8 @@ public class CitySearchAdapter extends ArrayAdapter<CityAutocomplete> implements
 		}
 
 		@Override
+		@SuppressWarnings("unchecked")
 		protected void publishResults(@Nullable CharSequence constraint, @NonNull FilterResults results) {
-			//noinspection unchecked
 			List<CityAutocomplete> towns = (List<CityAutocomplete>) results.values;
 			clear();
 			if (towns != null && towns.size() > 0) {

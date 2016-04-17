@@ -16,8 +16,10 @@
 package io.romain.passport.ui.fragments;
 
 import android.app.ActivityOptions;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,7 +28,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -35,22 +36,28 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.OnClick;
 import io.romain.passport.R;
 import io.romain.passport.model.City;
 import io.romain.passport.model.database.PassportContentProvider;
+import io.romain.passport.ui.AddCityActivity;
 import io.romain.passport.ui.CityDetailActivity;
 import io.romain.passport.ui.MainActivity;
 import io.romain.passport.ui.adaptater.CityListAdapter;
-import io.romain.passport.ui.adaptater.CityListItemAnimator;
 import io.romain.passport.ui.views.EmptyRecyclerView;
 
 public class CityListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, CityListAdapter.OnCityClicked {
 
 	private static final int LOADER_ID = 5489;
 
-	private EmptyRecyclerView mRecyclerView;
+	@Bind(android.R.id.list)
+	public EmptyRecyclerView mRecyclerView;
+	@Bind(android.R.id.empty)
+	public TextView mEmptyView;
+
 
 	private CityListAdapter mAdapter;
 	private String mQuery;
@@ -64,17 +71,14 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mRecyclerView = (EmptyRecyclerView) view.findViewById(android.R.id.list);
-
 		// use this setting to improve performance if you know that changes
 		// in content do not change the layout size of the RecyclerView
 		mRecyclerView.setHasFixedSize(true);
 
 		// use a linear layout manager
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		mRecyclerView.setItemAnimator(new CityListItemAnimator());
 
-		mRecyclerView.setEmptyView(view.findViewById(android.R.id.empty));
+		mRecyclerView.setEmptyView(mEmptyView);
 		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.END) {
 
 			@Override
@@ -103,7 +107,7 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 			@Override
 			public void onSwiped(RecyclerView.ViewHolder holder, int direction) {
 				if (mAdapter != null) {
-					onCityRemoved(holder.itemView, City.fromCursor((Cursor) mAdapter.getItem(holder.getAdapterPosition())));
+					onCityRemoved(holder.itemView, City.MAPPER.map((Cursor) mAdapter.getItem(holder.getAdapterPosition())));
 				}
 			}
 		}).attachToRecyclerView(mRecyclerView);
@@ -118,13 +122,20 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (TextUtils.isEmpty(mQuery)) {
-			return new CursorLoader(getContext(), PassportContentProvider.Cities.CONTENT_URI, City._PROJECTION, null, null, null);
+			return new CursorLoader(
+					getContext(),
+					PassportContentProvider.Cities.CONTENT_URI,
+					null,
+					null,
+					null,
+					null
+			);
 		} else {
 			return new CursorLoader(
 					getContext(),
 					PassportContentProvider.Cities.CONTENT_URI,
-					City._PROJECTION,
-					City.CityColumns.NAME + " LIKE '" + mQuery + "%'",
+					null,
+					City.NAME + " LIKE " + DatabaseUtils.sqlEscapeString(mQuery + "%"),
 					null,
 					null
 			);
@@ -138,6 +149,15 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 		} else {
 			mAdapter = new CityListAdapter(getActivity(), data, this);
 			mRecyclerView.setAdapter(mAdapter);
+		}
+
+		mEmptyView.setText(TextUtils.isEmpty(mQuery) ? R.string.city_list_empty_text : R.string.city_list_empty_not_found);
+	}
+
+	@OnClick(android.R.id.empty)
+	public void onEmptyViewClicked() {
+		if(!TextUtils.isEmpty(mQuery)) {
+			startActivity(new Intent(getActivity(), AddCityActivity.class).putExtra(AddCityActivity.EXTRA_INITIAL_TEXT, mQuery));
 		}
 	}
 
@@ -159,28 +179,41 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 
 
 	@Override
-	public void onCityClicked(CardView card, ImageView image, final City city) {
+	public void onCityClicked(final View v, final City city) {
 		Intent intent = new Intent(getContext(), CityDetailActivity.class);
 		intent.putExtra(CityDetailActivity.EXTRA_CITY, city);
 		ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
 //				Pair.create((View) image, getContext().getString(R.string.transition_picture)),
-				Pair.create((View) card, getContext().getString(R.string.transition_detail_background))
+				(Pair<View, String>) Pair.create(v, getContext().getString(R.string.transition_detail_background))
 		);
 
 		getContext().startActivity(intent, options.toBundle());
 	}
 
 	@Override
-	public void onCityRemoved(View view, final City city) {
+	public void onCityFavorited(View v, City city) {
+		ContentValues cv = new ContentValues();
+		cv.put(City.FAVORITE, city.favorite() ? 0 : 1);
+
+		getContext().getContentResolver().update(
+				PassportContentProvider.Cities.CONTENT_URI,
+				cv,
+				City._ID + " = ?",
+				new String[]{String.valueOf(city._id())}
+		);
+	}
+
+	@Override
+	public void onCityRemoved(final View v, final City city) {
 		getContext().getContentResolver().delete(
 				PassportContentProvider.Cities.CONTENT_URI,
-				City.CityColumns._ID + " = ?",
-				new String[]{String.valueOf(city.id)}
+				City._ID + " = ?",
+				new String[]{String.valueOf(city._id())}
 		);
 
-		Snackbar.make(((MainActivity) getActivity()).getCoordinatorLayout(), getString(R.string.city_removed_successfully, city.name), Snackbar.LENGTH_SHORT)
-				.setAction(R.string.undo, v -> {
-					getContext().getContentResolver().insert(PassportContentProvider.Cities.CONTENT_URI, city.toContentValues());
+		Snackbar.make(((MainActivity) getActivity()).getCoordinatorLayout(), getString(R.string.city_removed_successfully, city.name()), Snackbar.LENGTH_SHORT)
+				.setAction(R.string.undo, view -> {
+					getContext().getContentResolver().insert(PassportContentProvider.Cities.CONTENT_URI, new City.Marshal(city).asContentValues());
 				})
 				.show();
 	}

@@ -9,14 +9,6 @@
         <attr name="metaButtonBarButtonStyle" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="SvgLogoView">
-        <attr name="strokeWidth" format="dimension"/>
-        <attr name="strokeColor" format="color|reference"/>
-        <attr name="fillColor" format="color|reference"/>
-        <attr name="resource" format="reference"/>
-        <attr name="makerSize" format="dimension"/>
-    </declare-styleable>
-
     <declare-styleable name="ForegroundView">
         <attr name="android:foreground"/>
         <attr name="android:foregroundInsidePadding"/>

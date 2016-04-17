@@ -9,6 +9,7 @@ apply plugin: 'build-announcements'
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.squareup.sqldelight'
 
 def gitVersion() {
     return "git rev-list HEAD --first-parent --count".execute([], project.rootDir).text.toInteger()
@@ -39,12 +40,32 @@ android {
         archivesBaseName = "passport"
     }
 
+    File keystore = rootProject.file('keys/passport.keys')
+    boolean hasCustomConfig = keystore.exists();
+    if (hasCustomConfig) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(keystore))
+        signingConfigs {
+
+            release {
+                storeFile rootProject.file("keys/passport.jks")
+                storePassword properties['RELEASE_STORE_PASSWORD']
+                keyAlias properties['RELEASE_KEY_ALIAS']
+                keyPassword properties['RELEASE_KEY_PASSWORD']
+            }
+        }
+    }
+
     buildTypes {
         debug {
 
         }
 
         release {
+            if (hasCustomConfig) {
+                signingConfig signingConfigs.release
+            }
+
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -77,7 +98,7 @@ android {
 }
 
 // Don't Zopflifying
-if(System.getenv('TRAVIS') == null) {
+if (System.getenv('TRAVIS') == null) {
     //add zopfli to variants with release build type
     android.applicationVariants.all { variant ->
         if (variant.buildType.name == 'release') {
@@ -85,17 +106,17 @@ if(System.getenv('TRAVIS') == null) {
                 output.assemble.doLast {
                     println "Zopflifying... it might take a while"
                     exec {
-                        commandLine output.zipAlign.zipAlignExe,'-f','-z', '4', output.outputFile.absolutePath , output.outputFile.absolutePath.replaceAll('\\.apk$', '-zopfli.apk')
+                        commandLine output.zipAlign.zipAlignExe, '-f', '-z', '4', output.outputFile.absolutePath, output.outputFile.absolutePath.replaceAll('\\.apk$', '-zopfli.apk')
                     }
                 }
             }
         }
     }
 }
-     
+
 
 ext {
-    support = '23.2.1'
+    support = '23.3.0'
     play_services = '8.4.0'
 }
 
@@ -117,8 +138,9 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     // Butterknife
-    compile 'com.jakewharton:butterknife:8.0.0-SNAPSHOT'
-    apt 'com.jakewharton:butterknife-compiler:8.0.0-SNAPSHOT'
+//    compile 'com.jakewharton:butterknife-annotations:8.+'
+    compile 'com.jakewharton:butterknife:7.0.1'
+//    apt 'com.jakewharton:butterknife-compiler:8.+'
 
     // GSON
     compile 'com.google.code.gson:gson:2.6.2'
@@ -137,24 +159,21 @@ dependencies {
     compile('com.squareup.retrofit2:retrofit:2.+') {
         exclude module: 'okhttp'
     }
-    compile ('com.squareup.retrofit2:converter-gson:2.+')
-    compile ('com.squareup.retrofit2:adapter-rxjava:2.+')
+    compile('com.squareup.retrofit2:converter-gson:2.+')
+    compile('com.squareup.retrofit2:adapter-rxjava:2.+')
 
     // Glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
-    // Database Schematic
-    apt 'net.simonvt.schematic:schematic-compiler:0.6.4'
-    compile 'net.simonvt.schematic:schematic:0.6.4'
-
-    // SVG Parser
-    compile 'com.caverock:androidsvg:1.2.1'
-//
-//    // Auto Parcel
-//    apt 'com.github.frankiesardo:auto-parcel-processor:+'
-//    compile 'com.github.frankiesardo:auto-parcel:+'
-
     // Setho
     debugCompile 'com.facebook.stetho:stetho:1.3.1'
     debugCompile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
+
+    // Auto-Value
+//    provided "com.google.auto.value:auto-value:1.2"
+    provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'
+    apt "com.google.auto.value:auto-value:1.2"
+    apt "com.ryanharter.auto.value:auto-value-parcel:0.2.1"
+    apt "com.ryanharter.auto.value:auto-value-gson:0.2.5"
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 }

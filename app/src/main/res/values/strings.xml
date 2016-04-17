@@ -27,7 +27,6 @@
 
     <!-- Login -->
     <string name="login_hint_email">Email</string>
-
     <string name="add_city_city">City</string>
 
     <!-- -->
@@ -45,7 +44,6 @@
 
     <string name="transition_detail_background">transition_detail_background</string>
     <string name="transition_picture">transition_picture</string>
-    <string name="temperature_unit_celsius">C</string>
     <string name="weather_error">Weather coudn\'t be found</string>
     <string name="get_accounts_permission_message">Autocomplete fields</string>
     <string name="undo">Undo</string>
@@ -57,8 +55,11 @@
     <string name="main_are_you_in">Are you in <xliff:g example="Paris" id="city">%1$s</xliff:g> ?</string>
     <string name="city_list_empty_text">Looks empty in here, add some city.</string>
     <string name="no_internet_connection">No internet connection</string>
-    <string name="main_saving">Saving...</string>
+    <string name="main_saving">Saving…</string>
     <string name="navigation_account_help_title"><![CDATA[Help & About]]></string>
     <string name="navigation_account_edit">Profile</string>
     <string name="error_occurred_please_retry">An error occurred, please retry in a short while</string>
+
+    <string name="temperature_unit_celsius" translatable="false">C</string>
+    <string name="city_list_empty_not_found">Uh ooh, I coudn\'t find this city…\nTap here to add this city</string>
 </resources>

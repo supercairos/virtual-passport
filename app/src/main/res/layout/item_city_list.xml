@@ -13,7 +13,7 @@
                                     android:stateListAnimator="@anim/card_elevation"
                                     card_view:cardCornerRadius="@dimen/dialog_corners">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -26,11 +26,10 @@
             android:scaleType="centerCrop"/>
 
         <LinearLayout
+            android:id="@+id/item_city_list_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/item_city_list_picture"
-            android:layout_alignEnd="@id/item_city_list_picture"
-            android:layout_alignStart="@id/item_city_list_picture"
+            android:layout_gravity="bottom"
             android:layout_marginBottom="@dimen/spacing_mini"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginStart="@dimen/spacing_normal">
@@ -39,6 +38,7 @@
                 android:id="@+id/item_city_list_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-light"
@@ -47,12 +47,13 @@
                 android:textSize="28sp"/>
 
             <ImageView
+                android:id="@+id/item_city_list_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/spacing_normal"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_star_24dp"/>
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_star_border_24dp"/>
 
         </LinearLayout>
 
@@ -60,17 +61,16 @@
             android:id="@+id/item_city_list_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
+            android:layout_gravity="top|end"
             android:layout_margin="@dimen/spacing_micro"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@android:string/cancel"
             android:padding="@dimen/spacing_medium"
             android:src="@drawable/ic_close_36dp"/>
-    </RelativeLayout>
+    </FrameLayout>
 
     <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:id="@+id/loading"
+                 android:id="@+id/item_city_list_loading"
                  style="?android:attr/progressBarStyleLarge"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
@@ -79,4 +79,5 @@
                  android:indeterminate="true"
                  android:indeterminateTint="@color/grey_300"
                  android:indeterminateTintMode="src_in"/>
+
 </android.support.v7.widget.CardView>
