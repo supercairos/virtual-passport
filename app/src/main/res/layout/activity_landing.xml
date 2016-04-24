@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="@dimen/spacing_normal"
-            android:text="Loading ..."
+            android:text="@string/landing_screen_loading"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="14sp"/>
@@ -58,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/button_register"
+                android:text="@string/landing_screen_button_register"
                 />
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/button_login"/>
+                android:text="@string/landing_screen_button_login"/>
         </LinearLayout>
     </FrameLayout>
 

@@ -98,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/weather_error"
+                    android:text="@string/city_detail_no_weather_found"
                     android:textSize="@dimen/weather_error_text_size"
                     android:visibility="gone" />
             </FrameLayout>

@@ -22,12 +22,17 @@ import io.romain.passport.model.User;
 import io.romain.passport.ui.LandingActivity;
 import io.romain.passport.ui.RegisterActivity;
 import io.romain.passport.utils.Dog;
-import io.romain.passport.utils.constants.AuthenticatorConstants;
 import okhttp3.Credentials;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class AuthenticatorService extends Service {
+
+	public static final String ACCOUNT_TYPE = "io.romain.passport";
+	public static final String ACCOUNT_PROVIDER = "io.romain.passport";
+
+	public static final String AUTH_TOKEN_TYPE_FULL = "FullAccess";
+	public static final String KEY_ACCOUNT_AUTHENTICATOR_FAILED = "AuthenticatorFailed";
 
 	private Authenticator mAuthenticator;
 
@@ -80,7 +85,7 @@ public class AuthenticatorService extends Service {
 
 			// If the caller requested an authToken type we don't support, then
 			// return an error
-			if (!authTokenType.equals(AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL)) {
+			if (!authTokenType.equals(AUTH_TOKEN_TYPE_FULL)) {
 				final Bundle result = new Bundle();
 				result.putString(AccountManager.KEY_ERROR_MESSAGE, "invalid authTokenType");
 				return result;
@@ -96,11 +101,11 @@ public class AuthenticatorService extends Service {
 					Response<User> response = mRetrofit.create(User.UserService.class).login(Credentials.basic(account.name, password), false).execute();
 					if(response.isSuccessful()) {
 						User user = response.body();
-						if (!TextUtils.isEmpty(user.token)) {
+						if (!TextUtils.isEmpty(user.token())) {
 							final Bundle result = new Bundle();
 							result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
 							result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
-							result.putString(AccountManager.KEY_AUTHTOKEN, user.token);
+							result.putString(AccountManager.KEY_AUTHTOKEN, user.token());
 							return result;
 						}
 					}
@@ -113,7 +118,7 @@ public class AuthenticatorService extends Service {
 			// need to ask the user to re-login in our app;
 			final Intent intent = new Intent(mContext, LandingActivity.class);
 			intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, authenticatorResponse);
-			intent.putExtra(AuthenticatorConstants.KEY_ACCOUNT_AUTHENTICATOR_FAILED, true);
+			intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_FAILED, true);
 			// TODO: Show toast to tell user why he needs to re-login
 
 			final Bundle bundle = new Bundle();

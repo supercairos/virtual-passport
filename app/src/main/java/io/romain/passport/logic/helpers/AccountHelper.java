@@ -11,15 +11,14 @@ import android.os.Bundle;
 
 import java.io.IOException;
 
+import io.romain.passport.logic.services.account.AuthenticatorService;
 import io.romain.passport.utils.Dog;
-import io.romain.passport.utils.constants.AccountConstants;
-import io.romain.passport.utils.constants.AuthenticatorConstants;
 
 public final class AccountHelper {
 
 	public static Account getAccount(AccountManager manager) {
 
-		Account[] accounts = manager.getAccountsByType(AuthenticatorConstants.ACCOUNT_TYPE);
+		Account[] accounts = manager.getAccountsByType(AuthenticatorService.ACCOUNT_TYPE);
 		if (accounts.length > 0) {
 			return accounts[0];
 		} else {
@@ -27,20 +26,11 @@ public final class AccountHelper {
 		}
 	}
 
-	public static String getDisplayName(AccountManager manager) {
-		Account account = getAccount(manager);
-		if (account != null) {
-			return manager.getUserData(account, AccountConstants.KEY_NAME);
-		} else {
-			return null;
-		}
-	}
-
 	public static String getToken(AccountManager manager) throws IOException {
 		try {
-			Account[] accounts = manager.getAccountsByType(AuthenticatorConstants.ACCOUNT_TYPE);
+			Account[] accounts = manager.getAccountsByType(AuthenticatorService.ACCOUNT_TYPE);
 			if (accounts.length > 0) {
-				return manager.blockingGetAuthToken(accounts[0], AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL, true);
+				return manager.blockingGetAuthToken(accounts[0], AuthenticatorService.AUTH_TOKEN_TYPE_FULL, true);
 			} else {
 				return "";
 			}
@@ -52,9 +42,9 @@ public final class AccountHelper {
 
 	public static String peekToken(AccountManager manager) {
 
-		Account[] accounts = manager.getAccountsByType(AuthenticatorConstants.ACCOUNT_TYPE);
+		Account[] accounts = manager.getAccountsByType(AuthenticatorService.ACCOUNT_TYPE);
 		if (accounts.length > 0) {
-			return manager.peekAuthToken(accounts[0], AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL);
+			return manager.peekAuthToken(accounts[0], AuthenticatorService.AUTH_TOKEN_TYPE_FULL);
 		} else {
 			return "";
 		}

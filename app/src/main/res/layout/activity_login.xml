@@ -85,7 +85,7 @@
                 android:layout_marginTop="20dp"
                 android:enabled="false"
                 android:padding="15dp"
-                android:text="@string/button_login"/>
+                android:text="@string/landing_screen_button_login"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

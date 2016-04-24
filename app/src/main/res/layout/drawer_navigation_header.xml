@@ -1,60 +1,49 @@
-<io.romain.passport.ui.views.FourThreeFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                  android:layout_width="match_parent"
-                                                  android:layout_height="wrap_content"
-                                                  android:layout_gravity="bottom">
+<io.romain.passport.ui.views.FourThreeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content"
+                                                   android:layout_gravity="bottom"
+                                                   android:background="@drawable/drawer_top_background"
+                                                   android:gravity="bottom"
+                                                   android:orientation="vertical">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/drawer_top_background"/>
+        android:id="@+id/drawer_image"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@android:string/untitled"
+        tools:src="@drawable/no_icon_profile"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#55000000"
-        android:orientation="horizontal"
-        android:paddingStart="3dp"
-        android:paddingEnd="3dp"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/drawer_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:contentDescription="@android:string/untitled"
-            android:paddingEnd="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingStart="5dp"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/drawer_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp">
+            android:layout_marginBottom="3dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Inverse"
+            android:textStyle="bold"
+            tools:text="Romain Caire"/>
 
-            <TextView
-                android:id="@+id/drawer_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:layout_marginBottom="3dp"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:id="@+id/drawer_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/drawer_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+            tools:text="passport@gmail.com"/>
     </LinearLayout>
-</io.romain.passport.ui.views.FourThreeFrameLayout>
+</io.romain.passport.ui.views.FourThreeLinearLayout>

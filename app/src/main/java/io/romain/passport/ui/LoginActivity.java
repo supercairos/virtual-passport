@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void showSavingDialog() {
-		mDialog = ProgressDialog.show(this, getString(R.string.login), getString(R.string.please_wait), true);
+		mDialog = ProgressDialog.show(this, getString(R.string.login_dialog_login), getString(R.string.login_dialog_please_wait), true);
 		mDialog.show();
 		isSaving = true;
 	}
@@ -121,8 +121,8 @@ public class LoginActivity extends BaseActivity {
 
 	@OnClick(R.id.login_button_login)
 	void onLoginClicked() {
-		String email = mEmail.getEditableText().toString();
-		String password = mPassword.getEditableText().toString();
+		final String email = mEmail.getEditableText().toString();
+		final String password = mPassword.getEditableText().toString();
 
 		boolean isEverythingOk = true;
 		if (!EmailValidator.getInstance().validate(email)) {
@@ -149,7 +149,7 @@ public class LoginActivity extends BaseActivity {
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(user -> {
 						hideSavingDialog();
-						UserHelper.save(LoginActivity.this, user);
+						UserHelper.save(LoginActivity.this, user, password);
 					}, throwable -> {
 						Dog.d(throwable, "Ex!");
 						hideSavingDialog();

@@ -47,7 +47,7 @@
                     android:id="@+id/add_city_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/add_city_city"
+                    android:hint="@string/add_city_title"
                     android:inputType="textEmailAddress"
                     android:selectAllOnFocus="true">
 

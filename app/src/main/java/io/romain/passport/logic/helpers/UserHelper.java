@@ -21,17 +21,16 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 
+import io.romain.passport.logic.services.account.AuthenticatorService;
 import io.romain.passport.model.User;
 import io.romain.passport.ui.MainActivity;
-import io.romain.passport.utils.constants.AccountConstants;
-import io.romain.passport.utils.constants.AuthenticatorConstants;
 
 public class UserHelper {
 
 	@SuppressWarnings("deprecation")
-	public static void save(Activity context, User user) {
+	public static void save(Activity context, User user, String password) {
 		AccountManager manager = AccountManager.get(context);
-		Account[] accounts = manager.getAccountsByType(AuthenticatorConstants.ACCOUNT_TYPE);
+		Account[] accounts = manager.getAccountsByType(AuthenticatorService.ACCOUNT_TYPE);
 		for (Account account : accounts) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
 				manager.removeAccountExplicitly(account);
@@ -40,15 +39,15 @@ public class UserHelper {
 			}
 		}
 
-		Account myAccount = new Account(user.email, AuthenticatorConstants.ACCOUNT_TYPE);
+		Account myAccount = new Account(user.email(), AuthenticatorService.ACCOUNT_TYPE);
 
 		Bundle data = new Bundle();
-		data.putString(AccountConstants.KEY_SERVER_ID, user.id);
-		data.putString(AccountConstants.KEY_NAME, user.name);
-		data.putString(AccountConstants.KEY_PROFILE_PICTURE, user.picture != null ? user.picture.toString() : null);
+		data.putString(User.KEY_SERVER_ID, user.id());
+		data.putString(User.KEY_NAME, user.name());
+		data.putString(User.KEY_PROFILE_PICTURE, user.picture() != null ? user.picture().toString() : null);
 
-		manager.addAccountExplicitly(myAccount, user.password, data);
-		manager.setAuthToken(myAccount, AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL, user.token);
+		manager.addAccountExplicitly(myAccount, password, data);
+		manager.setAuthToken(myAccount, AuthenticatorService.AUTH_TOKEN_TYPE_FULL, user.token());
 
 		MainActivity.start(context);
 	}

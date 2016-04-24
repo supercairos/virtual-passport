@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="transition_add_city" translatable="false">transition_add_city</string>
+    <string name="transition_detail_background" translatable="false">transition_detail_background</string>
+    <string name="transition_picture" translatable="false">transition_picture</string>
 </resources>

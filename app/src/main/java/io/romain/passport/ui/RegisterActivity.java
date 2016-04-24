@@ -49,10 +49,10 @@ import butterknife.OnClick;
 import io.romain.passport.R;
 import io.romain.passport.logic.helpers.UserHelper;
 import io.romain.passport.model.User;
+import io.romain.passport.ui.drawable.LetterTileDrawable;
 import io.romain.passport.ui.fragments.dialogs.ErrorDialogFragment;
 import io.romain.passport.utils.CameraUtils;
 import io.romain.passport.utils.Dog;
-import io.romain.passport.utils.PathUtils;
 import io.romain.passport.utils.SimpleTextWatcher;
 import io.romain.passport.utils.UriRequestBody;
 import io.romain.passport.utils.glide.CircleTransform;
@@ -119,6 +119,8 @@ public class RegisterActivity extends BaseActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		mCircleTransform = new CircleTransform(this);
+		mProfilePicture.setImageDrawable(LetterTileDrawable.create(getResources()));
+
 		mName.addTextChangedListener(mRegisterFieldWatcher);
 		mEmail.addTextChangedListener(mRegisterFieldWatcher);
 		mPassword.addTextChangedListener(mRegisterFieldWatcher);
@@ -149,9 +151,9 @@ public class RegisterActivity extends BaseActivity {
 
 	@OnClick(R.id.register_button_register)
 	void onValidateClicked() {
-		String name = mName.getEditableText().toString();
-		String email = mEmail.getEditableText().toString();
-		String password = mPassword.getEditableText().toString();
+		final String name = mName.getEditableText().toString();
+		final String email = mEmail.getEditableText().toString();
+		final String password = mPassword.getEditableText().toString();
 
 		boolean isEverythingOk = true;
 		if (!EmailValidator.getInstance().validate(email)) {
@@ -180,15 +182,15 @@ public class RegisterActivity extends BaseActivity {
 
 		if (isEverythingOk) {
 			// Register
-			mDialog = ProgressDialog.show(this, getString(R.string.register), getString(R.string.please_wait), true);
+			mDialog = ProgressDialog.show(this, getString(R.string.register_dialog_register), getString(R.string.register_dialog_please_wait), true);
 			mDialog.show();
 			User.UserService service = mRetrofit.create(User.UserService.class);
 
 			mSubscriber = service
-					.register(new User(name, email, password, mProfilePictureUri))
+					.register(User.create(name, email, mProfilePictureUri))
 					.flatMap(user -> {
 						if (mProfilePictureUri != null) {
-							return service.upload("Bearer " + user.token, new UriRequestBody(getContentResolver(), mProfilePictureUri));
+							return service.upload("Bearer " + user.token(), new UriRequestBody(getContentResolver(), mProfilePictureUri));
 						} else {
 							return Observable.just(user);
 						}
@@ -200,7 +202,7 @@ public class RegisterActivity extends BaseActivity {
 							// onNext();
 							user -> {
 								mDialog.dismiss();
-								UserHelper.save(RegisterActivity.this, user);
+								UserHelper.save(RegisterActivity.this, user, password);
 							},
 							// onError();
 							throwable -> {
@@ -323,15 +325,7 @@ public class RegisterActivity extends BaseActivity {
 					getContentResolver().takePersistableUriPermission(uri, takeFlags);
 				}
 
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-					// Save our own.
-					String path = PathUtils.getPath(this, data.getData());
-					if (path != null) {
-						mProfilePictureUri = Uri.fromFile(new File(path));
-					}
-				} else {
-					mProfilePictureUri = data.getData();
-				}
+				mProfilePictureUri = data.getData();
 			}
 
 			Glide.with(this)

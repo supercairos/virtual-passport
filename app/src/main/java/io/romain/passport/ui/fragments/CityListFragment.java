@@ -58,7 +58,6 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 	@Bind(android.R.id.empty)
 	public TextView mEmptyView;
 
-
 	private CityListAdapter mAdapter;
 	private String mQuery;
 

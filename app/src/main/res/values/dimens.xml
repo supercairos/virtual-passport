@@ -21,5 +21,5 @@
     <dimen name="weather_error_text_size">26sp</dimen>
     <dimen name="city_banner_text_size">20sp</dimen>
 
-
+    <item name="letter_to_tile_ratio" type="dimen">67%</item>
 </resources>

@@ -33,6 +33,7 @@ import java.text.DateFormat;
 import io.romain.passport.model.City;
 import io.romain.passport.model.CityAutocomplete;
 import io.romain.passport.model.Forecast;
+import io.romain.passport.model.User;
 
 public class BaseGsonModule {
 
@@ -57,6 +58,8 @@ public class BaseGsonModule {
 				return (TypeAdapter<T>) CityAutocomplete.fromJson(gson);
 			} else if (Forecast.class.equals(rawType)) {
 				return (TypeAdapter<T>) Forecast.fromJson(gson);
+			} else if (User.class.equals(rawType)) {
+				return (TypeAdapter<T>) User.fromJson(gson);
 			} else if (Uri.class.equals(rawType)) {
 				return (TypeAdapter<T>) new UriAdapter();
 			}

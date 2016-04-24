@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/content_root_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
         android:elevation="@dimen/z_toolbar"
+        android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
@@ -38,21 +38,14 @@
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <io.romain.passport.ui.views.SquareLayout
+                <io.romain.passport.ui.views.SquareImageView
+                    android:id="@+id/profile_picture"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/profile_picture"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@android:string/untitled"
-                        android:src="@drawable/no_icon_profile"/>
-                </io.romain.passport.ui.views.SquareLayout>
+                    android:layout_weight="1"
+                    android:contentDescription="@android:string/untitled"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -99,10 +92,10 @@
 
                     <CheckBox
                         android:id="@+id/permission_checkbox"
+                        style="@style/Widget.Passport.HintCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/get_accounts_permission_message"
-                        style="@style/Widget.Passport.HintCheckBox" />
+                        android:text="@string/get_accounts_permission_message"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -131,14 +124,14 @@
 
             <Button
                 android:id="@+id/register_button_register"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="5dp"
-                android:padding="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_register"/>
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:padding="15dp"
+                android:text="@string/landing_screen_button_register"/>
         </LinearLayout>
     </ScrollView>
 

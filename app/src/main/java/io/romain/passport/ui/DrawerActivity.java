@@ -1,6 +1,5 @@
 package io.romain.passport.ui;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -9,7 +8,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +19,8 @@ import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
 import io.romain.passport.R;
-import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.utils.constants.AccountConstants;
+import io.romain.passport.model.User;
+import io.romain.passport.ui.drawable.LetterTileDrawable;
 import io.romain.passport.utils.glide.CircleTransform;
 
 public abstract class DrawerActivity extends LocationPermissionActivity {
@@ -58,7 +56,7 @@ public abstract class DrawerActivity extends LocationPermissionActivity {
 
 	@Override
 	public void setContentView(View view, ViewGroup.LayoutParams params) {
-		ViewGroup v = (ViewGroup) mInflater.inflate(R.layout.activity_drawer_layout, null);
+		ViewGroup v = (ViewGroup) mInflater.inflate(R.layout.activity_drawer_layout, (ViewGroup) findViewById(android.R.id.content), false);
 
 		ViewGroup content = (ViewGroup) v.findViewById(R.id.root_drawer_layout_content);
 		content.addView(view, params);
@@ -97,22 +95,16 @@ public abstract class DrawerActivity extends LocationPermissionActivity {
 		mDrawerLayout.addDrawerListener(mDrawerToggle);
 		mDrawerNavigation.setNavigationItemSelectedListener(this::onNavItemSelected);
 
-		Account account = AccountHelper.getAccount(mAccountManager);
-		if (account != null) {
-			String name = mAccountManager.getUserData(account, AccountConstants.KEY_NAME);
-			String url = mAccountManager.getUserData(account, AccountConstants.KEY_PROFILE_PICTURE);
-			String email = account.name;
-
-			title.setText(name);
-			subtitle.setText(email);
-			if (!TextUtils.isEmpty(url)) {
-				Glide.with(this)
-						.load(url)
-						.transform(mCircleTransform)
-						.error(R.drawable.no_icon_profile)
-						.fallback(R.drawable.no_icon_profile)
-						.into(icon);
-			}
+		User user = User.load(mAccountManager);
+		if (user != null) {
+			title.setText(user.name());
+			subtitle.setText(user.email());
+			Glide.with(this)
+					.load(user.picture())
+					.transform(mCircleTransform)
+					.error(LetterTileDrawable.create(getResources(), user.name()))
+					.fallback(LetterTileDrawable.create(getResources(), user.name()))
+					.into(icon);
 		}
 	}
 

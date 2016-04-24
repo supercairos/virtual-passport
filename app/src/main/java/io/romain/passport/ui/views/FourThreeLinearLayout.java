@@ -2,19 +2,19 @@ package io.romain.passport.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
-public class FourThreeFrameLayout extends FrameLayout {
+public class FourThreeLinearLayout extends LinearLayout {
 
-	public FourThreeFrameLayout(Context context) {
+	public FourThreeLinearLayout(Context context) {
 		super(context);
 	}
 
-	public FourThreeFrameLayout(Context context, AttributeSet attrs) {
+	public FourThreeLinearLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public FourThreeFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+	public FourThreeLinearLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 

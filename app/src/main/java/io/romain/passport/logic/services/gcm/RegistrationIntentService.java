@@ -16,7 +16,6 @@ import io.romain.passport.logic.services.BaseIntentService;
 import io.romain.passport.model.User;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.PlayServicesUtils;
-import io.romain.passport.utils.constants.AccountConstants;
 import retrofit2.Response;
 
 public class RegistrationIntentService extends BaseIntentService {
@@ -50,7 +49,7 @@ public class RegistrationIntentService extends BaseIntentService {
 				// [END get_token]
 				Dog.i("GCM Registration Token: " + token);
 
-				sendRegistrationToServer(token, account);
+				sendRegistrationToServer(token);
 
 				// Subscribe to topic channels
 				subscribeTopics(token);
@@ -77,10 +76,10 @@ public class RegistrationIntentService extends BaseIntentService {
 	 *
 	 * @param regid The new token.
 	 */
-	private void sendRegistrationToServer(String regid, Account account) {
+	private void sendRegistrationToServer(String regid) {
 		Dog.d("Got token : %s", regid);
 		try {
-			String userId = mAccountManager.getUserData(account, AccountConstants.KEY_SERVER_ID);
+			String userId = User.getServerId(mAccountManager);
 			if (!TextUtils.isEmpty(userId)) {
 				Response<User> user = mRetrofit.create(User.UserService.class).registerGcm(regid).execute();
 				if (user.isSuccessful()) {
