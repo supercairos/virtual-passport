@@ -17,10 +17,10 @@ package io.romain.passport.logic.modules;
 
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import io.romain.passport.BuildConfig;
+import io.romain.passport.utils.Dog;
 
 @Module
 public class ApplicationContextModule {
@@ -32,8 +32,9 @@ public class ApplicationContextModule {
 	}
 
 	@Provides
-	@Singleton
 	Context getApplicationContext() {
+		if(BuildConfig.DEBUG) Dog.d("Called()");
+
 		return mContext;
 	}
 

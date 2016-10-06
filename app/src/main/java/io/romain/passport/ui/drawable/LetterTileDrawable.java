@@ -84,7 +84,7 @@ public class LetterTileDrawable extends Drawable {
 			//noinspection ResourceType
 			sLetterToTileRatio = res.getFraction(R.dimen.letter_to_tile_ratio, 1, 1);
 
-			DEFAULT_PERSON_AVATAR = res.getDrawable(R.drawable.ic_person_white_24dp, null);
+			DEFAULT_PERSON_AVATAR = res.getDrawable(R.drawable.ic_person_white_24dp);
 
 			sPaint.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
 			sPaint.setTextAlign(Align.CENTER);

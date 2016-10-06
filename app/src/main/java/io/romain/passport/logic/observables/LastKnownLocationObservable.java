@@ -40,6 +40,7 @@ public class LastKnownLocationObservable implements Observable.OnSubscribe<Locat
 
     @Override
     public void call(Subscriber<? super Location> subscriber) {
+        subscriber.onStart();
         if (ContextCompat.checkSelfPermission(mClient.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(mClient.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 

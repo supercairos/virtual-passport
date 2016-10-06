@@ -17,8 +17,6 @@ package io.romain.passport.logic.modules;
 
 import com.google.gson.Gson;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -26,8 +24,7 @@ import dagger.Provides;
 public class GsonModule {
 
 	@Provides
-	@Singleton
-	Gson getGson() {
+	protected Gson getGson() {
 		return BaseGsonModule.getBaseGsonBuilder()
 				.setPrettyPrinting()
 				.create();

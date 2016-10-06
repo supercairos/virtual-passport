@@ -34,6 +34,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,28 +45,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
+import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.romain.passport.R;
-import io.romain.passport.logic.helpers.UserHelper;
-import io.romain.passport.model.User;
+import io.romain.passport.logic.observables.auth.FirebaseRegisterObservable;
+import io.romain.passport.logic.observables.auth.FirebaseUploadObservable;
+import io.romain.passport.logic.observables.auth.FirebaseUserUpdateObservable;
+import io.romain.passport.data.Profile;
 import io.romain.passport.ui.drawable.LetterTileDrawable;
 import io.romain.passport.ui.fragments.dialogs.ErrorDialogFragment;
 import io.romain.passport.utils.CameraUtils;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleTextWatcher;
-import io.romain.passport.utils.UriRequestBody;
 import io.romain.passport.utils.glide.CircleTransform;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -72,31 +72,31 @@ public class RegisterActivity extends BaseActivity {
 
 	private static final int PERMISSIONS_REQUEST = 11;
 
-	@Bind(R.id.profile_picture)
+	@BindView(R.id.profile_picture)
 	ImageView mProfilePicture;
 
-	@Bind(R.id.edit_name)
+	@BindView(R.id.edit_name)
 	EditText mName;
-	@Bind(R.id.edit_name_layout)
+	@BindView(R.id.edit_name_layout)
 	TextInputLayout mNameLayout;
 
-	@Bind(R.id.edit_email)
+	@BindView(R.id.edit_email)
 	EditText mEmail;
-	@Bind(R.id.edit_email_layout)
+	@BindView(R.id.edit_email_layout)
 	TextInputLayout mEmailLayout;
 
-	@Bind(R.id.permission_checkbox)
+	@BindView(R.id.permission_checkbox)
 	CheckBox mPermissionCheckbox;
 
-	@Bind(R.id.edit_password)
+	@BindView(R.id.edit_password)
 	EditText mPassword;
-	@Bind(R.id.edit_password_layout)
+	@BindView(R.id.edit_password_layout)
 	TextInputLayout mPasswordLayout;
 
-	@Bind(R.id.action_bar)
+	@BindView(R.id.action_bar)
 	Toolbar mActionBar;
 
-	@Bind(R.id.register_button_register)
+	@BindView(R.id.register_button_register)
 	Button mRegisterButton;
 
 	private ProgressDialog mDialog;
@@ -105,8 +105,9 @@ public class RegisterActivity extends BaseActivity {
 	private Uri mOutputFileUri;
 
 	private BitmapTransformation mCircleTransform;
-	private Subscription mSubscriber;
 
+	@Inject
+	Gson mGson;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -184,45 +185,35 @@ public class RegisterActivity extends BaseActivity {
 			// Register
 			mDialog = ProgressDialog.show(this, getString(R.string.register_dialog_register), getString(R.string.register_dialog_please_wait), true);
 			mDialog.show();
-			User.UserService service = mRetrofit.create(User.UserService.class);
+			Observable<FirebaseUser> observable = FirebaseRegisterObservable.create(this, email, password)
+					.filter(result -> result.getUser() != null)
+					.map(AuthResult::getUser);
 
-			mSubscriber = service
-					.register(User.create(name, email, mProfilePictureUri))
-					.flatMap(user -> {
-						if (mProfilePictureUri != null) {
-							return service.upload("Bearer " + user.token(), new UriRequestBody(getContentResolver(), mProfilePictureUri));
-						} else {
-							return Observable.just(user);
-						}
-					})
-					.subscribeOn(Schedulers.io())
-					.observeOn(AndroidSchedulers.mainThread())
-					.doOnError(throwable -> Dog.e(throwable, "Error... :'("))
-					.subscribe(
+			if (mProfilePictureUri != null) {
+				observable.flatMap(user -> Observable.zip(
+						Observable.just(user),
+						FirebaseUploadObservable.create(RegisterActivity.this, mProfilePictureUri, "pictures" + user.getUid()),
+						(user2, uri) -> FirebaseUserUpdateObservable.create(this, Profile.create(name, email, uri))
+						)
+				);
+			} else {
+				observable.flatMap(user -> FirebaseUserUpdateObservable.create(this, Profile.create(name, email)));
+			}
+
+			mRxSubscription.add(
+					observable.subscribe(
 							// onNext();
-							user -> {
+							text -> {
+								Dog.d("Saved : " + text);
 								mDialog.dismiss();
-								UserHelper.save(RegisterActivity.this, user, password);
+								MainActivity.start(RegisterActivity.this);
 							},
 							// onError();
 							throwable -> {
 								mDialog.dismiss();
-								if (throwable instanceof HttpException) {
-									int code = ((HttpException) throwable).code();
-									switch (code) {
-										case HttpsURLConnection.HTTP_INTERNAL_ERROR:
-										case HttpsURLConnection.HTTP_UNAVAILABLE:
-											mEmailLayout.setError(getString(R.string.error_email_already_used));
-											mEmail.requestFocus();
-											mEmail.setSelection(mEmail.length());
-											return;
-										default:
-									}
-								}
-
 								ErrorDialogFragment.newInstance(throwable.getLocalizedMessage()).show(getSupportFragmentManager(), "Dialog");
 							}
-					);
+					));
 		}
 	}
 
@@ -236,10 +227,6 @@ public class RegisterActivity extends BaseActivity {
 		super.onStop();
 		if (mDialog != null) {
 			mDialog.dismiss();
-		}
-
-		if (mSubscriber != null) {
-			mSubscriber.unsubscribe();
 		}
 	}
 

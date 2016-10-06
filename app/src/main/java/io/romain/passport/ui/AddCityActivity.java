@@ -45,16 +45,16 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.romain.passport.R;
-import io.romain.passport.logic.observables.CitySaverObservable;
+import io.romain.passport.logic.observables.DatabaseSaverObservable;
 import io.romain.passport.logic.observables.GeocoderObservable;
 import io.romain.passport.logic.observables.GoogleApiObservable;
 import io.romain.passport.logic.observables.LocationUpdatesObservable;
 import io.romain.passport.logic.observables.ReverseGeocoderObservable;
-import io.romain.passport.model.City;
-import io.romain.passport.model.CityAutocomplete;
+import io.romain.passport.data.City;
+import io.romain.passport.data.CityAutocomplete;
 import io.romain.passport.ui.adaptater.CitySearchAdapter;
 import io.romain.passport.ui.transitions.FabDialogMorphSetup;
 import io.romain.passport.ui.views.LocationAutocompleteTextView;
@@ -98,19 +98,19 @@ public class AddCityActivity extends LocationPermissionActivity {
 		return sLocationRequest;
 	}
 
-	@Bind(R.id.dialog_root)
+	@BindView(R.id.dialog_root)
 	ViewGroup mRoot;
 
-	@Bind(R.id.dialog_loading)
+	@BindView(R.id.dialog_loading)
 	ProgressBar mLoading;
 
-	@Bind(R.id.dialog_container)
+	@BindView(R.id.dialog_container)
 	ViewGroup mContainer;
 
-	@Bind(R.id.add_city_city)
+	@BindView(R.id.add_city_city)
 	LocationAutocompleteTextView mEditText;
 
-	@Bind(R.id.add_city_ok)
+	@BindView(R.id.add_city_ok)
 	Button mValidateButton;
 
 	@Override
@@ -135,7 +135,7 @@ public class AddCityActivity extends LocationPermissionActivity {
 			mSubscription = mRetrofit.create(City.CityService.class)
 					.resolve(autocomplete.id())
 					.subscribeOn(Schedulers.io())
-					.map(city -> CitySaverObservable.save(this, city))
+					.map(city -> DatabaseSaverObservable.save(this, city))
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(city -> {
 						dismiss(Activity.RESULT_OK, city);
@@ -264,7 +264,7 @@ public class AddCityActivity extends LocationPermissionActivity {
 					.filter(city -> city != null)
 					.filter(city -> !TextUtils.isEmpty(city.name()) && !TextUtils.isEmpty(city.country()))
 					.observeOn(Schedulers.io())
-					.map(city -> CitySaverObservable.save(this, city))
+					.map(city -> DatabaseSaverObservable.save(this, city))
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(city -> {
 						dismiss(Activity.RESULT_OK, city);
@@ -331,7 +331,7 @@ public class AddCityActivity extends LocationPermissionActivity {
 				)
 				.filter(city -> city != null)
 				.filter(city -> !TextUtils.isEmpty(city.name()) && !TextUtils.isEmpty(city.country()))
-				.map(city -> CitySaverObservable.save(this, city))
+				.map(city -> DatabaseSaverObservable.save(this, city))
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(city -> {
 					dismiss(Activity.RESULT_OK, city);

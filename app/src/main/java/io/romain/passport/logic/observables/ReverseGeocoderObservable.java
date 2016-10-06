@@ -47,6 +47,7 @@ public class ReverseGeocoderObservable implements Observable.OnSubscribe<Address
     @Override
     public void call(Subscriber<? super Address> subscriber) {
         Geocoder geocoder = new Geocoder(mContext);
+        subscriber.onStart();
         try {
             List<Address> addresses = geocoder.getFromLocation(mLatitude, mLongitude, MAX_RESULTS);
             if(addresses != null && !addresses.isEmpty()) {

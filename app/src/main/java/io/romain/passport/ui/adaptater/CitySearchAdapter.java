@@ -17,7 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.romain.passport.MyApplication;
-import io.romain.passport.model.CityAutocomplete;
+import io.romain.passport.data.CityAutocomplete;
 import io.romain.passport.utils.Dog;
 import retrofit2.Call;
 import retrofit2.Response;

@@ -30,14 +30,19 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.text.DateFormat;
 
-import io.romain.passport.model.City;
-import io.romain.passport.model.CityAutocomplete;
-import io.romain.passport.model.Forecast;
-import io.romain.passport.model.User;
+import io.romain.passport.BuildConfig;
+import io.romain.passport.data.City;
+import io.romain.passport.data.CityAutocomplete;
+import io.romain.passport.data.Comment;
+import io.romain.passport.data.Forecast;
+import io.romain.passport.data.Profile;
+import io.romain.passport.utils.Dog;
 
 public class BaseGsonModule {
 
-	protected static GsonBuilder getBaseGsonBuilder() {
+	static GsonBuilder getBaseGsonBuilder() {
+		if(BuildConfig.DEBUG) Dog.d("Called()");
+
 		return new GsonBuilder()
 				.excludeFieldsWithoutExposeAnnotation()
 				.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
@@ -53,13 +58,15 @@ public class BaseGsonModule {
 		public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
 			Class<? super T> rawType = type.getRawType();
 			if (City.class.equals(rawType)) {
-				return (TypeAdapter<T>) City.fromJson(gson);
+				return (TypeAdapter<T>) City.getTypeAdapter(gson);
 			} else if (CityAutocomplete.class.equals(rawType)) {
-				return (TypeAdapter<T>) CityAutocomplete.fromJson(gson);
+				return (TypeAdapter<T>) CityAutocomplete.getTypeAdapter(gson);
 			} else if (Forecast.class.equals(rawType)) {
-				return (TypeAdapter<T>) Forecast.fromJson(gson);
-			} else if (User.class.equals(rawType)) {
-				return (TypeAdapter<T>) User.fromJson(gson);
+				return (TypeAdapter<T>) Forecast.getTypeAdapter(gson);
+			} else if (Profile.class.equals(rawType)) {
+				return (TypeAdapter<T>) Profile.getTypeAdapter(gson);
+			} else if (Comment.class.equals(rawType)) {
+				return (TypeAdapter<T>) Comment.getTypeAdapter(gson);
 			} else if (Uri.class.equals(rawType)) {
 				return (TypeAdapter<T>) new UriAdapter();
 			}

@@ -17,18 +17,19 @@ package io.romain.passport.logic.modules;
 
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import io.romain.passport.BuildConfig;
 import io.romain.passport.logic.helpers.SharedPrefHelper;
+import io.romain.passport.utils.Dog;
 
 @Module
 public class SharedPrefModule {
 
 	@Provides
-	@Singleton
 	SharedPrefHelper getSharedPrefManager(Context context) {
+		if(BuildConfig.DEBUG) Dog.d("Called()");
+
 		return new SharedPrefHelper(context);
 	}
 }

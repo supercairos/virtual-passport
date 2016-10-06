@@ -37,6 +37,7 @@ public class GoogleApiObservable implements Observable.OnSubscribe<LocationSetti
 
     @Override
     public void call(Subscriber<? super LocationSettingsResult> subscriber) {
+        subscriber.onStart();
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mRequest);
 

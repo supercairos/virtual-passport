@@ -20,7 +20,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -29,8 +28,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -38,11 +35,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.romain.passport.R;
-import io.romain.passport.model.City;
-import io.romain.passport.model.database.PassportContentProvider;
+import io.romain.passport.data.City;
+import io.romain.passport.data.sources.local.PassportContentProvider;
 import io.romain.passport.ui.AddCityActivity;
 import io.romain.passport.ui.CityDetailActivity;
 import io.romain.passport.ui.MainActivity;
@@ -53,10 +50,12 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 
 	private static final int LOADER_ID = 5489;
 
-	@Bind(android.R.id.list)
-	public EmptyRecyclerView mRecyclerView;
-	@Bind(android.R.id.empty)
-	public TextView mEmptyView;
+	@SuppressWarnings("WeakerAccess")
+	@BindView(android.R.id.list)
+	EmptyRecyclerView mRecyclerView;
+	@SuppressWarnings("WeakerAccess")
+	@BindView(android.R.id.empty)
+	TextView mEmptyView;
 
 	private CityListAdapter mAdapter;
 	private String mQuery;
@@ -73,43 +72,8 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 		// use this setting to improve performance if you know that changes
 		// in content do not change the layout size of the RecyclerView
 		mRecyclerView.setHasFixedSize(true);
-
-		// use a linear layout manager
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 		mRecyclerView.setEmptyView(mEmptyView);
-		new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.END) {
-
-			@Override
-			public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder holder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-				if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-					float width = (float) holder.itemView.getWidth();
-					float alpha = 1.0f - Math.abs(dX) / width;
-
-					holder.itemView.setAlpha(alpha);
-					holder.itemView.setTranslationX(dX);
-				} else {
-					super.onChildDraw(c, recyclerView, holder, dX, dY, actionState, isCurrentlyActive);
-				}
-			}
-
-			@Override
-			public boolean isLongPressDragEnabled() {
-				return false;
-			}
-
-			@Override
-			public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-				return false;
-			}
-
-			@Override
-			public void onSwiped(RecyclerView.ViewHolder holder, int direction) {
-				if (mAdapter != null) {
-					onCityRemoved(holder.itemView, City.MAPPER.map((Cursor) mAdapter.getItem(holder.getAdapterPosition())));
-				}
-			}
-		}).attachToRecyclerView(mRecyclerView);
 	}
 
 	@Override
@@ -211,9 +175,7 @@ public class CityListFragment extends BaseFragment implements LoaderManager.Load
 		);
 
 		Snackbar.make(((MainActivity) getActivity()).getCoordinatorLayout(), getString(R.string.city_removed_successfully, city.name()), Snackbar.LENGTH_SHORT)
-				.setAction(R.string.undo, view -> {
-					getContext().getContentResolver().insert(PassportContentProvider.Cities.CONTENT_URI, new City.Marshal(city).asContentValues());
-				})
+				.setAction(R.string.undo, view -> getContext().getContentResolver().insert(PassportContentProvider.Cities.CONTENT_URI, city.asContentValues()))
 				.show();
 	}
 }

@@ -2,9 +2,8 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="wrap_content"
-                                                   android:layout_gravity="bottom"
-                                                   android:background="@drawable/drawer_top_background"
                                                    android:gravity="bottom"
+                                                   android:background="@drawable/drawer_top_background"
                                                    android:orientation="vertical">
 
     <ImageView
@@ -16,8 +15,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
-        android:contentDescription="@android:string/untitled"
-        tools:src="@drawable/no_icon_profile"/>
+        android:contentDescription="@android:string/untitled"/>
 
     <LinearLayout
         android:layout_width="match_parent"

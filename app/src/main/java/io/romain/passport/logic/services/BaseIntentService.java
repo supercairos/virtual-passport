@@ -47,6 +47,6 @@ public abstract class BaseIntentService extends IntentService {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		((MyApplication) getApplicationContext()).getApplicationComponent().inject(this);
+		MyApplication.getApplication(this).getApplicationComponent().inject(this);
 	}
 }

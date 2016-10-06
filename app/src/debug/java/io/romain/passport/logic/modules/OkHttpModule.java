@@ -20,8 +20,6 @@ import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.romain.passport.utils.Dog;
@@ -32,8 +30,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class OkHttpModule {
 
 	@Provides
-	@Singleton
-	protected static OkHttpClient getOkHttpClient(Context context, AccountManager manager) {
+	protected OkHttpClient getOkHttpClient(Context context, AccountManager manager) {
 		return BaseOkHttpModule
 				.getBaseOkHttpClientBuilder(context, manager)
 				.addInterceptor(

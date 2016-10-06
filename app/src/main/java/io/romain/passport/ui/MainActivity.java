@@ -45,22 +45,20 @@ import android.widget.ViewAnimator;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.romain.passport.R;
-import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.logic.observables.CitySaverObservable;
+import io.romain.passport.logic.observables.DatabaseSaverObservable;
 import io.romain.passport.logic.observables.LocationUpdatesObservable;
 import io.romain.passport.logic.observables.ReverseGeocoderObservable;
 import io.romain.passport.logic.services.gcm.RegistrationIntentService;
-import io.romain.passport.model.City;
-import io.romain.passport.model.database.PassportContentProvider;
+import io.romain.passport.data.City;
+import io.romain.passport.data.sources.local.PassportContentProvider;
 import io.romain.passport.ui.animation.Rotate3DAnimation;
 import io.romain.passport.ui.fragments.CityListFragment;
 import io.romain.passport.ui.fragments.dialogs.LogoutDialogFragment;
 import io.romain.passport.ui.transitions.FabDialogMorphSetup;
 import io.romain.passport.utils.Dog;
-import io.romain.passport.utils.PlayServicesUtils;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -69,23 +67,23 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 	private static final int REQUEST_CODE_ADD_CITY = 1337;
 	private static final int DISTANCE = 20;
 
-	@Bind(R.id.action_bar)
+	@BindView(R.id.action_bar)
 	Toolbar mActionBar;
 
-	@Bind(R.id.floating_action_button_coordinator)
+	@BindView(R.id.floating_action_button_coordinator)
 	CoordinatorLayout mFabCoordinatorLayout;
-	@Bind(R.id.floating_action_button)
+	@BindView(R.id.floating_action_button)
 	FloatingActionButton mFloatingActionButton;
 
-	@Bind(R.id.detected_position_layout)
+	@BindView(R.id.detected_position_layout)
 	ViewAnimator mDetectedPositionLayout;
-	@Bind(R.id.detected_position_available_layout)
+	@BindView(R.id.detected_position_available_layout)
 	ViewGroup mDetectedPositionAvailableLayout;
-	@Bind(R.id.detected_position_available_text_view)
+	@BindView(R.id.detected_position_available_text_view)
 	TextView mDetectedPositionAvailableTextView;
-	@Bind(R.id.detected_position_available_close)
+	@BindView(R.id.detected_position_available_close)
 	ImageView mDetectedPositionAvailableClose;
-	@Bind(R.id.detected_position_loading_layout)
+	@BindView(R.id.detected_position_loading_layout)
 	ViewGroup mDetectedPositionLoadingLayout;
 
 	private CityListFragment mCityListFragment;
@@ -100,21 +98,7 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String token = AccountHelper.peekToken(mAccountManager);
-		if (TextUtils.isEmpty(token)) {
-			Dog.d("Auto disconnect");
-			AccountHelper.removeAccount(mAccountManager, new AccountHelper.AccountRemovedCallback() {
-				@Override
-				public void onSuccess() {
-					LandingActivity.start(MainActivity.this);
-				}
-
-				@Override
-				public void onFailure() {
-					LandingActivity.start(MainActivity.this);
-				}
-			});
-		}
+		XXX / Check if user is logged in.
 
 		setTheme(R.style.Passport_Main);
 		setContentView(R.layout.activity_main);
@@ -127,8 +111,6 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 
 		mDetectedPositionLayout.setOutAnimation(new Rotate3DAnimation(Rotate3DAnimation.Rotate.LEFT, Rotate3DAnimation.Angle.FROM_DEGREES_0, 300, true));
 		mDetectedPositionLayout.setInAnimation(new Rotate3DAnimation(Rotate3DAnimation.Rotate.LEFT, Rotate3DAnimation.Angle.TO_DEGREES_0, 300, false));
-
-		registerGcm();
 
 		mDetectedPositionLayout.setOnClickListener(v -> {
 			final City city = (City) mDetectedPositionAvailableLayout.getTag(R.id.data);
@@ -152,7 +134,7 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 						return city;
 					})
 					.subscribeOn(Schedulers.io())
-					.map(city1 -> CitySaverObservable.save(MainActivity.this, city1))
+					.map(city1 -> DatabaseSaverObservable.save(MainActivity.this, city1))
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(city1 -> {
 						mDetectedPositionLayout.showPrevious();
@@ -252,16 +234,6 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 		searchView.setOnQueryTextListener(this);
 
 		return true;
-	}
-
-	private void registerGcm() {
-		if (PlayServicesUtils.checkPlayServices(this)) {
-			if (TextUtils.isEmpty(PlayServicesUtils.getRegistrationId(this))) {
-				startService(new Intent(this, RegistrationIntentService.class));
-			}
-		} else {
-			Dog.i("No valid Google Play Services APK found.");
-		}
 	}
 
 	@Override

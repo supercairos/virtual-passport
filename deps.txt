@@ -1,0 +1,900 @@
+To honour the JVM settings for this build a new JVM will be forked. Please consider using the daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html.
+Observed package id 'add-ons;addon-google_apis-google-16' in inconsistent location 'C:\android-sdk\add-ons\addon-google_apis-google-16-1' (Expected 'C:\android-sdk\add-ons\addon-google_apis-google-16')
+Already observed package id 'add-ons;addon-google_apis-google-16' in 'C:\android-sdk\add-ons\addon-google_apis-google-16'. Skipping duplicate at 'C:\android-sdk\add-ons\addon-google_apis-google-16-1'
+Observed package id 'add-ons;addon-google_apis-google-16' in inconsistent location 'C:\android-sdk\add-ons\addon-google_apis-google-16-1' (Expected 'C:\android-sdk\add-ons\addon-google_apis-google-16')
+Already observed package id 'add-ons;addon-google_apis-google-16' in 'C:\android-sdk\add-ons\addon-google_apis-google-16'. Skipping duplicate at 'C:\android-sdk\add-ons\addon-google_apis-google-16-1'
+Incremental java compilation is an incubating feature.
+WARNING [Project: :app] shrinkResources does not yet work with useJack=true
+:app:dependencies
+
+------------------------------------------------------------
+Project :app
+------------------------------------------------------------
+
+_debugAndroidTestAnnotationProcessor - ## Internal use, do not manually configure ##
+No dependencies
+
+_debugAndroidTestApk - ## Internal use, do not manually configure ##
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support.test.espresso:espresso-core:2.2.2
+|    +--- com.squareup:javawriter:2.1.1
+|    +--- com.android.support.test:rules:0.5
+|    |    \--- com.android.support.test:runner:0.5
+|    |         +--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+|    |         +--- junit:junit:4.12
+|    |         |    \--- org.hamcrest:hamcrest-core:1.3
+|    |         \--- com.android.support.test:exposed-instrumentation-api-publish:0.5
+|    +--- com.android.support.test:runner:0.5 (*)
+|    +--- javax.inject:javax.inject:1
+|    +--- org.hamcrest:hamcrest-library:1.3
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    +--- com.android.support.test.espresso:espresso-idling-resource:2.2.2
+|    +--- org.hamcrest:hamcrest-integration:1.3
+|    |    \--- org.hamcrest:hamcrest-library:1.3 (*)
+|    +--- com.google.code.findbugs:jsr305:2.0.1
+|    \--- javax.annotation:javax.annotation-api:1.2
+\--- com.android.support.test:runner:0.5 (*)
+
+_debugAndroidTestCompile - ## Internal use, do not manually configure ##
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support.test.espresso:espresso-core:2.2.2
+|    +--- com.squareup:javawriter:2.1.1
+|    +--- com.android.support.test:rules:0.5
+|    |    \--- com.android.support.test:runner:0.5
+|    |         +--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+|    |         +--- junit:junit:4.12
+|    |         |    \--- org.hamcrest:hamcrest-core:1.3
+|    |         \--- com.android.support.test:exposed-instrumentation-api-publish:0.5
+|    +--- com.android.support.test:runner:0.5 (*)
+|    +--- javax.inject:javax.inject:1
+|    +--- org.hamcrest:hamcrest-library:1.3
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    +--- com.android.support.test.espresso:espresso-idling-resource:2.2.2
+|    +--- org.hamcrest:hamcrest-integration:1.3
+|    |    \--- org.hamcrest:hamcrest-library:1.3 (*)
+|    +--- com.google.code.findbugs:jsr305:2.0.1
+|    \--- javax.annotation:javax.annotation-api:1.2
+\--- com.android.support.test:runner:0.5 (*)
+
+_debugAnnotationProcessor - ## Internal use, do not manually configure ##
++--- com.squareup:javapoet:1.7.0
++--- com.google.dagger:dagger-compiler:2.4
+|    +--- com.google.dagger:dagger:2.4
+|    |    \--- javax.inject:javax.inject:1
+|    +--- com.google.dagger:dagger-producers:2.4
+|    |    +--- com.google.dagger:dagger:2.4 (*)
+|    |    \--- com.google.guava:guava:19.0
+|    \--- com.google.guava:guava:19.0
++--- com.jakewharton:butterknife-compiler:8.0.1
+|    +--- io.reactivex:rxjava:1.1.3
+|    +--- com.google.auto:auto-common:0.6
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.google.auto.service:auto-service:1.0-rc2
+|    |    +--- com.google.auto:auto-common:0.3 -> 0.6 (*)
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0
+|    \--- com.squareup:javapoet:1.6.1 -> 1.7.0
++--- com.google.auto.value:auto-value:1.2
++--- com.ryanharter.auto.value:auto-value-parcel:0.2.1
+|    +--- com.squareup:javapoet:1.4.0 -> 1.7.0
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    +--- com.google.auto.service:auto-service:1.0-rc2 (*)
+|    +--- org.apache.commons:commons-lang3:3.4
+|    +--- com.google.auto.value:auto-value:1.2-rc1 -> 1.2
+|    \--- com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1
++--- com.ryanharter.auto.value:auto-value-gson:0.2.5
+|    +--- com.squareup:javapoet:1.1.0 -> 1.7.0
+|    +--- com.google.code.gson:gson:2.4
+|    +--- com.google.auto.value:auto-value:1.2
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    \--- com.google.auto.service:auto-service:1.0-rc2 (*)
+\--- com.squareup.auto.value:auto-value-redacted:1.0.0
+     +--- com.google.auto.value:auto-value:1.2
+     \--- com.squareup:javapoet:1.7.0
+
+_debugApk - ## Internal use, do not manually configure ##
++--- com.android.support:multidex:1.0.1
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support:design:23.4.0
+|    +--- com.android.support:recyclerview-v7:23.4.0
+|    |    +--- com.android.support:support-annotations:23.4.0
+|    |    \--- com.android.support:support-v4:23.4.0 (*)
+|    +--- com.android.support:appcompat-v7:23.4.0
+|    |    +--- com.android.support:animated-vector-drawable:23.4.0
+|    |    |    \--- com.android.support:support-vector-drawable:23.4.0
+|    |    |         \--- com.android.support:support-v4:23.4.0 (*)
+|    |    +--- com.android.support:support-v4:23.4.0 (*)
+|    |    \--- com.android.support:support-vector-drawable:23.4.0 (*)
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.android.support:appcompat-v7:23.4.0 (*)
++--- com.android.support:cardview-v7:23.4.0
++--- com.android.support:recyclerview-v7:23.4.0 (*)
++--- com.android.support:palette-v7:23.4.0
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.google.android.gms:play-services-gcm:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2
+|    |    +--- com.google.android.gms:play-services-basement:9.0.2
+|    |    |    \--- com.android.support:support-v4:23.0.0 -> 23.4.0 (*)
+|    |    +--- com.google.firebase:firebase-common:9.0.2
+|    |    |    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    |    \--- com.google.android.gms:play-services-tasks:9.0.2
+|    |    |         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    \--- com.google.android.gms:play-services-tasks:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-iid:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.android.gms:play-services-location:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-maps:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.dagger:dagger:2.4
+|    \--- javax.inject:javax.inject:1
++--- com.jakewharton:butterknife:8.0.1
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
+|    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
++--- com.google.code.gson:gson:2.6.2
++--- com.squareup.okhttp3:okhttp:3.2.0
+|    \--- com.squareup.okio:okio:1.6.0
++--- com.squareup.okhttp3:logging-interceptor:3.2.0
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- io.reactivex:rxandroid:+ -> 1.2.0
++--- io.reactivex:rxjava:1.1.5
++--- com.squareup.retrofit2:retrofit:2.0.2
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- com.squareup.retrofit2:converter-gson:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- com.google.code.gson:gson:2.6.1 -> 2.6.2
++--- com.squareup.retrofit2:adapter-rxjava:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- io.reactivex:rxjava:1.1.1 -> 1.1.5
++--- com.github.bumptech.glide:glide:3.7.0
++--- com.github.bumptech.glide:okhttp3-integration:1.4.0
++--- com.squareup.sqldelight:runtime:0.3.2
+|    \--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- com.facebook.stetho:stetho:1.3.1
+|    +--- com.google.code.findbugs:jsr305:2.0.1
+|    \--- commons-cli:commons-cli:1.2
+\--- com.facebook.stetho:stetho-okhttp3:1.3.1
+     +--- com.google.code.findbugs:jsr305:2.0.1
+     +--- com.squareup.okhttp3:okhttp:3.0.1 -> 3.2.0 (*)
+     \--- com.facebook.stetho:stetho:1.3.1 (*)
+
+_debugCompile - ## Internal use, do not manually configure ##
++--- com.android.support:multidex:1.0.1
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support:design:23.4.0
+|    +--- com.android.support:recyclerview-v7:23.4.0
+|    |    +--- com.android.support:support-annotations:23.4.0
+|    |    \--- com.android.support:support-v4:23.4.0 (*)
+|    +--- com.android.support:appcompat-v7:23.4.0
+|    |    +--- com.android.support:animated-vector-drawable:23.4.0
+|    |    |    \--- com.android.support:support-vector-drawable:23.4.0
+|    |    |         \--- com.android.support:support-v4:23.4.0 (*)
+|    |    +--- com.android.support:support-v4:23.4.0 (*)
+|    |    \--- com.android.support:support-vector-drawable:23.4.0 (*)
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.android.support:appcompat-v7:23.4.0 (*)
++--- com.android.support:cardview-v7:23.4.0
++--- com.android.support:recyclerview-v7:23.4.0 (*)
++--- com.android.support:palette-v7:23.4.0
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.google.android.gms:play-services-gcm:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2
+|    |    +--- com.google.android.gms:play-services-basement:9.0.2
+|    |    |    \--- com.android.support:support-v4:23.0.0 -> 23.4.0 (*)
+|    |    +--- com.google.firebase:firebase-common:9.0.2
+|    |    |    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    |    \--- com.google.android.gms:play-services-tasks:9.0.2
+|    |    |         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    \--- com.google.android.gms:play-services-tasks:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-iid:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.android.gms:play-services-location:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-maps:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.dagger:dagger:2.4
+|    \--- javax.inject:javax.inject:1
++--- com.jakewharton:butterknife:8.0.1
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
+|    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
++--- com.google.code.gson:gson:2.6.2
++--- com.squareup.okhttp3:okhttp:3.2.0
+|    \--- com.squareup.okio:okio:1.6.0
++--- com.squareup.okhttp3:logging-interceptor:3.2.0
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- io.reactivex:rxandroid:+ -> 1.2.0
++--- io.reactivex:rxjava:1.1.5
++--- com.squareup.retrofit2:retrofit:2.0.2
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- com.squareup.retrofit2:converter-gson:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- com.google.code.gson:gson:2.6.1 -> 2.6.2
++--- com.squareup.retrofit2:adapter-rxjava:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- io.reactivex:rxjava:1.1.1 -> 1.1.5
++--- com.github.bumptech.glide:glide:3.7.0
++--- com.github.bumptech.glide:okhttp3-integration:1.4.0
++--- com.squareup.sqldelight:runtime:0.3.2
+|    \--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- com.facebook.stetho:stetho:1.3.1
+|    +--- com.google.code.findbugs:jsr305:2.0.1
+|    \--- commons-cli:commons-cli:1.2
++--- com.facebook.stetho:stetho-okhttp3:1.3.1
+|    +--- com.google.code.findbugs:jsr305:2.0.1
+|    +--- com.squareup.okhttp3:okhttp:3.0.1 -> 3.2.0 (*)
+|    \--- com.facebook.stetho:stetho:1.3.1 (*)
++--- org.glassfish:javax.annotation:10.0-b28
+\--- com.jakewharton.auto.value:auto-value-annotations:1.2-update1
+
+_debugUnitTestAnnotationProcessor - ## Internal use, do not manually configure ##
+No dependencies
+
+_debugUnitTestApk - ## Internal use, do not manually configure ##
+No dependencies
+
+_debugUnitTestCompile - ## Internal use, do not manually configure ##
+No dependencies
+
+_lintOptionsAnnotationProcessor - ## Internal use, do not manually configure ##
++--- com.squareup:javapoet:1.7.0
++--- com.google.dagger:dagger-compiler:2.4
+|    +--- com.google.dagger:dagger:2.4
+|    |    \--- javax.inject:javax.inject:1
+|    +--- com.google.dagger:dagger-producers:2.4
+|    |    +--- com.google.dagger:dagger:2.4 (*)
+|    |    \--- com.google.guava:guava:19.0
+|    \--- com.google.guava:guava:19.0
++--- com.jakewharton:butterknife-compiler:8.0.1
+|    +--- io.reactivex:rxjava:1.1.3
+|    +--- com.google.auto:auto-common:0.6
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.google.auto.service:auto-service:1.0-rc2
+|    |    +--- com.google.auto:auto-common:0.3 -> 0.6 (*)
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0
+|    \--- com.squareup:javapoet:1.6.1 -> 1.7.0
++--- com.google.auto.value:auto-value:1.2
++--- com.ryanharter.auto.value:auto-value-parcel:0.2.1
+|    +--- com.squareup:javapoet:1.4.0 -> 1.7.0
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    +--- com.google.auto.service:auto-service:1.0-rc2 (*)
+|    +--- org.apache.commons:commons-lang3:3.4
+|    +--- com.google.auto.value:auto-value:1.2-rc1 -> 1.2
+|    \--- com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1
++--- com.ryanharter.auto.value:auto-value-gson:0.2.5
+|    +--- com.squareup:javapoet:1.1.0 -> 1.7.0
+|    +--- com.google.code.gson:gson:2.4
+|    +--- com.google.auto.value:auto-value:1.2
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    \--- com.google.auto.service:auto-service:1.0-rc2 (*)
+\--- com.squareup.auto.value:auto-value-redacted:1.0.0
+     +--- com.google.auto.value:auto-value:1.2
+     \--- com.squareup:javapoet:1.7.0
+
+_lintOptionsApk - ## Internal use, do not manually configure ##
++--- com.android.support:multidex:1.0.1
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support:design:23.4.0
+|    +--- com.android.support:recyclerview-v7:23.4.0
+|    |    +--- com.android.support:support-annotations:23.4.0
+|    |    \--- com.android.support:support-v4:23.4.0 (*)
+|    +--- com.android.support:appcompat-v7:23.4.0
+|    |    +--- com.android.support:animated-vector-drawable:23.4.0
+|    |    |    \--- com.android.support:support-vector-drawable:23.4.0
+|    |    |         \--- com.android.support:support-v4:23.4.0 (*)
+|    |    +--- com.android.support:support-v4:23.4.0 (*)
+|    |    \--- com.android.support:support-vector-drawable:23.4.0 (*)
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.android.support:appcompat-v7:23.4.0 (*)
++--- com.android.support:cardview-v7:23.4.0
++--- com.android.support:recyclerview-v7:23.4.0 (*)
++--- com.android.support:palette-v7:23.4.0
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.google.android.gms:play-services-gcm:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2
+|    |    +--- com.google.android.gms:play-services-basement:9.0.2
+|    |    |    \--- com.android.support:support-v4:23.0.0 -> 23.4.0 (*)
+|    |    +--- com.google.firebase:firebase-common:9.0.2
+|    |    |    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    |    \--- com.google.android.gms:play-services-tasks:9.0.2
+|    |    |         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    \--- com.google.android.gms:play-services-tasks:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-iid:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.android.gms:play-services-location:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-maps:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.dagger:dagger:2.4
+|    \--- javax.inject:javax.inject:1
++--- com.jakewharton:butterknife:8.0.1
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
+|    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
++--- com.google.code.gson:gson:2.6.2
++--- com.squareup.okhttp3:okhttp:3.2.0
+|    \--- com.squareup.okio:okio:1.6.0
++--- com.squareup.okhttp3:logging-interceptor:3.2.0
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- io.reactivex:rxandroid:+ -> 1.2.0
++--- io.reactivex:rxjava:1.1.5
++--- com.squareup.retrofit2:retrofit:2.0.2
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- com.squareup.retrofit2:converter-gson:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- com.google.code.gson:gson:2.6.1 -> 2.6.2
++--- com.squareup.retrofit2:adapter-rxjava:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- io.reactivex:rxjava:1.1.1 -> 1.1.5
++--- com.github.bumptech.glide:glide:3.7.0
++--- com.github.bumptech.glide:okhttp3-integration:1.4.0
++--- com.squareup.sqldelight:runtime:0.3.2
+|    \--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+\--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+
+_lintOptionsCompile - ## Internal use, do not manually configure ##
++--- com.android.support:multidex:1.0.1
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support:design:23.4.0
+|    +--- com.android.support:recyclerview-v7:23.4.0
+|    |    +--- com.android.support:support-annotations:23.4.0
+|    |    \--- com.android.support:support-v4:23.4.0 (*)
+|    +--- com.android.support:appcompat-v7:23.4.0
+|    |    +--- com.android.support:animated-vector-drawable:23.4.0
+|    |    |    \--- com.android.support:support-vector-drawable:23.4.0
+|    |    |         \--- com.android.support:support-v4:23.4.0 (*)
+|    |    +--- com.android.support:support-v4:23.4.0 (*)
+|    |    \--- com.android.support:support-vector-drawable:23.4.0 (*)
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.android.support:appcompat-v7:23.4.0 (*)
++--- com.android.support:cardview-v7:23.4.0
++--- com.android.support:recyclerview-v7:23.4.0 (*)
++--- com.android.support:palette-v7:23.4.0
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.google.android.gms:play-services-gcm:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2
+|    |    +--- com.google.android.gms:play-services-basement:9.0.2
+|    |    |    \--- com.android.support:support-v4:23.0.0 -> 23.4.0 (*)
+|    |    +--- com.google.firebase:firebase-common:9.0.2
+|    |    |    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    |    \--- com.google.android.gms:play-services-tasks:9.0.2
+|    |    |         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    \--- com.google.android.gms:play-services-tasks:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-iid:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.android.gms:play-services-location:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-maps:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.dagger:dagger:2.4
+|    \--- javax.inject:javax.inject:1
++--- com.jakewharton:butterknife:8.0.1
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
+|    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
++--- com.google.code.gson:gson:2.6.2
++--- com.squareup.okhttp3:okhttp:3.2.0
+|    \--- com.squareup.okio:okio:1.6.0
++--- com.squareup.okhttp3:logging-interceptor:3.2.0
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- io.reactivex:rxandroid:+ -> 1.2.0
++--- io.reactivex:rxjava:1.1.5
++--- com.squareup.retrofit2:retrofit:2.0.2
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- com.squareup.retrofit2:converter-gson:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- com.google.code.gson:gson:2.6.1 -> 2.6.2
++--- com.squareup.retrofit2:adapter-rxjava:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- io.reactivex:rxjava:1.1.1 -> 1.1.5
++--- com.github.bumptech.glide:glide:3.7.0
++--- com.github.bumptech.glide:okhttp3-integration:1.4.0
++--- com.squareup.sqldelight:runtime:0.3.2
+|    \--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- org.glassfish:javax.annotation:10.0-b28
+\--- com.jakewharton.auto.value:auto-value-annotations:1.2-update1
+
+_lintOptionsUnitTestAnnotationProcessor - ## Internal use, do not manually configure ##
+No dependencies
+
+_lintOptionsUnitTestApk - ## Internal use, do not manually configure ##
+No dependencies
+
+_lintOptionsUnitTestCompile - ## Internal use, do not manually configure ##
+No dependencies
+
+_releaseAnnotationProcessor - ## Internal use, do not manually configure ##
++--- com.squareup:javapoet:1.7.0
++--- com.google.dagger:dagger-compiler:2.4
+|    +--- com.google.dagger:dagger:2.4
+|    |    \--- javax.inject:javax.inject:1
+|    +--- com.google.dagger:dagger-producers:2.4
+|    |    +--- com.google.dagger:dagger:2.4 (*)
+|    |    \--- com.google.guava:guava:19.0
+|    \--- com.google.guava:guava:19.0
++--- com.jakewharton:butterknife-compiler:8.0.1
+|    +--- io.reactivex:rxjava:1.1.3
+|    +--- com.google.auto:auto-common:0.6
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.google.auto.service:auto-service:1.0-rc2
+|    |    +--- com.google.auto:auto-common:0.3 -> 0.6 (*)
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0
+|    \--- com.squareup:javapoet:1.6.1 -> 1.7.0
++--- com.google.auto.value:auto-value:1.2
++--- com.ryanharter.auto.value:auto-value-parcel:0.2.1
+|    +--- com.squareup:javapoet:1.4.0 -> 1.7.0
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    +--- com.google.auto.service:auto-service:1.0-rc2 (*)
+|    +--- org.apache.commons:commons-lang3:3.4
+|    +--- com.google.auto.value:auto-value:1.2-rc1 -> 1.2
+|    \--- com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1
++--- com.ryanharter.auto.value:auto-value-gson:0.2.5
+|    +--- com.squareup:javapoet:1.1.0 -> 1.7.0
+|    +--- com.google.code.gson:gson:2.4
+|    +--- com.google.auto.value:auto-value:1.2
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    \--- com.google.auto.service:auto-service:1.0-rc2 (*)
+\--- com.squareup.auto.value:auto-value-redacted:1.0.0
+     +--- com.google.auto.value:auto-value:1.2
+     \--- com.squareup:javapoet:1.7.0
+
+_releaseApk - ## Internal use, do not manually configure ##
++--- com.android.support:multidex:1.0.1
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support:design:23.4.0
+|    +--- com.android.support:recyclerview-v7:23.4.0
+|    |    +--- com.android.support:support-annotations:23.4.0
+|    |    \--- com.android.support:support-v4:23.4.0 (*)
+|    +--- com.android.support:appcompat-v7:23.4.0
+|    |    +--- com.android.support:animated-vector-drawable:23.4.0
+|    |    |    \--- com.android.support:support-vector-drawable:23.4.0
+|    |    |         \--- com.android.support:support-v4:23.4.0 (*)
+|    |    +--- com.android.support:support-v4:23.4.0 (*)
+|    |    \--- com.android.support:support-vector-drawable:23.4.0 (*)
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.android.support:appcompat-v7:23.4.0 (*)
++--- com.android.support:cardview-v7:23.4.0
++--- com.android.support:recyclerview-v7:23.4.0 (*)
++--- com.android.support:palette-v7:23.4.0
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.google.android.gms:play-services-gcm:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2
+|    |    +--- com.google.android.gms:play-services-basement:9.0.2
+|    |    |    \--- com.android.support:support-v4:23.0.0 -> 23.4.0 (*)
+|    |    +--- com.google.firebase:firebase-common:9.0.2
+|    |    |    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    |    \--- com.google.android.gms:play-services-tasks:9.0.2
+|    |    |         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    \--- com.google.android.gms:play-services-tasks:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-iid:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.android.gms:play-services-location:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-maps:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.dagger:dagger:2.4
+|    \--- javax.inject:javax.inject:1
++--- com.jakewharton:butterknife:8.0.1
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
+|    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
++--- com.google.code.gson:gson:2.6.2
++--- com.squareup.okhttp3:okhttp:3.2.0
+|    \--- com.squareup.okio:okio:1.6.0
++--- com.squareup.okhttp3:logging-interceptor:3.2.0
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- io.reactivex:rxandroid:+ -> 1.2.0
++--- io.reactivex:rxjava:1.1.5
++--- com.squareup.retrofit2:retrofit:2.0.2
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- com.squareup.retrofit2:converter-gson:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- com.google.code.gson:gson:2.6.1 -> 2.6.2
++--- com.squareup.retrofit2:adapter-rxjava:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- io.reactivex:rxjava:1.1.1 -> 1.1.5
++--- com.github.bumptech.glide:glide:3.7.0
++--- com.github.bumptech.glide:okhttp3-integration:1.4.0
++--- com.squareup.sqldelight:runtime:0.3.2
+|    \--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+\--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+
+_releaseCompile - ## Internal use, do not manually configure ##
++--- com.android.support:multidex:1.0.1
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support:design:23.4.0
+|    +--- com.android.support:recyclerview-v7:23.4.0
+|    |    +--- com.android.support:support-annotations:23.4.0
+|    |    \--- com.android.support:support-v4:23.4.0 (*)
+|    +--- com.android.support:appcompat-v7:23.4.0
+|    |    +--- com.android.support:animated-vector-drawable:23.4.0
+|    |    |    \--- com.android.support:support-vector-drawable:23.4.0
+|    |    |         \--- com.android.support:support-v4:23.4.0 (*)
+|    |    +--- com.android.support:support-v4:23.4.0 (*)
+|    |    \--- com.android.support:support-vector-drawable:23.4.0 (*)
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.android.support:appcompat-v7:23.4.0 (*)
++--- com.android.support:cardview-v7:23.4.0
++--- com.android.support:recyclerview-v7:23.4.0 (*)
++--- com.android.support:palette-v7:23.4.0
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.google.android.gms:play-services-gcm:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2
+|    |    +--- com.google.android.gms:play-services-basement:9.0.2
+|    |    |    \--- com.android.support:support-v4:23.0.0 -> 23.4.0 (*)
+|    |    +--- com.google.firebase:firebase-common:9.0.2
+|    |    |    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    |    \--- com.google.android.gms:play-services-tasks:9.0.2
+|    |    |         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    \--- com.google.android.gms:play-services-tasks:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-iid:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.android.gms:play-services-location:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-maps:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.dagger:dagger:2.4
+|    \--- javax.inject:javax.inject:1
++--- com.jakewharton:butterknife:8.0.1
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
+|    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
++--- com.google.code.gson:gson:2.6.2
++--- com.squareup.okhttp3:okhttp:3.2.0
+|    \--- com.squareup.okio:okio:1.6.0
++--- com.squareup.okhttp3:logging-interceptor:3.2.0
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- io.reactivex:rxandroid:+ -> 1.2.0
++--- io.reactivex:rxjava:1.1.5
++--- com.squareup.retrofit2:retrofit:2.0.2
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- com.squareup.retrofit2:converter-gson:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- com.google.code.gson:gson:2.6.1 -> 2.6.2
++--- com.squareup.retrofit2:adapter-rxjava:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- io.reactivex:rxjava:1.1.1 -> 1.1.5
++--- com.github.bumptech.glide:glide:3.7.0
++--- com.github.bumptech.glide:okhttp3-integration:1.4.0
++--- com.squareup.sqldelight:runtime:0.3.2
+|    \--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- com.android.support:support-annotations:23.1.1 -> 23.4.0
++--- org.glassfish:javax.annotation:10.0-b28
+\--- com.jakewharton.auto.value:auto-value-annotations:1.2-update1
+
+_releaseUnitTestAnnotationProcessor - ## Internal use, do not manually configure ##
+No dependencies
+
+_releaseUnitTestApk - ## Internal use, do not manually configure ##
+No dependencies
+
+_releaseUnitTestCompile - ## Internal use, do not manually configure ##
+No dependencies
+
+androidJacocoAgent - The Jacoco agent to use to get coverage data.
+\--- org.jacoco:org.jacoco.agent:0.7.5.201505241946
+
+androidJacocoAnt - The Jacoco ant tasks to use to get execute Gradle tasks.
+\--- org.jacoco:org.jacoco.ant:0.7.5.201505241946
+     +--- org.jacoco:org.jacoco.core:0.7.5.201505241946
+     |    \--- org.ow2.asm:asm-debug-all:5.0.1
+     +--- org.jacoco:org.jacoco.report:0.7.5.201505241946
+     |    +--- org.jacoco:org.jacoco.core:0.7.5.201505241946 (*)
+     |    \--- org.ow2.asm:asm-debug-all:5.0.1
+     \--- org.jacoco:org.jacoco.agent:0.7.5.201505241946
+
+androidTestAnnotationProcessor - Classpath for the annotation processor for 'androidTest'.
+No dependencies
+
+androidTestApk - Classpath packaged with the compiled 'androidTest' classes.
+No dependencies
+
+androidTestCompile - Classpath for compiling the androidTest sources.
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support.test.espresso:espresso-core:2.2.2
+|    +--- com.squareup:javawriter:2.1.1
+|    +--- com.android.support.test:rules:0.5
+|    |    \--- com.android.support.test:runner:0.5
+|    |         +--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+|    |         +--- junit:junit:4.12
+|    |         |    \--- org.hamcrest:hamcrest-core:1.3
+|    |         \--- com.android.support.test:exposed-instrumentation-api-publish:0.5
+|    +--- com.android.support.test:runner:0.5 (*)
+|    +--- javax.inject:javax.inject:1
+|    +--- org.hamcrest:hamcrest-library:1.3
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    +--- com.android.support.test.espresso:espresso-idling-resource:2.2.2
+|    +--- org.hamcrest:hamcrest-integration:1.3
+|    |    \--- org.hamcrest:hamcrest-library:1.3 (*)
+|    +--- com.google.code.findbugs:jsr305:2.0.1
+|    \--- javax.annotation:javax.annotation-api:1.2
+\--- com.android.support.test:runner:0.5 (*)
+
+androidTestProvided - Classpath for only compiling the androidTest sources.
+No dependencies
+
+androidTestWearApp - Link to a wear app to embed for object 'androidTest'.
+No dependencies
+
+annotationProcessor - Classpath for the annotation processor for 'main'.
++--- com.squareup:javapoet:1.7.0
++--- com.google.dagger:dagger-compiler:2.4
+|    +--- com.google.dagger:dagger:2.4
+|    |    \--- javax.inject:javax.inject:1
+|    +--- com.google.dagger:dagger-producers:2.4
+|    |    +--- com.google.dagger:dagger:2.4 (*)
+|    |    \--- com.google.guava:guava:19.0
+|    \--- com.google.guava:guava:19.0
++--- com.jakewharton:butterknife-compiler:8.0.1
+|    +--- io.reactivex:rxjava:1.1.3
+|    +--- com.google.auto:auto-common:0.6
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.google.auto.service:auto-service:1.0-rc2
+|    |    +--- com.google.auto:auto-common:0.3 -> 0.6 (*)
+|    |    \--- com.google.guava:guava:18.0 -> 19.0
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0
+|    \--- com.squareup:javapoet:1.6.1 -> 1.7.0
++--- com.google.auto.value:auto-value:1.2
++--- com.ryanharter.auto.value:auto-value-parcel:0.2.1
+|    +--- com.squareup:javapoet:1.4.0 -> 1.7.0
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    +--- com.google.auto.service:auto-service:1.0-rc2 (*)
+|    +--- org.apache.commons:commons-lang3:3.4
+|    +--- com.google.auto.value:auto-value:1.2-rc1 -> 1.2
+|    \--- com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1
++--- com.ryanharter.auto.value:auto-value-gson:0.2.5
+|    +--- com.squareup:javapoet:1.1.0 -> 1.7.0
+|    +--- com.google.code.gson:gson:2.4
+|    +--- com.google.auto.value:auto-value:1.2
+|    +--- com.google.auto:auto-common:0.6 (*)
+|    \--- com.google.auto.service:auto-service:1.0-rc2 (*)
+\--- com.squareup.auto.value:auto-value-redacted:1.0.0
+     +--- com.google.auto.value:auto-value:1.2
+     \--- com.squareup:javapoet:1.7.0
+
+apk - Classpath packaged with the compiled 'main' classes.
+No dependencies
+
+archives - Configuration for archive artifacts.
+No dependencies
+
+compile - Classpath for compiling the main sources.
++--- com.android.support:multidex:1.0.1
++--- com.android.support:support-v4:23.4.0
+|    \--- com.android.support:support-annotations:23.4.0
++--- com.android.support:design:23.4.0
+|    +--- com.android.support:recyclerview-v7:23.4.0
+|    |    +--- com.android.support:support-annotations:23.4.0
+|    |    \--- com.android.support:support-v4:23.4.0 (*)
+|    +--- com.android.support:appcompat-v7:23.4.0
+|    |    +--- com.android.support:animated-vector-drawable:23.4.0
+|    |    |    \--- com.android.support:support-vector-drawable:23.4.0
+|    |    |         \--- com.android.support:support-v4:23.4.0 (*)
+|    |    +--- com.android.support:support-v4:23.4.0 (*)
+|    |    \--- com.android.support:support-vector-drawable:23.4.0 (*)
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.android.support:appcompat-v7:23.4.0 (*)
++--- com.android.support:cardview-v7:23.4.0
++--- com.android.support:recyclerview-v7:23.4.0 (*)
++--- com.android.support:palette-v7:23.4.0
+|    \--- com.android.support:support-v4:23.4.0 (*)
++--- com.google.android.gms:play-services-gcm:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2
+|    |    +--- com.google.android.gms:play-services-basement:9.0.2
+|    |    |    \--- com.android.support:support-v4:23.0.0 -> 23.4.0 (*)
+|    |    +--- com.google.firebase:firebase-common:9.0.2
+|    |    |    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    |    \--- com.google.android.gms:play-services-tasks:9.0.2
+|    |    |         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    |    \--- com.google.android.gms:play-services-tasks:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-iid:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.android.gms:play-services-location:9.0.2
+|    +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|    +--- com.google.android.gms:play-services-basement:9.0.2 (*)
+|    \--- com.google.android.gms:play-services-maps:9.0.2
+|         +--- com.google.android.gms:play-services-base:9.0.2 (*)
+|         \--- com.google.android.gms:play-services-basement:9.0.2 (*)
++--- com.google.dagger:dagger:2.4
+|    \--- javax.inject:javax.inject:1
++--- com.jakewharton:butterknife:8.0.1
+|    +--- com.jakewharton:butterknife-annotations:8.0.1
+|    |    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
+|    \--- com.android.support:support-annotations:23.3.0 -> 23.4.0
++--- com.google.code.gson:gson:2.6.2
++--- com.squareup.okhttp3:okhttp:3.2.0
+|    \--- com.squareup.okio:okio:1.6.0
++--- com.squareup.okhttp3:logging-interceptor:3.2.0
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- io.reactivex:rxandroid:+ -> 1.2.0
++--- io.reactivex:rxjava:1.1.5
++--- com.squareup.retrofit2:retrofit:2.0.2
+|    \--- com.squareup.okhttp3:okhttp:3.2.0 (*)
++--- com.squareup.retrofit2:converter-gson:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- com.google.code.gson:gson:2.6.1 -> 2.6.2
++--- com.squareup.retrofit2:adapter-rxjava:2.0.2
+|    +--- com.squareup.retrofit2:retrofit:2.0.2 (*)
+|    \--- io.reactivex:rxjava:1.1.1 -> 1.1.5
++--- com.github.bumptech.glide:glide:3.7.0
++--- com.github.bumptech.glide:okhttp3-integration:1.4.0
++--- com.squareup.sqldelight:runtime:0.3.2
+|    \--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+\--- com.android.support:support-annotations:23.1.1 -> 23.4.0
+
+debugAnnotationProcessor - Classpath for the annotation processor for 'debug'.
+No dependencies
+
+debugApk - Classpath packaged with the compiled 'debug' classes.
+No dependencies
+
+debugCompile - Classpath for compiling the debug sources.
++--- com.facebook.stetho:stetho:1.3.1
+|    +--- com.google.code.findbugs:jsr305:2.0.1
+|    \--- commons-cli:commons-cli:1.2
+\--- com.facebook.stetho:stetho-okhttp3:1.3.1
+     +--- com.google.code.findbugs:jsr305:2.0.1
+     +--- com.squareup.okhttp3:okhttp:3.0.1
+     |    \--- com.squareup.okio:okio:1.6.0
+     \--- com.facebook.stetho:stetho:1.3.1 (*)
+
+debugProvided - Classpath for only compiling the debug sources.
+No dependencies
+
+debugWearApp - Link to a wear app to embed for object 'debug'.
+No dependencies
+
+default - Configuration for default artifacts.
+No dependencies
+
+default-mapping - Configuration for default mapping artifacts.
+No dependencies
+
+default-metadata - Metadata for the produced APKs.
+No dependencies
+
+lintOptionsAnnotationProcessor - Classpath for the annotation processor for 'lintOptions'.
+No dependencies
+
+lintOptionsApk - Classpath packaged with the compiled 'lintOptions' classes.
+No dependencies
+
+lintOptionsCompile - Classpath for compiling the lintOptions sources.
+No dependencies
+
+lintOptionsProvided - Classpath for only compiling the lintOptions sources.
+No dependencies
+
+lintOptionsWearApp - Link to a wear app to embed for object 'lintOptions'.
+No dependencies
+
+provided - Classpath for only compiling the main sources.
++--- org.glassfish:javax.annotation:10.0-b28
+\--- com.jakewharton.auto.value:auto-value-annotations:1.2-update1
+
+releaseAnnotationProcessor - Classpath for the annotation processor for 'release'.
+No dependencies
+
+releaseApk - Classpath packaged with the compiled 'release' classes.
+No dependencies
+
+releaseCompile - Classpath for compiling the release sources.
+No dependencies
+
+releaseProvided - Classpath for only compiling the release sources.
+No dependencies
+
+releaseWearApp - Link to a wear app to embed for object 'release'.
+No dependencies
+
+testAnnotationProcessor - Classpath for the annotation processor for 'test'.
+No dependencies
+
+testApk - Classpath packaged with the compiled 'test' classes.
+No dependencies
+
+testCompile - Classpath for compiling the test sources.
+No dependencies
+
+testDebugAnnotationProcessor - Classpath for the annotation processor for 'testDebug'.
+No dependencies
+
+testDebugApk - Classpath packaged with the compiled 'testDebug' classes.
+No dependencies
+
+testDebugCompile - Classpath for compiling the testDebug sources.
+No dependencies
+
+testDebugProvided - Classpath for only compiling the testDebug sources.
+No dependencies
+
+testDebugWearApp - Link to a wear app to embed for object 'testDebug'.
+No dependencies
+
+testLintOptionsAnnotationProcessor - Classpath for the annotation processor for 'testLintOptions'.
+No dependencies
+
+testLintOptionsApk - Classpath packaged with the compiled 'testLintOptions' classes.
+No dependencies
+
+testLintOptionsCompile - Classpath for compiling the testLintOptions sources.
+No dependencies
+
+testLintOptionsProvided - Classpath for only compiling the testLintOptions sources.
+No dependencies
+
+testLintOptionsWearApp - Link to a wear app to embed for object 'testLintOptions'.
+No dependencies
+
+testProvided - Classpath for only compiling the test sources.
+No dependencies
+
+testReleaseAnnotationProcessor - Classpath for the annotation processor for 'testRelease'.
+No dependencies
+
+testReleaseApk - Classpath packaged with the compiled 'testRelease' classes.
+No dependencies
+
+testReleaseCompile - Classpath for compiling the testRelease sources.
+No dependencies
+
+testReleaseProvided - Classpath for only compiling the testRelease sources.
+No dependencies
+
+testReleaseWearApp - Link to a wear app to embed for object 'testRelease'.
+No dependencies
+
+testWearApp - Link to a wear app to embed for object 'test'.
+No dependencies
+
+wearApp - Link to a wear app to embed for object 'main'.
+No dependencies
+
+BUILD SUCCESSFUL
+
+Total time: 8.182 secs

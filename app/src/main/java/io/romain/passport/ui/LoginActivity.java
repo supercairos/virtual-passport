@@ -32,51 +32,44 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import javax.net.ssl.HttpsURLConnection;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.romain.passport.R;
-import io.romain.passport.logic.helpers.UserHelper;
-import io.romain.passport.model.User;
+import io.romain.passport.logic.observables.auth.FirebaseLoginObservable;
 import io.romain.passport.ui.fragments.dialogs.ErrorDialogFragment;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.SimpleTextWatcher;
 import io.romain.passport.utils.loaders.ProfileLoader;
 import io.romain.passport.utils.validators.EmailValidator;
 import io.romain.passport.utils.validators.PasswordValidator;
-import okhttp3.Credentials;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends FirebaseAuthActivity {
 
 	private static final int LOADER_ID = 8888;
 
 	private static final int PERMISSIONS_REQUEST = 12;
 
-	@Bind(R.id.edit_login_email)
+	@BindView(R.id.edit_login_email)
 	EditText mEmail;
-	@Bind(R.id.edit_login_email_layout)
+	@BindView(R.id.edit_login_email_layout)
 	TextInputLayout mEmailLayout;
-
-	@Bind(R.id.permission_checkbox)
+	@BindView(R.id.permission_checkbox)
 	CheckBox mPermissionCheckbox;
-
-	@Bind(R.id.edit_login_password)
+	@BindView(R.id.edit_login_password)
 	EditText mPassword;
-	@Bind(R.id.edit_login_password_layout)
+	@BindView(R.id.edit_login_password_layout)
 	TextInputLayout mPasswordLayout;
-
-	@Bind(R.id.action_bar)
+	@BindView(R.id.action_bar)
 	Toolbar mActionBar;
-
-	@Bind(R.id.login_button_login)
+	@BindView(R.id.login_button_login)
 	Button mLoginButton;
 
 	private ProgressDialog mDialog;
 	private boolean isSaving = false;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -143,35 +136,33 @@ public class LoginActivity extends BaseActivity {
 
 		if (isEverythingOk) {
 			showSavingDialog();
-			mRetrofit.create(User.UserService.class)
-					.login(Credentials.basic(email, password))
-					.subscribeOn(Schedulers.io())
-					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(user -> {
-						hideSavingDialog();
-						UserHelper.save(LoginActivity.this, user, password);
-					}, throwable -> {
-						Dog.d(throwable, "Ex!");
-						hideSavingDialog();
-						if (throwable instanceof HttpException) {
-							int code = ((HttpException) throwable).code();
-							switch (code) {
-								case HttpsURLConnection.HTTP_UNAUTHORIZED:
-									mEmailLayout.setError(getString(R.string.error_wrong_login));
-									mEmail.requestFocus();
-									mEmail.setSelection(mEmail.length());
-									return;
-								default:
-							}
-						}
-
-						ErrorDialogFragment.newInstance(LoginActivity.this, R.string.error_occurred_please_retry).show(getSupportFragmentManager(), "Dialog");
-					});
+			mRxSubscription.add(
+					FirebaseLoginObservable.create(this, email, password) // Login
+							.filter(result -> result.getUser() != null)
+							.map(AuthResult::getUser)
+							.subscribe(success -> {
+								hideSavingDialog();
+								MainActivity.start(this);
+							}, throwable -> {
+								Dog.d(throwable, "Ex!");
+								hideSavingDialog();
+								ErrorDialogFragment.newInstance(LoginActivity.this, R.string.error_occurred_please_retry).show(getSupportFragmentManager(), "Dialog");
+							}));
 		}
 	}
 
 	@Override
-	protected void onStop() {
+	void onUserSignedIn(FirebaseUser user) {
+		MainActivity.start(this);
+	}
+
+	@Override
+	void onUserSignedOut() {
+
+	}
+
+	@Override
+	public void onStop() {
 		hideSavingDialog();
 		super.onStop();
 	}

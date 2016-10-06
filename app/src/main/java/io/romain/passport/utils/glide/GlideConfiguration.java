@@ -21,7 +21,9 @@ import android.content.Context;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.GlideModule;
 
@@ -50,7 +52,7 @@ public class GlideConfiguration implements GlideModule {
 				activityManager.isLowRamDevice() ? DecodeFormat.PREFER_RGB_565 : DecodeFormat.PREFER_ARGB_8888
 		);
 
-		//builder.setDiskCache(new DiskLruCacheFactory(getMyCacheLocationWithoutIO(), DISK_CACHE_SIZE));
+		builder.setDiskCache(new InternalCacheDiskCacheFactory(context, "glide", DISK_CACHE_SIZE));
 	}
 
 	@Override

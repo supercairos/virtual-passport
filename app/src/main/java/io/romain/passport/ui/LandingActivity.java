@@ -6,37 +6,35 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import butterknife.Bind;
+import com.google.firebase.auth.FirebaseUser;
+
+import butterknife.BindView;
 import butterknife.OnClick;
 import io.romain.passport.R;
-import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.utils.Dog;
+import io.romain.passport.utils.GoogleApiUtils;
 import io.romain.passport.utils.SimpleAnimatorListener;
 
-public class LandingActivity extends BaseActivity {
+public class LandingActivity extends FirebaseAuthActivity {
 
 	private static final long ICON_DISOLVE_DURATION = 500;
 	private static final long FADE_IN_DURATION = 300;
 	private static final long CROSSFADE_DURATION = 500;
 
-	@Bind(R.id.content_root_view)
+	@BindView(R.id.content_root_view)
 	FrameLayout mRootView;
-
-	@Bind(R.id.landing_splash_screen)
+	@BindView(R.id.landing_splash_screen)
 	ViewGroup mSplashScreen;
-	@Bind(R.id.landing_button_screen)
+	@BindView(R.id.landing_button_screen)
 	ViewGroup mButtonScreen;
-
-	@Bind(R.id.landing_icon)
+	@BindView(R.id.landing_icon)
 	ImageView mLandingIcon;
-
-	@Bind(R.id.landing_button_layout)
+	@BindView(R.id.landing_button_layout)
 	ViewGroup mLandingButtonLayout;
 
 	public static void start(Context context) {
@@ -49,20 +47,30 @@ public class LandingActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String token = AccountHelper.peekToken(mAccountManager);
-		if (!TextUtils.isEmpty(token)) {
-			Dog.d("Auto login : %s", token.substring(0, token.length() < 10 ? token.length() : 10));
-			MainActivity.start(this);
+		// Check if user is already logged in
+		if (!GoogleApiUtils.isGooglePlayServicesAvailable(this)) {
+			Toast.makeText(this, getString(R.string.common_google_play_services_install_text_phone, getString(R.string.app_name)), Toast.LENGTH_LONG).show();
+			finish();
+			return;
 		}
 
 		setTheme(R.style.Passport_Home);
 		setContentView(R.layout.activity_landing);
+	}
 
+	@Override
+	void onUserSignedIn(FirebaseUser user) {
+		MainActivity.start(this);
+	}
+
+	@Override
+	void onUserSignedOut() {
 		// Black
 		ObjectAnimator a1 = ObjectAnimator.ofFloat(mLandingIcon, View.SCALE_X, 0.0f).setDuration(ICON_DISOLVE_DURATION);
 		ObjectAnimator a2 = ObjectAnimator.ofFloat(mLandingIcon, View.SCALE_Y, 0.0f).setDuration(ICON_DISOLVE_DURATION);
 		ObjectAnimator a3 = ObjectAnimator.ofFloat(mButtonScreen, View.ALPHA, 1.0f).setDuration(FADE_IN_DURATION);
 		a3.setStartDelay(ICON_DISOLVE_DURATION - FADE_IN_DURATION);
+
 		ObjectAnimator a4 = ObjectAnimator.ofFloat(mSplashScreen, View.ALPHA, 0.0f).setDuration(FADE_IN_DURATION);
 		a4.setStartDelay(ICON_DISOLVE_DURATION - FADE_IN_DURATION);
 
@@ -96,4 +104,5 @@ public class LandingActivity extends BaseActivity {
 	void onButtonLoginClicked() {
 		startActivity(new Intent(this, LoginActivity.class));
 	}
+
 }

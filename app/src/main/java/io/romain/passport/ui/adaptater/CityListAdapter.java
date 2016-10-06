@@ -39,10 +39,10 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.HashSet;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.romain.passport.R;
-import io.romain.passport.model.City;
+import io.romain.passport.data.City;
 import io.romain.passport.ui.views.FourThreeImageView;
 import io.romain.passport.utils.AnimUtils;
 import io.romain.passport.utils.Dog;
@@ -64,19 +64,19 @@ public class CityListAdapter extends CursorRecyclerAdapter<CityListAdapter.CityL
 
 	public class CityListViewHolder extends RecyclerView.ViewHolder {
 
-		@Bind(R.id.item_city_list_content)
+		@BindView(R.id.item_city_list_content)
 		public LinearLayout content;
-		@Bind(R.id.item_city_list_picture)
+		@BindView(R.id.item_city_list_picture)
 		public FourThreeImageView picture;
-		@Bind(R.id.item_city_list_name)
+		@BindView(R.id.item_city_list_name)
 		public TextView name;
-		@Bind(R.id.item_city_list_favorite)
+		@BindView(R.id.item_city_list_favorite)
 		public ImageView favorite;
-		@Bind(R.id.item_city_list_loading)
+		@BindView(R.id.item_city_list_loading)
 		public ProgressBar loading;
-		@Bind(R.id.item_city_list_card_view)
+		@BindView(R.id.item_city_list_card_view)
 		public CardView card;
-		@Bind(R.id.item_city_list_remove)
+		@BindView(R.id.item_city_list_remove)
 		public ImageView remove;
 
 		public CityListViewHolder(final View view) {

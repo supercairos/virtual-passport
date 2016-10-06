@@ -19,10 +19,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -30,37 +28,38 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import io.romain.passport.R;
-import io.romain.passport.model.City;
-import io.romain.passport.model.Forecast;
-import io.romain.passport.model.wrappers.WeatherWrapper;
+import io.romain.passport.data.City;
+import io.romain.passport.data.Forecast;
+import io.romain.passport.data.wrappers.WeatherWrapper;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.glide.CityDetailTarget;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressWarnings("WeakerAccess")
 public class CityDetailActivity extends BaseActivity implements OnMapReadyCallback {
 
     public static final String EXTRA_CITY = "extra_city";
 
-    @Bind(R.id.city_detail_toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.city_detail_collapsing_toolbar)
+    @BindView(R.id.city_detail_toolbar)
+	Toolbar mToolbar;
+    @BindView(R.id.city_detail_collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
-    @Bind(R.id.city_detail_picture)
-    ImageView mImageView;
+    @BindView(R.id.city_detail_picture)
+	ImageView mImageView;
 
     // Weather
-    @Bind(R.id.city_detail_weather_frame)
-    LinearLayout mWeatherLayout;
-    @Bind(R.id.city_detail_weather_scroll_progress)
-    ProgressBar mWeatherSpinner;
-    @Bind(R.id.city_detail_weather_empty_view)
-    TextView mWeatherEmptyView;
-    @Bind(R.id.city_detail_weather_scroll_view)
-    HorizontalScrollView mWeatherScrollView;
+    @BindView(R.id.city_detail_weather_frame)
+	LinearLayout mWeatherLayout;
+    @BindView(R.id.city_detail_weather_scroll_progress)
+	ProgressBar mWeatherSpinner;
+    @BindView(R.id.city_detail_weather_empty_view)
+	TextView mWeatherEmptyView;
+    @BindView(R.id.city_detail_weather_scroll_view)
+	HorizontalScrollView mWeatherScrollView;
 
     private SupportMapFragment mGoogleMapsFragment;
     private City mCity;
@@ -77,17 +76,7 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
 
         setTheme(R.style.Passport_Detail);
         setContentView(R.layout.activity_city_detail);
-        setFragment(SupportMapFragment.newInstance(
-                new GoogleMapOptions()
-                        .liteMode(true)
-                        .camera(
-                                new CameraPosition.Builder()
-                                        .target(new LatLng(mCity.latitude(), mCity.longitude()))
-                                        .zoom(11)
-                                        .build()
-                        )
-                )
-        );
+
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -99,7 +88,6 @@ public class CityDetailActivity extends BaseActivity implements OnMapReadyCallba
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fallback(R.drawable.no_picture_found)
                 .error(R.drawable.no_picture_found)
-//				.crossFade()
                 .into(new CityDetailTarget(mImageView, mCollapsingToolbar, mToolbar));
 
 

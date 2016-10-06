@@ -17,10 +17,10 @@ package io.romain.passport.logic.modules;
 
 import com.google.gson.Gson;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import io.romain.passport.BuildConfig;
+import io.romain.passport.utils.Dog;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -34,17 +34,18 @@ public class RetrofitModule {
 	private static final String HOST = "passport-supercairos.rhcloud.com";
 	private static final int PORT = 80;
 
+	public static final HttpUrl BASE_URL = new HttpUrl.Builder()
+			.scheme(PROTOCOL)
+			.host(HOST)
+			.port(PORT)
+			.build();
+
 	@Provides
-	@Singleton
 	Retrofit getRetrofit(OkHttpClient client, Gson gson) {
+		if (BuildConfig.DEBUG) Dog.d("Called()");
+
 		return new Retrofit.Builder()
-				.baseUrl(
-						new HttpUrl.Builder()
-								.scheme(PROTOCOL)
-								.host(HOST)
-								.port(PORT)
-								.build()
-				)
+				.baseUrl(BASE_URL)
 				.addConverterFactory(GsonConverterFactory.create(gson))
 				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 				.client(client)

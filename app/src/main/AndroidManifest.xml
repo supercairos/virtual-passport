@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="io.romain.passport"
           android:installLocation="auto">
 
@@ -110,65 +111,10 @@
         </activity>
 
         <provider
-            android:name=".model.database.PassportContentProvider"
+            android:name=".data.sources.local.PassportContentProvider"
             android:authorities="io.romain.passport"
             android:exported="false"/>
 
-        <service
-            android:name=".logic.services.account.SyncService"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:process=":sync">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
-            </intent-filter>
-
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter"/>
-        </service>
-        <service
-            android:name=".logic.services.account.AuthenticatorService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
-            </intent-filter>
-
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator"/>
-        </service>
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-
-                <category android:name="io.romain.passport"/>
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name=".logic.services.gcm.MyGcmListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name=".logic.services.gcm.MyInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name=".logic.services.gcm.RegistrationIntentService"
-            android:exported="false"/>
     </application>
 
 </manifest>

@@ -6,13 +6,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import java.io.File;
 
 import io.romain.passport.R;
-import io.romain.passport.logic.helpers.AccountHelper;
-import io.romain.passport.model.database.PassportContentProvider;
+import io.romain.passport.data.sources.local.PassportContentProvider;
 import io.romain.passport.ui.LandingActivity;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.PlayServicesUtils;
@@ -28,17 +26,7 @@ public class LogoutDialogFragment extends BaseDialogFragment {
 				.setMessage(R.string.logout_message)
 				.setTitle(R.string.logout_title)
 				.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-					AccountHelper.removeAccount(mAccountManager, new AccountHelper.AccountRemovedCallback() {
-						@Override
-						public void onSuccess() {
-							(new CleanupThread(context)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-						}
-
-						@Override
-						public void onFailure() {
-							Toast.makeText(context, "Could not remove this account", Toast.LENGTH_LONG).show();
-						}
-					});
+					xxx
 				})
 				.setNegativeButton(android.R.string.cancel, null)
 				.create();

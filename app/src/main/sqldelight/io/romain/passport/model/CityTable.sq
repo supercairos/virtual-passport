@@ -1,13 +1,11 @@
-CREATE TABLE cities (
-    _id LONG NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name STRING NOT NULL,
-    favorite BOOLEAN NOT NULL,
-    country STRING NOT NULL,
-    longitude DOUBLE NOT NULL,
-    latitude DOUBLE NOT NULL,
-    picture CLASS('android.net.Uri')
-);
+import android.net.Uri;
 
--- Further SQL statements are proceeded by an identifier.
-add_favorite_column:
-ALTER TABLE cities ADD favorite INT NOT NULL DEFAULT 0;
+CREATE TABLE cities (
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    favorite INTEGER AS Boolean NOT NULL,
+    country TEXT NOT NULL,
+    longitude REAL NOT NULL,
+    latitude REAL NOT NULL,
+    picture TEXT AS Uri
+);

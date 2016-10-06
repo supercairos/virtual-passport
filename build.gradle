@@ -3,25 +3,38 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:+'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.+'
-        classpath 'me.tatarka:gradle-retrolambda:3.+'
-        classpath 'com.squareup.sqldelight:gradle-plugin:0.2.2'
+        classpath 'com.google.guava:guava:19.0'
+        classpath 'com.squareup:javapoet:1.7.0'
+
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha7'
+        classpath 'com.squareup.sqldelight:gradle-plugin:0.4.4'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
             options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+def ciServer = 'TRAVIS'
+project.ext.preDexLibs = "true".equals(System.getenv(ciServer))
+
+subprojects {
+    project.plugins.whenPluginAdded { plugin ->
+        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
     }
 }

@@ -17,6 +17,7 @@ package io.romain.passport;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import io.romain.passport.logic.components.ApplicationComponent;
 import io.romain.passport.logic.components.DaggerApplicationComponent;
@@ -38,8 +39,13 @@ public class MyApplication extends Application {
 				.build();
 	}
 
+	@Override
+	protected void attachBaseContext(Context base) {
+		super.attachBaseContext(base);
+		MultiDex.install(base);
+	}
+
 	public static MyApplication getApplication(Context context) {
 		return ((MyApplication) context.getApplicationContext());
 	}
-
 }

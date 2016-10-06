@@ -45,7 +45,7 @@ public class LocationUpdatesObservable implements Observable.OnSubscribe<Locatio
 
     @Override
     public void call(Subscriber<? super Location> subscriber) {
-
+        subscriber.onStart();
         LastKnownLocationObservable
                 .create(mClient)
                 .subscribe(subscriber::onNext, subscriber::onError);

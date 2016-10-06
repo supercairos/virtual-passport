@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+             xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
-    tools:context="io.romain.passport.ui.AddCityActivity">
+             android:layout_height="match_parent"
+             android:fitsSystemWindows="false"
+             android:focusable="false"
+             android:focusableInTouchMode="false"
+             tools:context="io.romain.passport.ui.AddCityActivity">
 
 
     <FrameLayout
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_medium"
                 android:layout_marginStart="@dimen/spacing_normal"
-                android:text="@string/add_city_description" />
+                android:text="@string/add_city_description"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                     android:inputType="textEmailAddress"
                     android:selectAllOnFocus="true">
 
-                    <requestFocus />
+                    <requestFocus/>
                 </io.romain.passport.ui.views.LocationAutocompleteTextView>
 
             </android.support.design.widget.TextInputLayout>
@@ -68,12 +68,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:text="@android:string/cancel"
-                    android:textColor="?android:colorAccent" />
+                    android:textColor="?android:colorAccent"/>
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
 
                 <Button
                     android:id="@+id/add_city_ok"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:enabled="false"
-                    android:text="@android:string/ok" />
+                    android:text="@android:string/ok"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone" />
+            android:visibility="gone"/>
     </FrameLayout>
 
 </FrameLayout>

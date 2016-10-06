@@ -44,6 +44,7 @@ public class GeocoderObservable implements Observable.OnSubscribe<Address> {
     @Override
     public void call(Subscriber<? super Address> subscriber) {
         Geocoder geocoder = new Geocoder(mContext);
+        subscriber.onStart();
         try {
             List<Address> addresses = geocoder.getFromLocationName(mInput, MAX_RESULTS);
             if(addresses != null && !addresses.isEmpty()) {

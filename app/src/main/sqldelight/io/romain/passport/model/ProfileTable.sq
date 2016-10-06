@@ -1,0 +1,9 @@
+import android.net.Uri;
+
+CREATE TABLE profiles (
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    server_id TEXT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    picture TEXT AS Uri
+);

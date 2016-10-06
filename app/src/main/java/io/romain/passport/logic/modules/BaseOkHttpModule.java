@@ -15,16 +15,15 @@
  */
 package io.romain.passport.logic.modules;
 
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.os.Build;
-import android.text.TextUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import io.romain.passport.logic.helpers.AccountHelper;
+import io.romain.passport.BuildConfig;
+import io.romain.passport.utils.Dog;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.ConnectionSpec;
@@ -37,9 +36,11 @@ public class BaseOkHttpModule {
 
 	private static final long TIMEOUT = 180;
 
-	protected static OkHttpClient.Builder getBaseOkHttpClientBuilder(Context context, AccountManager manager) {
+	protected static OkHttpClient.Builder getBaseOkHttpClientBuilder(Context context) {
+		if (BuildConfig.DEBUG) Dog.d("Called()");
+
 		return new OkHttpClient.Builder()
-				.addInterceptor(new HeaderInterceptor(manager))
+				.addInterceptor(new HeaderInterceptor())
 				.connectTimeout(TIMEOUT, TimeUnit.SECONDS)
 				.connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
 				.cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024));
@@ -48,12 +49,6 @@ public class BaseOkHttpModule {
 	private static final class HeaderInterceptor implements Interceptor {
 
 		private static final int MAX_STALE = 60 * 3;
-
-		private final AccountManager mManager;
-
-		public HeaderInterceptor(AccountManager manager) {
-			mManager = manager;
-		}
 
 		@Override
 		public Response intercept(Chain chain) throws IOException {
@@ -67,11 +62,6 @@ public class BaseOkHttpModule {
 								.maxStale(MAX_STALE, TimeUnit.MINUTES)
 								.build()
 				);
-			}
-
-			String s = AccountHelper.peekToken(mManager);
-			if (!TextUtils.isEmpty(s)) {
-				builder.addHeader("Authorization", "Bearer " + s);
 			}
 
 			return chain.proceed(builder.build());

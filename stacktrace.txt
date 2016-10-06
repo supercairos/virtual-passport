@@ -1,0 +1,98 @@
+To honour the JVM settings for this build a new JVM will be forked. Please consider using the daemon: https://docs.gradle.org/2.10/userguide/gradle_daemon.html.
+Download https://jcenter.bintray.com/com/android/tools/build/gradle/2.2.0-alpha4/gradle-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/build/gradle-core/2.2.0-alpha4/gradle-core-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/build/builder/2.2.0-alpha4/builder-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/lint/lint/25.2.0-alpha4/lint-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/build/gradle-api/2.2.0-alpha4/gradle-api-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/databinding/compilerCommon/2.2.0-alpha4/compilerCommon-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/build/builder-model/2.2.0-alpha4/builder-model-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/build/builder-test-api/2.2.0-alpha4/builder-test-api-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/sdklib/25.2.0-alpha4/sdklib-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/sdk-common/25.2.0-alpha4/sdk-common-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/common/25.2.0-alpha4/common-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/build/manifest-merger/25.2.0-alpha4/manifest-merger-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/25.2.0-alpha4/ddmlib-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/lint/lint-checks/25.2.0-alpha4/lint-checks-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/databinding/baseLibrary/2.2.0-alpha4/baseLibrary-2.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/25.2.0-alpha4/layoutlib-api-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/dvlib/25.2.0-alpha4/dvlib-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/repository/25.2.0-alpha4/repository-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/lint/lint-api/25.2.0-alpha4/lint-api-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.pom
+Download https://jcenter.bintray.com/com/google/jimfs/jimfs-parent/1.1/jimfs-parent-1.1.pom
+Download https://jcenter.bintray.com/com/android/tools/annotations/25.2.0-alpha4/annotations-25.2.0-alpha4.pom
+Download https://jcenter.bintray.com/com/android/tools/build/gradle/2.2.0-alpha4/gradle-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/build/gradle-core/2.2.0-alpha4/gradle-core-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/build/builder/2.2.0-alpha4/builder-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/lint/lint/25.2.0-alpha4/lint-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/build/gradle-api/2.2.0-alpha4/gradle-api-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/databinding/compilerCommon/2.2.0-alpha4/compilerCommon-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/build/builder-model/2.2.0-alpha4/builder-model-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/build/builder-test-api/2.2.0-alpha4/builder-test-api-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/sdklib/25.2.0-alpha4/sdklib-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/sdk-common/25.2.0-alpha4/sdk-common-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/common/25.2.0-alpha4/common-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/build/manifest-merger/25.2.0-alpha4/manifest-merger-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/25.2.0-alpha4/ddmlib-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/lint/lint-checks/25.2.0-alpha4/lint-checks-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/databinding/baseLibrary/2.2.0-alpha4/baseLibrary-2.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/layoutlib/layoutlib-api/25.2.0-alpha4/layoutlib-api-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/dvlib/25.2.0-alpha4/dvlib-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/repository/25.2.0-alpha4/repository-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/android/tools/lint/lint-api/25.2.0-alpha4/lint-api-25.2.0-alpha4.jar
+Download https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar
+Download https://jcenter.bintray.com/com/android/tools/annotations/25.2.0-alpha4/annotations-25.2.0-alpha4.jar
+Observed package id 'add-ons;addon-google_apis-google-16' in inconsistent location 'C:\android-sdk\add-ons\addon-google_apis-google-16-1' (Expected 'C:\android-sdk\add-ons\addon-google_apis-google-16')
+Already observed package id 'add-ons;addon-google_apis-google-16' in 'C:\android-sdk\add-ons\addon-google_apis-google-16'. Skipping duplicate at 'C:\android-sdk\add-ons\addon-google_apis-google-16-1'
+Observed package id 'add-ons;addon-google_apis-google-16' in inconsistent location 'C:\android-sdk\add-ons\addon-google_apis-google-16-1' (Expected 'C:\android-sdk\add-ons\addon-google_apis-google-16')
+Already observed package id 'add-ons;addon-google_apis-google-16' in 'C:\android-sdk\add-ons\addon-google_apis-google-16'. Skipping duplicate at 'C:\android-sdk\add-ons\addon-google_apis-google-16-1'
+WARNING [Project: :app] shrinkResources does not yet work with useJack=true
+:app:preBuild UP-TO-DATE
+:app:preDebugBuild UP-TO-DATE
+:app:compileDebugNdk UP-TO-DATE
+:app:checkDebugManifest
+:app:preLintOptionsBuild UP-TO-DATE
+:app:extractProguardFiles
+:app:preReleaseBuild
+:app:prepareComAndroidSupportAnimatedVectorDrawable2400Library
+:app:prepareComAndroidSupportAppcompatV72400Library
+:app:prepareComAndroidSupportCardviewV72400Library
+:app:prepareComAndroidSupportDesign2400Library
+:app:prepareComAndroidSupportMultidex101Library
+:app:prepareComAndroidSupportPaletteV72400Library
+:app:prepareComAndroidSupportRecyclerviewV72400Library
+:app:preDebugAndroidTestBuild UP-TO-DATE
+:app:prepareComAndroidSupportSupportV42400Library
+:app:prepareComAndroidSupportSupportVectorDrawable2400Library
+:app:prepareComGoogleAndroidGmsPlayServicesBase902Library
+:app:prepareComGoogleAndroidGmsPlayServicesBasement902Library
+:app:prepareComGoogleAndroidGmsPlayServicesGcm902Library
+:app:prepareComGoogleAndroidGmsPlayServicesIid902Library
+:app:prepareComGoogleAndroidGmsPlayServicesLocation902Library
+:app:prepareComGoogleAndroidGmsPlayServicesMaps902Library
+:app:prepareComGoogleAndroidGmsPlayServicesTasks902Library
+:app:prepareComGoogleFirebaseFirebaseCommon902Library
+:app:prepareComJakewhartonButterknife810Library
+:app:prepareComSquareupSqldelightRuntime042Library
+:app:prepareIoReactivexRxandroid121Library
+:app:prepareDebugDependencies
+:app:compileDebugAidl
+:app:compileDebugRenderscript
+:app:generateDebugBuildConfig
+:app:generateDebugSqlDelightInterface
+:app:mergeDebugShaders
+:app:compileDebugShaders
+:app:generateDebugAssets
+:app:mergeDebugAssets
+:app:generateDebugResValues
+:app:generateDebugResources
+:app:mergeDebugResources
+:app:processDebugManifest
+:app:processDebugResources
+:app:generateDebugSources
+:app:unzipJacocoAgent UP-TO-DATE
+:app:transformClassesWithPreJackPackagedLibrariesForDebug FAILED
+
+BUILD FAILED
+
+Total time: 31.931 secs

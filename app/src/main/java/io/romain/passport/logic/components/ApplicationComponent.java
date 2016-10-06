@@ -18,14 +18,13 @@ package io.romain.passport.logic.components;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.romain.passport.logic.modules.AccountModule;
 import io.romain.passport.logic.modules.ApplicationContextModule;
+import io.romain.passport.logic.modules.FirebaseAuthModule;
 import io.romain.passport.logic.modules.GsonModule;
 import io.romain.passport.logic.modules.OkHttpModule;
 import io.romain.passport.logic.modules.RetrofitModule;
 import io.romain.passport.logic.modules.SharedPrefModule;
 import io.romain.passport.logic.services.BaseIntentService;
-import io.romain.passport.logic.services.account.AuthenticatorService;
 import io.romain.passport.ui.BaseActivity;
 import io.romain.passport.ui.adaptater.CitySearchAdapter;
 import io.romain.passport.ui.fragments.BaseFragment;
@@ -33,7 +32,14 @@ import io.romain.passport.ui.fragments.dialogs.BaseDialogFragment;
 import io.romain.passport.utils.glide.GlideConfiguration;
 
 @Singleton
-@Component(modules = {AccountModule.class, SharedPrefModule.class, RetrofitModule.class, OkHttpModule.class, GsonModule.class, ApplicationContextModule.class})
+@Component(modules = {
+		ApplicationContextModule.class,
+		FirebaseAuthModule.class,
+		SharedPrefModule.class,
+		RetrofitModule.class,
+		OkHttpModule.class,
+		GsonModule.class
+})
 public interface ApplicationComponent {
 	void inject(BaseActivity activity);
 
@@ -44,8 +50,6 @@ public interface ApplicationComponent {
 	void inject(BaseDialogFragment baseDialogFragment);
 
 	void inject(GlideConfiguration configuration);
-
-	void inject(AuthenticatorService.Authenticator authenticator);
 
 	void inject(CitySearchAdapter citySearchAdapter);
 }

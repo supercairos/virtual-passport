@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.view.Gravity;
@@ -39,7 +40,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import java.util.HashMap;
 
 import io.romain.passport.R;
-import io.romain.passport.model.City;
+import io.romain.passport.data.City;
 import io.romain.passport.ui.adaptater.CityListAdapter;
 import io.romain.passport.ui.views.FourThreeImageView;
 import io.romain.passport.utils.ColorUtils;
@@ -93,13 +94,14 @@ public class CityItemTarget extends GlideDrawableImageViewTarget implements Pale
 					public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
 						mViewHolder.content.removeOnLayoutChangeListener(this);
 						Palette.from(image)
-								.setRegion(mViewHolder.content.getLeft(), mViewHolder.content.getTop(), mViewHolder.content.getRight(), mViewHolder.content.getBottom())
 								.clearFilters()
+								.setRegion(mViewHolder.content.getLeft(), mViewHolder.content.getTop(), mViewHolder.content.getRight(), mViewHolder.content.getBottom())
+//								.maximumColorCount(10)
 								.generate(CityItemTarget.this);
 					}
 				});
 			} else {
-				onGenerated(palette);
+				onGenerated(null);
 			}
 		}
 	}
@@ -118,8 +120,11 @@ public class CityItemTarget extends GlideDrawableImageViewTarget implements Pale
 	@SuppressWarnings("RedundantCast")
 	@Override
 	@TargetApi(21)
-	public void onGenerated(Palette palette) {
-		sUrlPaletteCache.put(mCity.picture(), palette);
+	public void onGenerated(@Nullable Palette palette) {
+		if(palette != null) {
+			sUrlPaletteCache.put(mCity.picture(), palette);
+		}
+
 		Context context = getView().getContext();
 		((FourThreeImageView) getView()).setForeground(
 				new LayerDrawable(

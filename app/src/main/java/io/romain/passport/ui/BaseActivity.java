@@ -15,11 +15,13 @@
  */
 package io.romain.passport.ui;
 
-import android.accounts.AccountManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -27,17 +29,29 @@ import butterknife.ButterKnife;
 import io.romain.passport.MyApplication;
 import io.romain.passport.logic.helpers.SharedPrefHelper;
 import retrofit2.Retrofit;
+import rx.subscriptions.CompositeSubscription;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
 	@Inject
-	public SharedPrefHelper mSharedPref;
+	SharedPrefHelper mSharedPref;
 
 	@Inject
 	Retrofit mRetrofit;
 
 	@Inject
-	AccountManager mAccountManager;
+	Gson mGson;
+
+	@Inject
+	FirebaseAuth mAuth;
+
+	CompositeSubscription mRxSubscription = new CompositeSubscription();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		MyApplication.getApplication(this).getApplicationComponent().inject(this);
+	}
 
 	@Override
 	public void setContentView(int layoutResID) {
@@ -62,8 +76,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		MyApplication.getApplication(this).getApplicationComponent().inject(this);
+	protected void onDestroy() {
+		super.onDestroy();
+		mRxSubscription.clear();
 	}
 }

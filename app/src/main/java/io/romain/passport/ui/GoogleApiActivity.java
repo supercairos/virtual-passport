@@ -18,7 +18,7 @@ import io.romain.passport.R;
 import io.romain.passport.utils.Dog;
 import io.romain.passport.utils.GoogleApiUtils;
 
-public abstract class GoogleApiActivity extends BaseActivity implements
+public abstract class GoogleApiActivity extends FirebaseAuthActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -70,7 +70,7 @@ public abstract class GoogleApiActivity extends BaseActivity implements
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         connect();
     }
